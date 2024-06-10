@@ -2,7 +2,15 @@
 
 import { createContext, useContext } from 'react'
 
-import { UseLocationData } from './useLocation.types'
+export interface UseLocationData {
+  coords?: {
+    latitude: string
+    longitude: string
+  }
+  error?: {
+    message: string
+  }
+}
 
 export const LocationContext = createContext<UseLocationData | undefined>(
   undefined

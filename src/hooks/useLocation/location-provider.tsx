@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from 'react'
 
-import { LocationContext } from './use-location'
+import { LocationContext, UseLocationData } from './use-location'
 
-import { LocationProviderProps, UseLocationData } from './useLocation.types'
-import { formatDecimals } from '@/utils/stringFormaters'
+import { formatDecimals } from '@/lib/stringFormaters'
+
+interface LocationProviderProps {
+  children: React.ReactNode
+}
 
 export function LocationProvider({
   children
@@ -19,8 +22,6 @@ export function LocationProvider({
           message: 'Geolocation is not supported by your device.'
         }
       })
-
-      return
     }
 
     const onSuccess = ({
