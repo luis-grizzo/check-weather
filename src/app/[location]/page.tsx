@@ -17,13 +17,13 @@ export default async function Location({
   params: { location }
 }: LocationProps) {
   const decodedPath = decodeURIComponent(location)
-  const [latitude, longitude] = decodedPath.split(',')
+  const [latitude, longitude, language] = decodedPath.split(',')
 
   if (isNaN(parseInt(latitude)) || isNaN(parseInt(longitude))) {
     throw new Error('Invalid coordinates')
   }
 
-  const weather = await fetchWeather({ latitude, longitude })
+  const weather = await fetchWeather({ latitude, longitude, language })
 
   const color = weathersCatalog[weather.type].color
   const icon = weathersCatalog[weather.type].icon[weather.period]
@@ -31,20 +31,29 @@ export default async function Location({
   return (
     <>
       <header className="flex items-center justify-between container mx-auto px-8 py-6">
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           {weather.location.city && (
             <span className="text-lg">
               {weather.location.city}, {weather.location.country}
             </span>
           )}
-          <span className="text-xs">{weather.forecast_time}</span>
+
+          <span className="text-xs">{weather.time}</span>
+
+          <div className="flex flex-wrap gap-2">
+            {weather.forecast_times.map((time) => (
+              <Badge key={time.description}>
+                {`${time.description} ${time.value}`}
+              </Badge>
+            ))}
+          </div>
         </div>
 
-        <RefreshButton />
+        <RefreshButton unixLastRequestTime={weather.unixTimestamp} />
       </header>
 
       <main
-        className={`relative flex flex-col items-center justify-center gap-8 h-full container mx-auto px-8 py-6 overflow-hidden before:absolute before:w-3/4 before:max-w-96 before:aspect-square before:bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] ${color} before:to-transparent before:to-70%  before:rounded-full before:animate-pulse before:-z-50`}
+        className={`relative flex flex-col items-center justify-center gap-8 h-full container mx-auto px-8 py-6 before:absolute before:w-3/4 before:max-w-96 before:aspect-square before:bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] ${color} before:to-transparent before:to-70%  before:rounded-full before:animate-pulse before:-z-50`}
       >
         <div className="flex items-center gap-4">
           <Image src={icon} alt=" " className="w-24 aspect-square" />
@@ -53,11 +62,10 @@ export default async function Location({
         </div>
 
         <div className="flex flex-wrap justify-center gap-2">
-          {weather.pills.map((pill) => (
-            <Badge
-              key={pill.description}
-              type="default"
-            >{`${pill.description} ${pill.value}`}</Badge>
+          {weather.forecast_temperatures.map((temperature) => (
+            <Badge key={temperature.description}>
+              {`${temperature.description} ${temperature.value}`}
+            </Badge>
           ))}
         </div>
 

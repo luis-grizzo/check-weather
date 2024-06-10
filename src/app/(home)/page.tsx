@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
 import { useLocation } from '@/hooks/useLocation'
-import { randomIcon } from '@/utils'
+
+import { InfoPanel } from '@/components'
+
+import { weatherIcons } from '@/constants/icons'
 
 export default function Home() {
   const router = useRouter()
@@ -18,15 +21,27 @@ export default function Home() {
     }
 
     if (coords) {
-      const path = encodeURIComponent(`${coords.latitude},${coords.longitude}`)
+      const path = encodeURIComponent(
+        `${coords.latitude},${coords.longitude},${navigator.language}`
+      )
 
       router.push(`/${path}`)
     }
   }, [coords, error])
 
   return (
-    <main className="flex items-center justify-center h-dvh w-dvw">
-      <Image src={randomIcon} alt="" className="w-24 aspect-square" />
+    <main className="flex flex-col items-center justify-center gap-8 h-dvh container mx-auto p-8">
+      <Image
+        src={weatherIcons.clear_day}
+        alt=""
+        className="w-24 aspect-square"
+      />
+
+      <h2 className="text-lg">Welcome to Check Weather!</h2>
+
+      <InfoPanel type="info">
+        Please provide access to your location to be able to use the app!
+      </InfoPanel>
     </main>
   )
 }

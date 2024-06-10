@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={poppins.className}>
-      <body className="flex flex-col w-dvw h-dvh overflow-hidden bg-neutral-50 text-neutral-950">
+      <body className="flex flex-col w-dvw h-dvh bg-neutral-50 text-neutral-950">
         <LocationProvider>
           <Navbar />
 
