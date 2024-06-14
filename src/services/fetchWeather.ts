@@ -1,4 +1,3 @@
-import { imperialUnitLanguages } from '@/constants/imperialUnitLanguages'
 import { hourInSeconds } from '@/constants/timeMarks'
 
 import { formatWeatherResponse } from '@/utils/weatherUtils'
@@ -8,7 +7,7 @@ import type { WeatherTypes } from '@/types/weatherTypes'
 interface FetchWeatherProps {
   latitude: string
   longitude: string
-  language: string
+  measurementUnit: string
 }
 
 export interface FetchWeatherResponse {
@@ -39,15 +38,13 @@ export interface FetchWeatherResponse {
 export async function fetchWeather({
   latitude,
   longitude,
-  language
+  measurementUnit
 }: FetchWeatherProps) {
-  const units = imperialUnitLanguages.includes(language) ? 'imperial' : 'metric'
-
   const params = new URLSearchParams({
     lat: latitude,
     lon: longitude,
     lang: 'en',
-    units,
+    units: measurementUnit,
     appid: String(process.env.OPEN_WEATHER_API_KEY)
   })
 

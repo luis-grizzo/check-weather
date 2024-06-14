@@ -4,11 +4,12 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
+import { weatherIcons } from '@/constants/icons'
+import { imperialUnitLanguages } from '@/constants/measurementUnits'
+
 import { useLocation } from '@/hooks/useLocation'
 
 import { InfoPanel } from '@/components'
-
-import { weatherIcons } from '@/constants/icons'
 
 export default function Home() {
   const router = useRouter()
@@ -21,8 +22,12 @@ export default function Home() {
     }
 
     if (coords) {
+      const measurementUnit = imperialUnitLanguages.includes(navigator.language)
+        ? 'imperial'
+        : 'metric'
+
       const path = encodeURIComponent(
-        `${coords.latitude},${coords.longitude},${navigator.language}`
+        `${coords.latitude},${coords.longitude},${measurementUnit}`
       )
 
       router.push(`/${path}`)
@@ -33,7 +38,7 @@ export default function Home() {
     <main className="flex flex-col items-center justify-center gap-8 h-dvh container mx-auto p-8">
       <Image
         src={weatherIcons.clear_day}
-        alt=""
+        alt="Random weather icon"
         className="w-24 aspect-square"
       />
 
