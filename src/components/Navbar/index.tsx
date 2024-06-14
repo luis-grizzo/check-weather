@@ -20,7 +20,7 @@ export function Navbar() {
   }, [index])
 
   return (
-    <nav className="sticky top-0 bg-neutral-100/60 border-b-1 border-neutral-600/10 backdrop-blur">
+    <nav className="sticky top-0 bg-neutral-100/60 border-b-1 border-neutral-600/10 backdrop-blur z-50">
       <div className="flex items-center gap-2 container mx-auto px-8 py-6">
         <Image
           src={weatherIconsArray[index]}
