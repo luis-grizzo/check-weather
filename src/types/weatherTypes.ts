@@ -14,8 +14,3 @@ export type WeatherTypes =
   | 'ash'
   | 'squall'
   | 'tornado'
-
-export interface GenericWeatherInfo {
-  description: string
-  value: string
-}
