@@ -2,31 +2,48 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { weatherIconsArray } from '@/constants/icons'
+import { calculateRandomIndex } from '@/lib/calculators'
 
 export function Navbar() {
-  const [index, setIndex] = useState(0)
+  const [stateIndex, setStateIndex] = useState(0)
+
+  const MotionImage = motion(Image)
 
   useEffect(() => {
-    // TODO: Resolver bug no useEffect onde não é disparado caso o index seja o mesmo do anterior.
     const timer = setTimeout(() => {
-      const newIndex = Math.floor(Math.random() * weatherIconsArray.length)
+      let newIndex = stateIndex
 
-      setIndex(newIndex)
-    }, 2_000)
+      while (newIndex === stateIndex)
+        newIndex = calculateRandomIndex(weatherIconsArray)
+
+      setStateIndex(newIndex)
+    }, 5_000)
 
     return () => clearTimeout(timer)
-  }, [index])
+  }, [stateIndex])
 
   return (
-    <nav className="sticky top-0 bg-neutral-100/60 border-b-1 border-neutral-600/10 backdrop-blur z-50">
+    <nav className="sticky top-0 min-h-[76px] bg-neutral-100/60 border-b-1 border-neutral-600/10 backdrop-blur overflow-hidden z-50">
       <div className="flex items-center gap-2 container mx-auto px-8 py-6">
-        <Image
-          src={weatherIconsArray[index]}
-          alt=""
-          className="w-7 aspect-square"
-        />
+        <AnimatePresence mode="popLayout">
+          {weatherIconsArray.map(
+            (icon, index) =>
+              stateIndex === index && (
+                <MotionImage
+                  key={index}
+                  initial={{ opacity: 0, y: -50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 50 }}
+                  src={icon}
+                  alt="Random weather icon"
+                  className="w-7 aspect-square"
+                />
+              )
+          )}
+        </AnimatePresence>
 
         <span className="text-lg">Check Weather</span>
       </div>
