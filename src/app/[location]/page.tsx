@@ -57,7 +57,7 @@ export default async function Location({
           <span className="text-xs">{`${formatTime(weather.time)} - ${formatDate(weather.time)}`}</span>
         </div>
 
-        <RefreshButton lastRequestTime={weather.time} />
+        <RefreshButton unixTimestampOfLastRequest={weather.time} />
       </header>
 
       <main

@@ -9,10 +9,12 @@ import { hourInMilliseconds } from '@/constants/timeMarks'
 import { formatTimer } from '@/lib/stringFormaters'
 
 interface RefreshButtonProps {
-  lastRequestTime: number
+  unixTimestampOfLastRequest: number
 }
 
-export function RefreshButton({ lastRequestTime }: RefreshButtonProps) {
+export function RefreshButton({
+  unixTimestampOfLastRequest
+}: RefreshButtonProps) {
   const router = useRouter()
 
   const [isDisabled, setIsDisabled] = useState(true)
@@ -25,24 +27,21 @@ export function RefreshButton({ lastRequestTime }: RefreshButtonProps) {
   useEffect(() => {
     const timer = setInterval(() => {
       const currentTime = Date.now()
-      const revalidateTime = lastRequestTime * 1_000 + hourInMilliseconds
+      const revalidateTime =
+        unixTimestampOfLastRequest * 1_000 + hourInMilliseconds
+
       const remainTime = revalidateTime - currentTime
+      const formattedTimer = formatTimer(remainTime)
 
-      if (revalidateTime < currentTime) {
-        setCountdownTimer('00:00')
+      setCountdownTimer(formattedTimer)
 
-        setIsDisabled(false)
-      } else {
-        const formatedTimer = formatTimer(remainTime)
-
-        setCountdownTimer(formatedTimer)
-
-        setIsDisabled(true)
-      }
+      setIsDisabled(!!remainTime)
     }, 1_000)
 
+    if (!isDisabled) clearInterval(timer)
+
     return () => clearInterval(timer)
-  }, [lastRequestTime])
+  }, [unixTimestampOfLastRequest, isDisabled])
 
   return (
     <div className="flex flex-col items-center gap-2">
