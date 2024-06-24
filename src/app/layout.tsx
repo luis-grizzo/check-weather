@@ -9,6 +9,7 @@ import { Footer, Navbar } from '@/components'
 import './globals.css'
 
 export const metadata: Metadata = {
+  manifest: '/manifest.json',
   title: 'Check Weather',
   description: 'Consult your local weather info!'
 }
