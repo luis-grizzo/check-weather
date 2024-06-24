@@ -44,6 +44,15 @@ export default async function Location({
   const color = weathersCatalog[weather.type].color
   const icon = weathersCatalog[weather.type].icon[period]
 
+  const handleWindSpeedSulfix = () => {
+    const sulfixes = {
+      imperial: 'mi/h',
+      metric: 'm/s'
+    }
+
+    return sulfixes[measurementUnit as keyof typeof sulfixes]
+  }
+
   return (
     <>
       <header className="flex items-center justify-between container mx-auto px-8 py-6">
@@ -64,11 +73,7 @@ export default async function Location({
         className={`relative flex flex-col items-center justify-center gap-8 h-full container mx-auto px-8 py-6 before:absolute before:w-3/4 before:max-w-96 before:aspect-square before:bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] ${color} before:to-transparent before:to-70%  before:rounded-full before:animate-pulse before:-z-50`}
       >
         <div className="flex items-center gap-4">
-          <Image
-            src={icon}
-            alt="Current weather icon"
-            className="w-24 aspect-square"
-          />
+          <Image src={icon.src} alt={icon.alt} className="w-24 aspect-square" />
 
           <span className="text-8xl">{`${roundValue(weather.curr_temp)}°`}</span>
         </div>
@@ -99,7 +104,7 @@ export default async function Location({
               className="w-8 aspect-square"
             />
 
-            <span className="text-lg text-nowrap">{`${roundValue(weather.wind_speed)} ${measurementUnit === 'imperial' ? 'mi/h' : 'm/s'}`}</span>
+            <span className="text-lg text-nowrap">{`${roundValue(weather.wind_speed)} ${handleWindSpeedSulfix()}`}</span>
 
             <span className="text-xs">Wind</span>
           </div>

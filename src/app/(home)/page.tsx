@@ -37,12 +37,12 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center gap-8 h-dvh container mx-auto p-8">
       <Image
-        src={weatherIcons.clear_day}
-        alt="Random weather icon"
+        src={weatherIcons.clear_day.src}
+        alt={weatherIcons.clear_day.alt}
         className="w-24 aspect-square"
       />
 
-      <h2 className="text-lg">Welcome to Check Weather!</h2>
+      <h1 className="text-lg">Welcome to Check Weather!</h1>
 
       <InfoPanel type="info">
         Please provide access to your location to be able to use the app!

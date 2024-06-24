@@ -31,11 +31,13 @@ export function RefreshButton({
         unixTimestampOfLastRequest * 1_000 + hourInMilliseconds
 
       const remainTime = revalidateTime - currentTime
-      const formattedTimer = formatTimer(remainTime)
+      const validatedRemainTime = remainTime < 0 ? 0 : remainTime
+
+      const formattedTimer = formatTimer(validatedRemainTime)
 
       setCountdownTimer(formattedTimer)
 
-      setIsDisabled(!!remainTime)
+      setIsDisabled(!!validatedRemainTime)
     }, 1_000)
 
     if (!isDisabled) clearInterval(timer)
@@ -46,6 +48,7 @@ export function RefreshButton({
   return (
     <div className="flex flex-col items-center gap-2">
       <button
+        role="button"
         className="flex items-center justify-center p-2 bg-neutral-100/60 border-1 border-neutral-600/10 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
         onClick={refresh}
         disabled={isDisabled}

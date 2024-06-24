@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Location should match snapshot 1`] = `
+<div>
+  <header
+    class="flex items-center justify-between container mx-auto px-8 py-6"
+  >
+    <div
+      class="flex flex-col gap-2"
+    >
+      <span
+        class="text-lg"
+      >
+        Jaú, Brazil
+      </span>
+      <span
+        class="text-xs"
+      >
+        3:26 PM - Thursday, June 20, 2024
+      </span>
+    </div>
+    <div
+      class="flex flex-col items-center gap-2"
+    >
+      <button
+        class="flex items-center justify-center p-2 bg-neutral-100/60 border-1 border-neutral-600/10 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+        disabled=""
+        role="button"
+      >
+        <img
+          alt="Loading icon"
+          class="w-6 aspect-square animate-spin"
+          data-nimg="1"
+          decoding="async"
+          height="40"
+          loading="lazy"
+          src="/_next/image?url=%2Fimg.jpg&w=96&q=75"
+          srcset="/_next/image?url=%2Fimg.jpg&w=48&q=75 1x, /_next/image?url=%2Fimg.jpg&w=96&q=75 2x"
+          style="color: transparent;"
+          width="40"
+        />
+      </button>
+    </div>
+  </header>
+  <main
+    class="relative flex flex-col items-center justify-center gap-8 h-full container mx-auto px-8 py-6 before:absolute before:w-3/4 before:max-w-96 before:aspect-square before:bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] before:from-blue-300 before:to-transparent before:to-70%  before:rounded-full before:animate-pulse before:-z-50"
+  >
+    <div
+      class="flex items-center gap-4"
+    >
+      <img
+        alt="Clear day icon"
+        class="w-24 aspect-square"
+        data-nimg="1"
+        decoding="async"
+        height="40"
+        loading="lazy"
+        src="/_next/image?url=%2Fimg.jpg&w=96&q=75"
+        srcset="/_next/image?url=%2Fimg.jpg&w=48&q=75 1x, /_next/image?url=%2Fimg.jpg&w=96&q=75 2x"
+        style="color: transparent;"
+        width="40"
+      />
+      <span
+        class="text-8xl"
+      >
+        30°
+      </span>
+    </div>
+    <div
+      class="flex flex-wrap justify-center gap-2"
+    >
+      <span
+        class="flex items-center gap-2 px-2 py-1 text-xs bg-neutral-100/60 border-1 border-neutral-600/10 text-neutral-950 rounded-lg backdrop-blur"
+      >
+        Feels like 28°
+      </span>
+      <span
+        class="flex items-center gap-2 px-2 py-1 text-xs bg-neutral-100/60 border-1 border-neutral-600/10 text-neutral-950 rounded-lg backdrop-blur"
+      >
+        Min 30°
+      </span>
+      <span
+        class="flex items-center gap-2 px-2 py-1 text-xs bg-neutral-100/60 border-1 border-neutral-600/10 text-neutral-950 rounded-lg backdrop-blur"
+      >
+        Max 30°
+      </span>
+      <span
+        class="flex items-center gap-2 px-2 py-1 text-xs bg-neutral-100/60 border-1 border-neutral-600/10 text-neutral-950 rounded-lg backdrop-blur"
+      >
+        Sunrise 6:53 AM
+      </span>
+      <span
+        class="flex items-center gap-2 px-2 py-1 text-xs bg-neutral-100/60 border-1 border-neutral-600/10 text-neutral-950 rounded-lg backdrop-blur"
+      >
+        Sunset 5:39 PM
+      </span>
+    </div>
+    <span
+      class="text-base capitalize"
+    >
+      clear sky
+    </span>
+    <div
+      class="flex items-center justify-between gap-8 p-8 bg-neutral-100/60 border-1 border-neutral-600/10 rounded-2xl backdrop-blur"
+    >
+      <div
+        class="flex flex-col items-center gap-2"
+      >
+        <img
+          alt="Wind speed icon"
+          class="w-8 aspect-square"
+          data-nimg="1"
+          decoding="async"
+          height="40"
+          loading="lazy"
+          src="/_next/image?url=%2Fimg.jpg&w=96&q=75"
+          srcset="/_next/image?url=%2Fimg.jpg&w=48&q=75 1x, /_next/image?url=%2Fimg.jpg&w=96&q=75 2x"
+          style="color: transparent;"
+          width="40"
+        />
+        <span
+          class="text-lg text-nowrap"
+        >
+          1 m/s
+        </span>
+        <span
+          class="text-xs"
+        >
+          Wind
+        </span>
+      </div>
+      <div
+        class="flex flex-col items-center gap-2"
+      >
+        <img
+          alt="Humidity icon"
+          class="w-8 aspect-square"
+          data-nimg="1"
+          decoding="async"
+          height="40"
+          loading="lazy"
+          src="/_next/image?url=%2Fimg.jpg&w=96&q=75"
+          srcset="/_next/image?url=%2Fimg.jpg&w=48&q=75 1x, /_next/image?url=%2Fimg.jpg&w=96&q=75 2x"
+          style="color: transparent;"
+          width="40"
+        />
+        <span
+          class="text-lg text-nowrap"
+        >
+          17%
+        </span>
+        <span
+          class="text-xs"
+        >
+          Humidity
+        </span>
+      </div>
+      <div
+        class="flex flex-col items-center gap-2"
+      >
+        <img
+          alt="Visibility icon"
+          class="w-8 aspect-square"
+          data-nimg="1"
+          decoding="async"
+          height="40"
+          loading="lazy"
+          src="/_next/image?url=%2Fimg.jpg&w=96&q=75"
+          srcset="/_next/image?url=%2Fimg.jpg&w=48&q=75 1x, /_next/image?url=%2Fimg.jpg&w=96&q=75 2x"
+          style="color: transparent;"
+          width="40"
+        />
+        <span
+          class="text-lg text-nowrap"
+        >
+          10 km
+        </span>
+        <span
+          class="text-xs"
+        >
+          Visibility
+        </span>
+      </div>
+    </div>
+  </main>
+</div>
+`;

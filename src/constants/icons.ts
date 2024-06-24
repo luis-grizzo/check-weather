@@ -22,19 +22,58 @@ import error from '@public/error.svg'
 import progress_activity from '@public/progress_activity.svg'
 
 export const weatherIcons = {
-  clear_day,
-  clear_night,
-  partly_cloudy_day,
-  partly_cloudy_night,
-  rainy,
-  thunderstorm,
-  weather_snowy,
-  mist,
-  weather_mix,
-  foggy,
-  airwave,
-  storm,
-  tornado
+  clear_day: {
+    src: clear_day,
+    alt: 'Clear day icon'
+  },
+  clear_night: {
+    src: clear_night,
+    alt: 'Clear night icon'
+  },
+  partly_cloudy_day: {
+    src: partly_cloudy_day,
+    alt: 'Partly cloudy day icon'
+  },
+  partly_cloudy_night: {
+    src: partly_cloudy_night,
+    alt: 'Partly cloudy night icon'
+  },
+  rainy: {
+    src: rainy,
+    alt: 'Rainy icon'
+  },
+  thunderstorm: {
+    src: thunderstorm,
+    alt: 'Thunderstorm icon'
+  },
+  weather_snowy: {
+    src: weather_snowy,
+    alt: 'Weather snowy icon'
+  },
+  mist: {
+    src: mist,
+    alt: 'Mist icon'
+  },
+  weather_mix: {
+    src: weather_mix,
+    alt: 'Weather mix icon'
+  },
+  foggy: {
+    src: foggy,
+    alt: 'Foggy icon'
+  },
+  airwave: {
+    src: airwave,
+    alt: 'Airwave icon'
+  },
+  storm: {
+    src: storm,
+    alt: 'Storm icon'
+  },
+  tornado: {
+    src: tornado,
+    alt: 'Tornado icon'
+  }
 }
 
 export const layoutIcons = {

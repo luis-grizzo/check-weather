@@ -21,6 +21,7 @@ export function InfoPanel({ type, children }: InfoPanelProps) {
 
   return (
     <div
+      role="dialog"
       className={`flex items-start gap-4 p-4 text-sm ${types[type].color} border-1 rounded-2xl backdrop-blur`}
     >
       <Image src={types[type].icon} alt="" className="w-5 aspect-square" />

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { LocationContext, UseLocationData } from './use-location'
 
-import { formatDecimals } from '@/lib/stringFormaters'
+import { truncateToOneDecimal } from '@/lib/stringFormaters'
 
 interface LocationProviderProps {
   children: React.ReactNode
@@ -22,28 +22,28 @@ export function LocationProvider({
           message: 'Geolocation is not supported by your device.'
         }
       })
-    }
+    } else {
+      const onSuccess = ({
+        coords: { latitude, longitude }
+      }: GeolocationPosition) => {
+        setLocation({
+          coords: {
+            latitude: truncateToOneDecimal(latitude),
+            longitude: truncateToOneDecimal(longitude)
+          }
+        })
+      }
 
-    const onSuccess = ({
-      coords: { latitude, longitude }
-    }: GeolocationPosition) => {
-      setLocation({
-        coords: {
-          latitude: formatDecimals(latitude),
-          longitude: formatDecimals(longitude)
-        }
-      })
-    }
+      const onError = ({ message }: GeolocationPositionError) => {
+        setLocation({
+          error: {
+            message
+          }
+        })
+      }
 
-    const onError = ({ message }: GeolocationPositionError) => {
-      setLocation({
-        error: {
-          message
-        }
-      })
+      navigator.geolocation.getCurrentPosition(onSuccess, onError)
     }
-
-    navigator.geolocation.getCurrentPosition(onSuccess, onError)
   }, [])
 
   return (
