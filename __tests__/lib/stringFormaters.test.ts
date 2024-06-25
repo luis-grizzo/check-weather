@@ -57,6 +57,8 @@ describe('truncateToOneDecimal', () => {
     expect(truncateToOneDecimal(-11.098)).toBe('-11.0')
 
     expect(truncateToOneDecimal(0)).toBe('0.0')
+
+    expect(truncateToOneDecimal(1)).toBe('1.0')
   })
 
   it('should handle Inifinity values', () => {
