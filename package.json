@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install",
+    "prepare": "husky init",
     "test": "jest --silent",
     "test:default": "jest",
     "test:watch": "jest --watch",
