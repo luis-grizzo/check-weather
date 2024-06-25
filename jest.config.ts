@@ -31,7 +31,7 @@ const config: Config = {
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/{index,fonts}.ts',
-    '!src/{constants,types}/*'
+    '!src/{constants,types,manifest}/*'
   ],
 
   // The directory where Jest should output its coverage files
@@ -51,10 +51,10 @@ const config: Config = {
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {
     global: {
-      branches: 95,
-      functions: 95,
-      lines: 95,
-      statements: 95
+      branches: 99,
+      functions: 99,
+      lines: 99,
+      statements: 99
     }
   },
 
