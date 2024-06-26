@@ -30,7 +30,7 @@ const config: Config = {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
-    '!src/**/{index,fonts}.ts',
+    '!src/**/{index,fonts,manifest}.ts',
     '!src/{constants,types}/*'
   ],
 
@@ -51,10 +51,10 @@ const config: Config = {
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {
     global: {
-      branches: 95,
-      functions: 95,
-      lines: 95,
-      statements: 95
+      branches: 99,
+      functions: 99,
+      lines: 99,
+      statements: 99
     }
   },
 

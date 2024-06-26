@@ -4,7 +4,6 @@ exports[`RootLayout should match snapshot 1`] = `
 <div>
   <html
     class="className"
-    data-testid="container"
     lang="en"
   >
     <body

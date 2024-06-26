@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 
 import { poppins } from './fonts'
 
@@ -11,7 +11,22 @@ import './globals.css'
 export const metadata: Metadata = {
   manifest: '/manifest.json',
   title: 'Check Weather',
-  description: 'Consult your local weather info!'
+  description: 'Consult your local weather info!',
+  metadataBase: new URL('https://go-check-weather.vercel.app/'),
+  openGraph: {
+    title: 'Check Weather',
+    description: 'Consult your local weather info!',
+    url: new URL('https://go-check-weather.vercel.app/'),
+    siteName: 'Check Weather'
+  },
+  twitter: {
+    title: 'Check Weather',
+    description: 'Consult your local weather info!'
+  }
+}
+
+export const viewport: Viewport = {
+  themeColor: '#fafafa'
 }
 
 export default function RootLayout({
