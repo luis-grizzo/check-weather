@@ -70,6 +70,19 @@ global.fetch = jest.fn().mockImplementation(() => ({
 }))
 
 describe('Location', () => {
+  beforeAll(() => {
+    jest
+      .spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions')
+      .mockImplementation(() => {
+        return {
+          timeZone: 'UTC',
+          locale: 'locale',
+          calendar: 'calendar',
+          numberingSystem: 'numberingSystem'
+        }
+      })
+  })
+
   afterAll(() => {
     jest.clearAllMocks()
     jest.clearAllTimers()

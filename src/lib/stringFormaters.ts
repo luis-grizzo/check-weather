@@ -1,12 +1,20 @@
-export const formatDate = (unixTimestamp: number) =>
-  new Intl.DateTimeFormat('en', { dateStyle: 'full' }).format(
-    unixTimestamp * 1_000
-  )
+export const formatDate = (unixTimestamp: number) => {
+  const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
 
-export const formatTime = (unixTimestamp: number) =>
-  new Intl.DateTimeFormat('en', { timeStyle: 'short' }).format(
-    unixTimestamp * 1_000
-  )
+  return new Intl.DateTimeFormat('en', {
+    dateStyle: 'full',
+    timeZone: timeZone
+  }).format(unixTimestamp * 1_000)
+}
+
+export const formatTime = (unixTimestamp: number) => {
+  const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
+
+  return new Intl.DateTimeFormat('en', {
+    timeStyle: 'short',
+    timeZone: timeZone
+  }).format(unixTimestamp * 1_000)
+}
 
 export const truncateToOneDecimal = (number: number) => {
   if (!isFinite(number)) return '0.0'
@@ -22,10 +30,12 @@ export const truncateToOneDecimal = (number: number) => {
 }
 export const formatTimer = (timestamp: number) => {
   const time = new Date(timestamp)
+  const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
 
   return time.toLocaleTimeString('en', {
     minute: '2-digit',
-    second: '2-digit'
+    second: '2-digit',
+    timeZone: timeZone
   })
 }
 

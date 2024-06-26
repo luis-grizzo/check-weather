@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 
 import { poppins } from './fonts'
 
@@ -13,7 +13,6 @@ export const metadata: Metadata = {
   title: 'Check Weather',
   description: 'Consult your local weather info!',
   metadataBase: new URL('https://go-check-weather.vercel.app/'),
-  themeColor: '#fafafa',
   openGraph: {
     title: 'Check Weather',
     description: 'Consult your local weather info!',
@@ -24,6 +23,10 @@ export const metadata: Metadata = {
     title: 'Check Weather',
     description: 'Consult your local weather info!'
   }
+}
+
+export const viewport: Viewport = {
+  themeColor: '#fafafa'
 }
 
 export default function RootLayout({

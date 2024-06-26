@@ -27,24 +27,75 @@ describe('formatCountryName', () => {
 })
 
 describe('formatDate', () => {
+  beforeAll(() => {
+    jest
+      .spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions')
+      .mockImplementation(() => {
+        return {
+          timeZone: 'UTC',
+          locale: 'locale',
+          calendar: 'calendar',
+          numberingSystem: 'numberingSystem'
+        }
+      })
+  })
+
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
+
   it('should return the formatted date', () => {
-    const unixTimestamp = new Date('June 17, 2024').getTime() / 1_000
+    const unixTimestamp = new Date('2024-06-17T03:00:00Z').getTime() / 1_000
 
     expect(formatDate(unixTimestamp)).toBe('Monday, June 17, 2024')
   })
 })
 
 describe('formatTime', () => {
+  beforeAll(() => {
+    jest
+      .spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions')
+      .mockImplementation(() => {
+        return {
+          timeZone: 'UTC',
+          locale: 'locale',
+          calendar: 'calendar',
+          numberingSystem: 'numberingSystem'
+        }
+      })
+  })
+
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
+
   it('should return the formatted time', () => {
-    const unixTimestamp = new Date('June 17, 2024, 16:38').getTime() / 1_000
+    const unixTimestamp = new Date('2024-06-17T16:38:00Z').getTime() / 1_000
 
     expect(formatTime(unixTimestamp)).toBe('4:38 PM')
   })
 })
 
 describe('formatTimer', () => {
+  beforeAll(() => {
+    jest
+      .spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions')
+      .mockImplementation(() => {
+        return {
+          timeZone: 'UTC',
+          locale: 'locale',
+          calendar: 'calendar',
+          numberingSystem: 'numberingSystem'
+        }
+      })
+  })
+
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
+
   it('should return the formatted time', () => {
-    const timestamp = new Date('June 17, 2024, 16:38:11').getTime()
+    const timestamp = new Date('2024-06-17T16:38:11Z').getTime()
 
     expect(formatTimer(timestamp)).toBe('38:11')
   })
