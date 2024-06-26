@@ -45,7 +45,7 @@ export default function Home() {
       <h1 className="text-lg">Welcome to Check Weather!</h1>
 
       <InfoPanel type="info">
-        Please provide access to your location to be able to use the app!
+        Please provide access to your location to be able to use the app! test
       </InfoPanel>
     </main>
   )
