@@ -23,7 +23,7 @@ export default function Error({ error, reset }: ErrorProps) {
 
       <h2 className="text-lg">Something went wrong!</h2>
 
-      <InfoPanel type="error">{error.message}</InfoPanel>
+      <InfoPanel>{error.message}</InfoPanel>
 
       <Button onClick={reset}>Try again</Button>
     </main>
