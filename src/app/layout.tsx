@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#fafafa'
+  themeColor: '#f5f5f5'
 }
 
 export default function RootLayout({
@@ -35,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={poppins.className}>
-      <body className="flex flex-col w-dvw h-dvh bg-neutral-50 text-neutral-950">
+    <html lang="en" className={`${poppins.className} overflow-hidden`}>
+      <body className="relative flex flex-col w-dvw h-dvh bg-neutral-50 text-neutral-950 overflow-hidden">
         <LocationProvider>
           <Navbar />
 
