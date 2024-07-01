@@ -106,7 +106,6 @@ const config: Config = {
     '^@/app/(.*)$': '<rootDir>/src/app/$1',
     '^@/services/(.*)$': '<rootDir>/src/services/$1',
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
-    '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
     '^@/utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@/lib/(.*)$': '<rootDir>/src/lib/$1'
   },

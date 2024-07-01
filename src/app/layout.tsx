@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from 'next'
 
 import { poppins } from './fonts'
 
-import { LocationProvider } from '@/hooks/useLocation'
-
 import { Footer, Navbar } from '@/components'
 
 import './globals.css'
@@ -37,13 +35,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.className} overflow-hidden`}>
       <body className="relative flex flex-col w-dvw h-dvh bg-neutral-50 text-neutral-950 overflow-hidden">
-        <LocationProvider>
-          <Navbar />
+        <Navbar />
 
-          {children}
+        {children}
 
-          <Footer />
-        </LocationProvider>
+        <Footer />
       </body>
     </html>
   )
