@@ -10,6 +10,7 @@ import {
   formatTime,
   formatTimer
 } from '@/lib/stringFormaters'
+import { positiveOrZero } from '@/lib/numberFormaters'
 
 import type { FetchWeatherFactoredResponse } from '@/utils/weatherUtils'
 import { useRouter } from 'next/navigation'
@@ -31,16 +32,16 @@ export function Header({ location, requestTimestamp }: HeaderProps) {
       const revalidateTime = requestTimestamp * 1_000 + hourInMilliseconds
 
       const remainTime = revalidateTime - currentTime
-      const validatedRemainTime = remainTime < 0 ? 0 : remainTime
+      const validatedRemainTime = positiveOrZero(remainTime)
 
       const formattedTimer = formatTimer(validatedRemainTime)
 
       setCountdownTimer(formattedTimer)
 
       if (!validatedRemainTime) {
-        clearInterval(timer)
-
         setShouldRefresh(true)
+
+        clearInterval(timer)
       }
     }, 1_000)
 
@@ -58,9 +59,11 @@ export function Header({ location, requestTimestamp }: HeaderProps) {
   return (
     <header className="flex items-center justify-between container mx-auto px-8 py-6">
       <div className="flex flex-col gap-1">
-        <span className="text-xs">{`Next forecast in ${countdownTimer}`}</span>
+        <span role="timer" className="text-xs">
+          {`Next forecast in ${countdownTimer}`}
+        </span>
 
-        {location.city && (
+        {location.country && (
           <span className="text-lg">
             {`${location.city}, ${formatCountryName(location.country)}`}
           </span>

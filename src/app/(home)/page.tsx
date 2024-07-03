@@ -44,9 +44,12 @@ export default function Home() {
         isError: true,
         message: 'Geolocation is not supported by your device'
       })
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        locationProvided,
+        locationRefused
+      )
     }
-
-    navigator.geolocation.getCurrentPosition(locationProvided, locationRefused)
   }
 
   const checkPermission = ({ state }: PermissionStatus) => {
