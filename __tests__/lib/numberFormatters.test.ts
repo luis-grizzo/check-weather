@@ -1,4 +1,4 @@
-import { positiveOrZero, roundValue } from '@/lib/numberFormaters'
+import { positiveOrZero, roundValue } from '@/lib/numberFormatters'
 
 describe('roundValue', () => {
   it('should return the correct rounded value', () => {

@@ -9,8 +9,8 @@ import {
   formatDate,
   formatTime,
   formatTimer
-} from '@/lib/stringFormaters'
-import { positiveOrZero } from '@/lib/numberFormaters'
+} from '@/lib/stringFormatters'
+import { positiveOrZero } from '@/lib/numberFormatters'
 
 import type { FetchWeatherFactoredResponse } from '@/utils/weatherUtils'
 import { useRouter } from 'next/navigation'

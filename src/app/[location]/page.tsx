@@ -10,7 +10,7 @@ import { Badge, DisplayTime, Header } from '@/components'
 
 import { calculatePeriod } from '@/lib/calculators'
 import { metersToKilometers } from '@/lib/converters'
-import { roundValue } from '@/lib/numberFormaters'
+import { roundValue } from '@/lib/numberFormatters'
 
 interface LocationProps {
   params: {

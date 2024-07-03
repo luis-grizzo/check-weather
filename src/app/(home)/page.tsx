@@ -10,7 +10,7 @@ import { imperialUnitLanguages } from '@/constants/measurementUnits'
 
 import { Button } from '@/components'
 
-import { truncateToOneDecimal } from '@/lib/stringFormaters'
+import { truncateToOneDecimal } from '@/lib/stringFormatters'
 
 export default function Home() {
   const router = useRouter()
