@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from 'next'
 
 import { poppins } from './fonts'
 
-import { LocationProvider } from '@/hooks/useLocation'
-
 import { Footer, Navbar } from '@/components'
 
 import './globals.css'
@@ -26,7 +24,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#fafafa'
+  themeColor: '#f5f5f5'
 }
 
 export default function RootLayout({
@@ -35,15 +33,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={poppins.className}>
-      <body className="flex flex-col w-dvw h-dvh bg-neutral-50 text-neutral-950">
-        <LocationProvider>
-          <Navbar />
+    <html lang="en" className={`${poppins.className} overflow-hidden`}>
+      <body className="relative flex flex-col w-dvw h-dvh bg-neutral-50 text-neutral-950 overflow-hidden">
+        <Navbar />
 
-          {children}
+        {children}
 
-          <Footer />
-        </LocationProvider>
+        <Footer />
       </body>
     </html>
   )

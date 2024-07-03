@@ -1,26 +1,18 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
-import { InfoPanel } from '@/components'
+import { Button, InfoPanel } from '@/components'
 
 import cloud_off from '@public/cloud_off.svg'
 
 interface ErrorProps {
   error: Error & { digest?: string }
+  reset: () => void
 }
 
-export default function Error({ error }: ErrorProps) {
-  const router = useRouter()
-
-  const returnHome = () => {
-    router.push('/')
-
-    return () => {}
-  }
-
+export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
     console.error(error)
   }, [])
@@ -31,18 +23,9 @@ export default function Error({ error }: ErrorProps) {
 
       <h2 className="text-lg">Something went wrong!</h2>
 
-      <InfoPanel type="error">
-        Please check your browser&apos;s location access permissions and refresh
-        the page or try again.
-      </InfoPanel>
+      <InfoPanel>{error.message}</InfoPanel>
 
-      <button
-        role="button"
-        onClick={returnHome}
-        className="flex items-center justify-center py-3 px-4 bg-neutral-100/60 border-1 border-neutral-600/10 rounded-lg"
-      >
-        Try again
-      </button>
+      <Button onClick={reset}>Try again</Button>
     </main>
   )
 }

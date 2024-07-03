@@ -51,10 +51,10 @@ const config: Config = {
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {
     global: {
-      branches: 99,
-      functions: 99,
-      lines: 99,
-      statements: 99
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100
     }
   },
 
@@ -106,7 +106,6 @@ const config: Config = {
     '^@/app/(.*)$': '<rootDir>/src/app/$1',
     '^@/services/(.*)$': '<rootDir>/src/services/$1',
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
-    '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
     '^@/utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@/lib/(.*)$': '<rootDir>/src/lib/$1'
   },

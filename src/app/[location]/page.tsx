@@ -6,16 +6,11 @@ import { validMeasurementUnits } from '@/constants/measurementUnits'
 
 import { fetchWeather } from '@/services/fetchWeather'
 
-import { Badge, RefreshButton } from '@/components'
+import { Badge, DisplayTime, Header } from '@/components'
 
-import {
-  formatCountryName,
-  formatDate,
-  formatTime
-} from '@/lib/stringFormaters'
 import { calculatePeriod } from '@/lib/calculators'
 import { metersToKilometers } from '@/lib/converters'
-import { roundValue } from '@/lib/numberFormaters'
+import { roundValue } from '@/lib/numberFormatters'
 
 interface LocationProps {
   params: {
@@ -55,19 +50,7 @@ export default async function Location({
 
   return (
     <>
-      <header className="flex items-center justify-between container mx-auto px-8 py-6">
-        <div className="flex flex-col gap-2">
-          {weather.location.city && (
-            <span className="text-lg">
-              {`${weather.location.city}, ${formatCountryName(weather.location.country)}`}
-            </span>
-          )}
-
-          <span className="text-xs">{`${formatTime(weather.time)} - ${formatDate(weather.time)}`}</span>
-        </div>
-
-        <RefreshButton unixTimestampOfLastRequest={weather.time} />
-      </header>
+      <Header location={weather.location} requestTimestamp={weather.time} />
 
       <main
         className={`relative flex flex-col items-center justify-center gap-8 h-full container mx-auto px-8 py-6 before:absolute before:w-3/4 before:max-w-96 before:aspect-square before:bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] ${color} before:to-transparent before:to-70%  before:rounded-full before:animate-pulse before:-z-50`}
@@ -89,9 +72,9 @@ export default async function Location({
             </>
           )}
 
-          <Badge>{`Sunrise ${formatTime(weather.sunrise)}`}</Badge>
+          <DisplayTime description="Sunrise" timestamp={weather.sunrise} />
 
-          <Badge>{`Sunset ${formatTime(weather.sunset)}`}</Badge>
+          <DisplayTime description="Sunset" timestamp={weather.sunset} />
         </div>
 
         <span className="text-base capitalize">{weather.description}</span>

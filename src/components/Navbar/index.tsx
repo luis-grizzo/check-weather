@@ -26,7 +26,7 @@ export function Navbar() {
   }, [stateIndex])
 
   return (
-    <nav className="sticky top-0 min-h-[76px] bg-neutral-100/60 border-b-1 border-neutral-600/10 backdrop-blur overflow-hidden z-50">
+    <nav className="sticky top-0 min-h-[76px] bg-neutral-100/80 border-b-1 border-neutral-600/10 backdrop-blur overflow-hidden z-50">
       <div className="flex items-center gap-2 container mx-auto px-8 py-6">
         <AnimatePresence mode="wait">
           {weatherIconsArray.map(
