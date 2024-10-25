@@ -28,19 +28,6 @@ export const formatTimer = (timestamp: number) => {
   })
 }
 
-export const truncateToOneDecimal = (number: number) => {
-  if (!isFinite(number)) return '0.0'
-
-  const numberString = number.toString()
-  const decimalIndex = numberString.indexOf('.')
-
-  if (decimalIndex === -1) {
-    return `${numberString}.0`
-  }
-
-  return numberString.substring(0, decimalIndex + 2)
-}
-
 export const formatCountryName = (code: string | undefined) => {
   if (!code) return undefined
 
@@ -54,3 +41,26 @@ export const formatCountryName = (code: string | undefined) => {
     code
   )
 }
+
+export const truncateToOneDecimal = (decimal: number) => {
+  if (!isFinite(decimal)) return '0.0'
+
+  const decimalString = decimal.toString()
+  const decimalIndex = decimalString.indexOf('.')
+
+  if (decimalIndex === -1) {
+    return `${decimalString}.0`
+  }
+
+  return decimalString.substring(0, decimalIndex + 2)
+}
+
+export const calculatePeriod = ({
+  currentTime,
+  sunrise,
+  sunset
+}: {
+  currentTime: number
+  sunrise: number
+  sunset: number
+}) => (currentTime > sunrise && currentTime < sunset ? 'day' : 'night')

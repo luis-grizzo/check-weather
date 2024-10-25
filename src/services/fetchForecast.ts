@@ -1,14 +1,17 @@
 import { openWeatherUrl } from '@/constants/openWeather'
 import { timeUnits } from '@/constants/timeUnits'
 
-import { formatWeatherResponse } from '@/lib/weatherFormatter'
+import { formatForecastResponse } from '@/lib/forecastFormatter'
 
-interface FetchWeatherProps {
+interface FetchForecastProps {
   latitude: string
   longitude: string
 }
 
-export async function fetchWeather({ latitude, longitude }: FetchWeatherProps) {
+export async function fetchForecast({
+  latitude,
+  longitude
+}: FetchForecastProps) {
   const params = new URLSearchParams({
     lat: latitude,
     lon: longitude,
@@ -16,8 +19,8 @@ export async function fetchWeather({ latitude, longitude }: FetchWeatherProps) {
     appid: String(process.env.OPEN_WEATHER_API_KEY)
   })
 
-  const res = await fetch(`${openWeatherUrl}/weather?${params}`, {
-    next: { revalidate: timeUnits.hour / 1_000 }
+  const res = await fetch(`${openWeatherUrl}/forecast?${params}`, {
+    next: { revalidate: (timeUnits.hour / 1_000) * 3 }
   })
 
   if (!res.ok) {
@@ -26,7 +29,7 @@ export async function fetchWeather({ latitude, longitude }: FetchWeatherProps) {
     throw new Error(`Failed to fetch data - ${statusText}`)
   }
 
-  const weather = formatWeatherResponse(await res.json())
+  const weather = formatForecastResponse(await res.json())
 
   return weather
 }
