@@ -19,10 +19,10 @@ jobs:
           node-version: 20.x
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: npm install --immutable
 
       - name: Linting
-        run: yarn lint
+        run: npm run lint
 
       - name: Test
-        run: yarn test:default --clearCache && yarn test:coverage
+        run: npm run test:default --clearCache && npm run test:coverage
