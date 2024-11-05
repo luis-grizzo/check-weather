@@ -1,6 +1,6 @@
-import { openWeatherUrl } from '@/constants/openWeather'
+import { openWeatherUrl } from '@/constants/open-weather'
 
-import { formatWeatherResponse } from '@/lib/weatherFormatter'
+import { formatWeatherResponse } from '@/lib/format-weather-response'
 
 interface FetchWeatherProps {
   latitude: string
