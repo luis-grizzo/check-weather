@@ -28,7 +28,8 @@ export function formatForecastResponse(
     forecasts,
     location: {
       city: response.city.name,
-      coord: response.city.coord,
+      latitude: response.city.coord.lat,
+      longitude: response.city.coord.lon,
       population: response.city.population,
       country: response.city.country,
       timezone: response.city.timezone,

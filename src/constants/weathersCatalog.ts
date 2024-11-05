@@ -2,14 +2,14 @@ import { weatherIcons } from './icons'
 
 export const weathersCatalog = {
   clear: {
-    color: 'before:from-sky-300',
+    color: 'before:from-sky-300 dark:before:from-sky-700',
     icon: {
       day: weatherIcons.clear_day,
       night: weatherIcons.clear_night
     }
   },
   clouds: {
-    color: 'before:from-blue-300',
+    color: 'before:from-blue-300 dark:before:from-blue-900',
     icon: {
       day: weatherIcons.partly_cloudy_day,
       night: weatherIcons.partly_cloudy_night

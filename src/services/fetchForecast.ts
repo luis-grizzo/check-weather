@@ -1,5 +1,4 @@
 import { openWeatherUrl } from '@/constants/openWeather'
-import { timeUnits } from '@/constants/timeUnits'
 
 import { formatForecastResponse } from '@/lib/forecastFormatter'
 
@@ -15,13 +14,13 @@ export async function fetchForecast({
   const params = new URLSearchParams({
     lat: latitude,
     lon: longitude,
+    cnt: '8',
     lang: 'en',
+    units: 'imperial',
     appid: String(process.env.OPEN_WEATHER_API_KEY)
   })
 
-  const res = await fetch(`${openWeatherUrl}/forecast?${params}`, {
-    next: { revalidate: (timeUnits.hour / 1_000) * 3 }
-  })
+  const res = await fetch(`${openWeatherUrl}/forecast?${params}`)
 
   if (!res.ok) {
     const { statusText } = res

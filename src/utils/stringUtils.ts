@@ -1,17 +1,11 @@
-export const formatDate = (unixTimestamp: number) => {
+export const formatDateTime = (
+  unixTimestamp: number,
+  options: Intl.DateTimeFormatOptions
+) => {
   const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
 
   return new Intl.DateTimeFormat('en', {
-    dateStyle: 'full',
-    timeZone
-  }).format(unixTimestamp * 1_000)
-}
-
-export const formatTime = (unixTimestamp: number) => {
-  const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
-
-  return new Intl.DateTimeFormat('en', {
-    timeStyle: 'short',
+    ...options,
     timeZone
   }).format(unixTimestamp * 1_000)
 }
@@ -53,6 +47,11 @@ export const truncateToOneDecimal = (decimal: number) => {
   }
 
   return decimalString.substring(0, decimalIndex + 2)
+}
+
+export const formatTimezone = (offsetInSeconds: number): string => {
+  const offsetInHours = offsetInSeconds / 3_600
+  return `UTC ${offsetInHours}`
 }
 
 export const calculatePeriod = ({

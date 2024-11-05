@@ -68,11 +68,9 @@ export interface FormattedFetchForecastResponse {
   }>
   location: {
     city: string
-    coord: {
-      lat: number
-      lon: number
-    }
-    country: string
+    latitude: number
+    longitude: number
+    country?: string
     population: number
     timezone: number
     sunrise: number

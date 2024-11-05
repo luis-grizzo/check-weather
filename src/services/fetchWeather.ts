@@ -1,5 +1,4 @@
 import { openWeatherUrl } from '@/constants/openWeather'
-import { timeUnits } from '@/constants/timeUnits'
 
 import { formatWeatherResponse } from '@/lib/weatherFormatter'
 
@@ -13,12 +12,11 @@ export async function fetchWeather({ latitude, longitude }: FetchWeatherProps) {
     lat: latitude,
     lon: longitude,
     lang: 'en',
+    units: 'imperial',
     appid: String(process.env.OPEN_WEATHER_API_KEY)
   })
 
-  const res = await fetch(`${openWeatherUrl}/weather?${params}`, {
-    next: { revalidate: timeUnits.hour / 1_000 }
-  })
+  const res = await fetch(`${openWeatherUrl}/weather?${params}`)
 
   if (!res.ok) {
     const { statusText } = res

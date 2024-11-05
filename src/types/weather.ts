@@ -33,28 +33,22 @@ export interface FetchWeatherResponse {
   }
   dt: number
   sys: {
-    country?: string
     sunrise: number
     sunset: number
   }
-  name: string
 }
 
 export interface FormattedFetchWeatherResponse {
   type: WeatherTypes
   description: string
+  time: number
+  sunrise: number
+  sunset: number
   curr_temp: number
   feels_like_temp: number
   curr_min_temp: number
   curr_max_temp: number
-  time: number
-  sunrise: number
-  sunset: number
   visibility: number
   wind_speed: number
   humidity: number
-  location: {
-    city: string
-    country?: string
-  }
 }
