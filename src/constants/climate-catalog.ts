@@ -1,6 +1,6 @@
 import { weatherIcons } from './icons'
 
-export const weathersCatalog = {
+export const climateCatalog = {
   clear: {
     color: 'before:from-sky-300 dark:before:from-sky-700',
     icon: {
