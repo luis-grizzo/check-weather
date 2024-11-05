@@ -1,8 +1,14 @@
 import type { Metadata, Viewport } from 'next'
 
-import { poppins } from './fonts'
+import { geistMono, geistSans } from './fonts'
 
-import { Footer, Navbar } from '@/components'
+import { Toaster } from '@/components/ui/toaster'
+import { TooltipProvider } from '@/components/ui/tooltip'
+
+import { ThemeProvider } from '@/components/client/ThemeProvider'
+
+import { Navbar } from '@/components/client/navbar'
+import { Footer } from '@/components/client/Footer'
 
 import './globals.css'
 
@@ -33,13 +39,28 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${poppins.className} overflow-hidden`}>
-      <body className="relative flex flex-col w-dvw h-dvh bg-neutral-50 text-neutral-950 overflow-hidden">
-        <Navbar />
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      suppressHydrationWarning
+    >
+      <body className="relative h-dvh w-full">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TooltipProvider delayDuration={0}>
+            <Navbar />
 
-        {children}
+            {children}
 
-        <Footer />
+            <Footer />
+
+            <Toaster />
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

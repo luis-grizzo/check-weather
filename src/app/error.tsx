@@ -1,11 +1,11 @@
 'use client'
 
 import { useEffect } from 'react'
-import Image from 'next/image'
+import { CloudOff } from 'lucide-react'
 
-import { Button, InfoPanel } from '@/components'
+import { useToast } from '@/hooks/use-toast'
 
-import cloud_off from '@public/cloud_off.svg'
+import { Button } from '@/components/ui/button'
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -13,17 +13,31 @@ interface ErrorProps {
 }
 
 export default function Error({ error, reset }: ErrorProps) {
+  const { toast } = useToast()
+
   useEffect(() => {
     console.error(error)
+
+    toast({
+      variant: 'destructive',
+      title: 'Error.',
+      description: error.message
+    })
   }, [])
 
   return (
     <main className="flex flex-col items-center justify-center gap-8 h-dvh container mx-auto p-8">
-      <Image src={cloud_off} alt="" className="w-24 aspect-square" />
+      <div className="flex items-center gap-4">
+        <CloudOff className="h-10 w-10 lg:h-12 lg:w-12" />
 
-      <h2 className="text-lg">Something went wrong!</h2>
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
+          Oops
+        </h1>
+      </div>
 
-      <InfoPanel>{error.message}</InfoPanel>
+      <p className="text-center text-xl text-muted-foreground">
+        Something went wrong!
+      </p>
 
       <Button onClick={reset}>Try again</Button>
     </main>
