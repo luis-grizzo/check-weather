@@ -33,9 +33,17 @@ export interface FetchWeatherResponse {
   }
   dt: number
   sys: {
+    country?: string
     sunrise: number
     sunset: number
   }
+  rain?: {
+    '1h': number
+  }
+  snow?: {
+    '1h': number
+  }
+  name: string
 }
 
 export interface FormattedFetchWeatherResponse {
@@ -51,4 +59,10 @@ export interface FormattedFetchWeatherResponse {
   visibility: number
   wind_speed: number
   humidity: number
+  rain_1h?: number
+  snow_1h?: number
+  location: {
+    country?: string
+    city: string
+  }
 }

@@ -37,8 +37,10 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
-    --chart-1: 85 85% 35%;
-    --chart-2: 293 69% 49%;
+    --chart-current-temperature: 84, 81%, 44%;
+    --chart-feels-like-temperature: 269, 100%, 92%; /* purple 200 - feito */
+    --chart-minimal-temperature: 213, 97%, 87%; /* blue 200 - feito */
+    --chart-maximum-temperature: 0, 96%, 89%; /* red 200 - feito */
     --radius: 0.5rem;
   }
 
@@ -62,7 +64,9 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
-    --chart-1: 83 78% 35%;
-    --chart-2: 292 91% 73%;
+    --chart-current-temperature: 83, 78%, 55%;
+    --chart-feels-like-temperature: 274, 87%, 21%; /* purple 950 - feito */
+    --chart-minimal-temperature: 226, 57%, 21%; /* blue 950 - feito */
+    --chart-maximum-temperature: 0, 75%, 15%; /* red 950 - feito */
   }
 }

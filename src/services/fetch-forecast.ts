@@ -14,9 +14,7 @@ export async function fetchForecast({
   const params = new URLSearchParams({
     lat: latitude,
     lon: longitude,
-    cnt: '8',
     lang: 'en',
-    units: 'imperial',
     appid: String(process.env.OPEN_WEATHER_API_KEY)
   })
 

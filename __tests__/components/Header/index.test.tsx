@@ -1,14 +1,13 @@
 import { act } from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 
-import { hourInMilliseconds } from '@/constants/timeMarks'
+import { timeUnits } from '@/constants/timeUnits'
 
 import { Header } from '@/components'
 
-import { FetchWeatherFactoredResponse } from '@/utils/weatherUtils'
+import { FormattedFetchWeatherResponse } from '@/types/weather'
 
 const unixTimestamp = new Date('June 17, 2024 16:00').getTime() / 1_000
-const secondInMilliseconds = 1_000
 
 jest.useFakeTimers()
 
@@ -22,16 +21,14 @@ jest.mock('next/navigation', () => ({
   }
 }))
 
-const location: FetchWeatherFactoredResponse['location'] = {
+const location: FormattedFetchWeatherResponse['location'] = {
   city: 'Jaú',
   country: 'BR'
 }
 
 describe('Header', () => {
   beforeEach(() => {
-    jest.setSystemTime(
-      new Date(unixTimestamp * 1_000 + hourInMilliseconds - 5_000)
-    )
+    jest.setSystemTime(new Date(unixTimestamp * 1_000 + timeUnits.hour - 5_000))
 
     render(<Header location={location} requestTimestamp={unixTimestamp} />)
   })
@@ -54,7 +51,7 @@ describe('Header', () => {
     expect(eTimer.textContent).toEqual('Next forecast in --:--')
 
     act(() => {
-      jest.advanceTimersByTime(secondInMilliseconds)
+      jest.advanceTimersByTime(timeUnits.second)
     })
 
     await waitFor(() => {
@@ -66,7 +63,7 @@ describe('Header', () => {
 
   it('should call refresh when timer reaches zero', async () => {
     act(() => {
-      jest.advanceTimersByTime(5_000)
+      jest.advanceTimersByTime(timeUnits.second * 5)
     })
 
     await waitFor(() => {
@@ -76,7 +73,7 @@ describe('Header', () => {
 
   it('should timer not be minor than zero', () => {
     act(() => {
-      jest.advanceTimersByTime(10_000)
+      jest.advanceTimersByTime(timeUnits.second * 10)
     })
 
     const eTimer = screen.getByRole('timer')

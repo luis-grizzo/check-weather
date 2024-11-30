@@ -5,12 +5,13 @@ import { geistMono, geistSans } from './fonts'
 import { Toaster } from '@/components/ui/toaster'
 import { TooltipProvider } from '@/components/ui/tooltip'
 
-import { ThemeProvider } from '@/components/client/ThemeProvider'
+import { ThemeProvider } from '@/components/client/theme-provider'
 
 import { Navbar } from '@/components/client/navbar'
-import { Footer } from '@/components/client/Footer'
+import { Footer } from '@/components/client/footer'
 
 import './globals.css'
+import React from 'react'
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',

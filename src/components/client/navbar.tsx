@@ -18,10 +18,11 @@ export function Navbar() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      let newIndex = stateIndex
+      let newIndex!: number
 
-      while (newIndex === stateIndex)
+      do {
         newIndex = calculateRandomIndex(weatherIconsArray)
+      } while (newIndex === stateIndex)
 
       setStateIndex(newIndex)
     }, timeUnits.second * 5)
@@ -54,13 +55,16 @@ export function Navbar() {
         </Link>
 
         <div className="flex items-center h-full">
-          <ThemeToggle />
-
           <Button asChild variant="ghost" size="icon">
-            <Link href="" target="_blank">
+            <Link
+              href="https://github.com/luis-grizzo/check-weather"
+              target="_blank"
+            >
               <GitHubLogoIcon />
             </Link>
           </Button>
+
+          <ThemeToggle />
         </div>
       </div>
     </nav>

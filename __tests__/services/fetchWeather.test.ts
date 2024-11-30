@@ -1,5 +1,5 @@
 import { fetchWeather } from '@/services/fetchWeather'
-import { FetchWeatherFactoredResponse } from '@/utils/weatherUtils'
+import type { FormattedFetchWeatherResponse } from '@/types/weather'
 
 describe('fetchWeather', () => {
   afterEach(() => {
@@ -57,7 +57,7 @@ describe('fetchWeather', () => {
       }))
     }))
 
-    const mockResponse: FetchWeatherFactoredResponse = {
+    const mockResponse: FormattedFetchWeatherResponse = {
       curr_max_temp: 30.27,
       curr_min_temp: 30.21,
       curr_temp: 30.21,
@@ -78,8 +78,7 @@ describe('fetchWeather', () => {
 
     const response = await fetchWeather({
       latitude: '-48.6',
-      longitude: '-22.3',
-      measurementUnit: 'metric'
+      longitude: '-22.3'
     })
 
     expect(response).toEqual(mockResponse)
@@ -94,8 +93,7 @@ describe('fetchWeather', () => {
       async () =>
         await fetchWeather({
           latitude: '-48.6',
-          longitude: '-22.3',
-          measurementUnit: 'metric'
+          longitude: '-22.3'
         })
     ).rejects.toThrow()
   })

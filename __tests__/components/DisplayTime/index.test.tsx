@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 
 describe('DisplayTime', () => {
   it('should match snapshot', () => {
-    const timestamp = new Date('June 17, 2024 16:38:11').getTime() / 1000
+    const timestamp = new Date('June 17, 2024 16:38:11').getTime() / 1_000
 
     const { container } = render(
       <DisplayTime description="test" timestamp={timestamp} />

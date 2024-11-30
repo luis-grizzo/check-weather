@@ -1,14 +1,13 @@
 import { render } from '@testing-library/react'
 
 import Location from '@/app/[location]/page'
-import { hourInMilliseconds } from '@/constants/timeMarks'
+import { timeUnits } from '@/constants/timeUnits'
 
 const unixTimestamp = 1718908012
-const secondInMilliseconds = 1_000
 
 jest.useFakeTimers()
 jest.setSystemTime(
-  new Date(unixTimestamp * 1_000 + hourInMilliseconds - secondInMilliseconds)
+  new Date(unixTimestamp * 1_000 + timeUnits.hour - timeUnits.second)
 )
 
 jest.mock('next/navigation', () => ({

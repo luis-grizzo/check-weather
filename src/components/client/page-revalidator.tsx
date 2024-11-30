@@ -9,9 +9,11 @@ import { formatTimer } from '@/utils/string-utils'
 import { positiveOrZero } from '@/utils/number-utils'
 
 export function PageRevalidator({
-  requestTimestamp
+  requestUnixTimestamp,
+  revalidateIn
 }: {
-  requestTimestamp: number
+  requestUnixTimestamp: number
+  revalidateIn: number
 }) {
   const router = useRouter()
 
@@ -20,7 +22,7 @@ export function PageRevalidator({
   useEffect(() => {
     const timer = setInterval(() => {
       const currentTime = Date.now()
-      const revalidateTime = requestTimestamp * 1_000 + timeUnits.hour
+      const revalidateTime = requestUnixTimestamp * 1_000 + revalidateIn
 
       const remainTime = revalidateTime - currentTime
       const validatedRemainTime = positiveOrZero(remainTime)
@@ -37,7 +39,7 @@ export function PageRevalidator({
     }, timeUnits.second)
 
     return () => clearInterval(timer)
-  }, [requestTimestamp])
+  }, [requestUnixTimestamp])
 
   return (
     <span className="text-sm text-muted-foreground geist-mono">

@@ -12,7 +12,6 @@ export async function fetchWeather({ latitude, longitude }: FetchWeatherProps) {
     lat: latitude,
     lon: longitude,
     lang: 'en',
-    units: 'imperial',
     appid: String(process.env.OPEN_WEATHER_API_KEY)
   })
 

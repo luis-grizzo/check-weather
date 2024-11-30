@@ -19,6 +19,12 @@ export function formatWeatherResponse(
     curr_max_temp: response.main.temp_max,
     visibility: response.visibility,
     wind_speed: response.wind.speed,
-    humidity: response.main.humidity
+    humidity: response.main.humidity,
+    rain_1h: response.rain?.['1h'],
+    snow_1h: response.snow?.['1h'],
+    location: {
+      country: response.sys.country,
+      city: response.name
+    }
   }
 }

@@ -2,6 +2,7 @@ import { act } from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import { weatherIconsArray } from '@/constants/icons'
+import { timeUnits } from '@/constants/timeUnits'
 
 import { Navbar } from '@/components/Navbar'
 
@@ -22,7 +23,7 @@ describe('Navbar', () => {
     const possiblyAltTexts = weatherIconsArray.map((icon) => icon.alt)
 
     act(() => {
-      jest.advanceTimersByTime(5_000)
+      jest.advanceTimersByTime(timeUnits.second * 5)
     })
 
     await waitFor(() =>

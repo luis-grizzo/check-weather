@@ -22,11 +22,11 @@ export default function GetLocation() {
     const truncatedLatitude = truncateToOneDecimal(latitude)
     const truncatedLongitude = truncateToOneDecimal(longitude)
 
-    const path = encodeURIComponent(
+    const encodedCoordinates = encodeURIComponent(
       `${truncatedLatitude},${truncatedLongitude}`
     )
 
-    router.push(`/${path}`)
+    router.push(`/current/${encodedCoordinates}`)
   }
 
   const locationRefused = ({ message }: GeolocationPositionError) => {

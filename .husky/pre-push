@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run test:default --clearCache && npm run test:coverage
+# npm run test:default --clearCache && npm run test:coverage

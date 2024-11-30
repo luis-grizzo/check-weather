@@ -22,14 +22,12 @@ export const formatTimer = (timestamp: number) => {
   })
 }
 
-export const formatCountryName = (code: string | undefined) => {
-  if (!code) return undefined
-
+export const formatCountryName = (code: string) => {
   const isTwoCapitalLetters = /^[A-Z]{2}$/g
   const isThreeDigits = /^\d{3}$/g
 
   if (!isTwoCapitalLetters.test(code) && !isThreeDigits.test(code))
-    return undefined
+    throw new Error('Invalid country code.')
 
   return new Intl.DisplayNames(['en'], { type: 'region', fallback: 'code' }).of(
     code
@@ -47,11 +45,6 @@ export const truncateToOneDecimal = (decimal: number) => {
   }
 
   return decimalString.substring(0, decimalIndex + 2)
-}
-
-export const formatTimezone = (offsetInSeconds: number): string => {
-  const offsetInHours = offsetInSeconds / 3_600
-  return `UTC ${offsetInHours}`
 }
 
 export const calculatePeriod = ({

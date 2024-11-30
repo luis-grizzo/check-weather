@@ -52,20 +52,8 @@ export interface FetchForecastResponse {
 }
 
 export interface FormattedFetchForecastResponse {
-  forecasts: Array<{
-    time: number
-    type: WeatherTypes
-    description: string
-    temp: number
-    feels_like_temp: number
-    min_temp: number
-    max_temp: number
-    visibility: number
-    precipitation_prob: number
-    rain_last_3h?: number
-    snow_last_3h?: number
-    day_part: 'n' | 'd'
-  }>
+  requestUnixTimestamp: number
+  list: FormattedForecastsList[]
   location: {
     city: string
     latitude: number
@@ -76,4 +64,25 @@ export interface FormattedFetchForecastResponse {
     sunrise: number
     sunset: number
   }
+}
+
+export interface FormattedForecastsList {
+  date: string
+  forecasts: FormattedForecast[]
+}
+
+export interface FormattedForecast {
+  time: number
+  type: WeatherTypes
+  description: string
+  temp: number
+  feels_like_temp: number
+  min_temp: number
+  max_temp: number
+  visibility: number
+  precipitation_prob: number
+  rain_last_3h?: number
+  snow_last_3h?: number
+  day_part: 'n' | 'd'
+  wind_speed: number
 }

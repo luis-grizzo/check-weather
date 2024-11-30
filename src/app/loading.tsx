@@ -1,15 +1,9 @@
-import Image from 'next/image'
-
-import { layoutIcons } from '@/constants/icons'
+import { Sun } from 'lucide-react'
 
 export default function Loading() {
   return (
     <main className="flex flex-col items-center justify-center gap-8 h-dvh container mx-auto p-8">
-      <Image
-        src={layoutIcons.progress_activity}
-        alt=""
-        className="w-24 aspect-square animate-spin"
-      />
+      <Sun className="h-24 w-24 animate-pulse" />
     </main>
   )
 }
