@@ -1,5 +1,3 @@
-import { openWeatherUrl } from '@/constants/open-weather'
-
 import { formatWeatherResponse } from '@/lib/format-weather-response'
 
 interface FetchWeatherProps {
@@ -15,7 +13,9 @@ export async function fetchWeather({ latitude, longitude }: FetchWeatherProps) {
     appid: String(process.env.OPEN_WEATHER_API_KEY)
   })
 
-  const res = await fetch(`${openWeatherUrl}/weather?${params}`)
+  const res = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?${params}`
+  )
 
   if (!res.ok) {
     const { statusText } = res

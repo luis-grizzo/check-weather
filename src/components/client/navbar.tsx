@@ -8,10 +8,11 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { weatherIconsArray } from '@/constants/icons'
 import { timeUnits } from '@/constants/time-units'
 
+import { Button } from '@/components/ui/button'
+
 import { ThemeToggle } from '@/components/client/theme-toggle'
 
 import { calculateRandomIndex } from '@/utils/number-utils'
-import { Button } from '../ui/button'
 
 export function Navbar() {
   const [stateIndex, setStateIndex] = useState(0)

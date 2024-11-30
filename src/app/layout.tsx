@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from 'next'
 import { geistMono, geistSans } from './fonts'
 
 import { Toaster } from '@/components/ui/toaster'
-import { TooltipProvider } from '@/components/ui/tooltip'
 
 import { ThemeProvider } from '@/components/client/theme-provider'
 
@@ -52,15 +51,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <TooltipProvider delayDuration={0}>
-            <Navbar />
+          <Navbar />
 
-            {children}
+          {children}
 
-            <Footer />
+          <Footer />
 
-            <Toaster />
-          </TooltipProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

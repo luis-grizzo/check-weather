@@ -26,7 +26,7 @@ export default function GetLocation() {
       `${truncatedLatitude},${truncatedLongitude}`
     )
 
-    router.push(`/current/${encodedCoordinates}`)
+    router.push(`/${encodedCoordinates}`)
   }
 
   const locationRefused = ({ message }: GeolocationPositionError) => {

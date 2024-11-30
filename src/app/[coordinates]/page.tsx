@@ -1,29 +1,23 @@
 import { timeUnits } from '@/constants/time-units'
 
-import { fetchForecast } from '@/services/fetch-forecast'
 import { fetchWeather } from '@/services/fetch-weather'
-import { generateWeatherHint } from '@/services/generate-text'
+import {
+  generateWeatherHint,
+  generateLocationHint
+} from '@/services/generate-text'
 
-import { WeatherHeading } from '@/components/server/weather-heading'
 import { AISeal } from '@/components/server/ai-seal'
 
-import { ForecastChart } from '@/components/client/forecast-chart'
 import { WeatherDisplay } from '@/components/client/weather-display'
-import { ForecastCards } from '@/components/client/forecast-cards'
+import { PageRevalidator } from '@/components/client/page-revalidator'
 
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { formatDateTime } from '@/utils/string-utils'
+import { formatCountryName, formatDateTime } from '@/utils/string-utils'
 
-interface LocationProps {
-  params: {
-    coordinates: string
-  }
-}
-
-export const revalidate = timeUnits.hour / 1_000
-
-export default async function Location({ params }: LocationProps) {
+export default async function Current({
+  params
+}: {
+  params: { coordinates: string }
+}) {
   const { coordinates } = await params
 
   const decodedPath = decodeURIComponent(coordinates)
@@ -34,98 +28,60 @@ export default async function Location({ params }: LocationProps) {
   }
 
   const weather = await fetchWeather({ latitude, longitude })
-  const { list, location } = await fetchForecast({
-    latitude,
-    longitude
-  })
 
-  const weatherHint = await generateWeatherHint({
-    location: location.city,
-    curr_temp: weather.curr_temp,
-    time: weather.time,
-    feels_like_temp: weather.feels_like_temp,
-    humidity: weather.humidity,
-    weather: weather.description,
-    wind_speed: weather.wind_speed
-  })
+  const weatherHint = await generateWeatherHint(weather)
+  const locationHint = await generateLocationHint(weather.location)
 
   return (
-    <main className="flex flex-col gap-16 min-h-full container mx-auto px-4 py-[4.5rem]">
-      <div className="flex flex-col gap-8">
-        <WeatherHeading location={location} weather={{ time: weather.time }} />
+    <main className="flex flex-col justify-center gap-8 min-h-full container mx-auto px-4 py-[4.5rem]">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+          {weather.location.country
+            ? `${weather.location.city}, ${formatCountryName(weather.location.country)}`
+            : 'International waters'}
+        </h1>
 
-        <WeatherDisplay weather={weather} />
+        <span className="text-sm font-medium leading-none geist-mono text-pretty">
+          {formatDateTime(weather.time, {
+            weekday: 'long',
+            month: 'long',
+            day: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hourCycle: 'h12'
+          })}
+        </span>
 
+        <PageRevalidator
+          requestUnixTimestamp={weather.time}
+          revalidateIn={timeUnits.hour}
+        />
+      </div>
+
+      <WeatherDisplay weather={weather} />
+
+      <div className="flex flex-col gap-2">
+        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-pretty">
+          Recommendation for well-being
+        </h2>
+
+        <p className="text-pretty">{weatherHint}</p>
+
+        <AISeal />
+      </div>
+
+      {weather.location.country && (
         <div className="flex flex-col gap-2">
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-pretty">
-            Recommendation for well-being
+            About the place you are
           </h2>
 
-          <p className="text-pretty">{weatherHint}</p>
+          <p className="text-pretty">{locationHint}</p>
 
           <AISeal />
         </div>
-      </div>
-
-      <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-4xl font-extrabold tracking-tight lg:text-5xl text-pretty">
-            Forecast for the next 5 days
-          </h2>
-
-          <span className="text-sm font-medium leading-none geist-mono text-pretty">
-            {`${formatDateTime(list.at(0)?.forecasts.at(0)?.time ?? 0, {
-              month: 'long',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true
-            })} to ${formatDateTime(list.at(-1)?.forecasts.at(-1)?.time ?? 0, {
-              month: 'long',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true
-            })}`}
-          </span>
-        </div>
-
-        <Tabs defaultValue={list.at(0)?.date} className="w-full">
-          <ScrollArea className="mb-8">
-            <TabsList>
-              {list.map((group) => (
-                <TabsTrigger key={group.date} value={group.date}>
-                  {group.date}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-
-          {list.map((group) => (
-            <TabsContent key={group.date} value={group.date}>
-              <div className="flex flex-col gap-8 w-full">
-                {group.forecasts.length > 1 && (
-                  <ForecastChart forecasts={group.forecasts} />
-                )}
-
-                <ForecastCards forecasts={group.forecasts} />
-
-                <div className="flex flex-col gap-2">
-                  <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-pretty">
-                    Recommendation on forecast
-                  </h2>
-
-                  <p className="text-pretty">{weatherHint}</p>
-
-                  <AISeal />
-                </div>
-              </div>
-            </TabsContent>
-          ))}
-        </Tabs>
-      </div>
+      )}
     </main>
   )
 }
