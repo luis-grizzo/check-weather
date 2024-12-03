@@ -8,10 +8,11 @@ import {
 
 import { AISeal } from '@/components/server/ai-seal'
 
-import { WeatherDisplay } from '@/components/client/weather-display'
+import { Location } from '@/components/client/location'
 import { PageRevalidator } from '@/components/client/page-revalidator'
+import { WeatherDisplay } from '@/components/client/weather-display'
 
-import { formatCountryName, formatDateTime } from '@/utils/string-utils'
+import { formatDateTime } from '@/utils/string-utils'
 
 export default async function Current({
   params
@@ -33,13 +34,9 @@ export default async function Current({
   const locationHint = await generateLocationHint(weather.location)
 
   return (
-    <main className="flex flex-col justify-center gap-8 min-h-full container mx-auto px-4 py-[4.5rem]">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
-          {weather.location.country
-            ? `${weather.location.city}, ${formatCountryName(weather.location.country)}`
-            : 'International waters'}
-        </h1>
+    <main className="flex flex-col md:items-center justify-center gap-12 md:gap-24 min-h-full container mx-auto px-4 py-[4.5rem]">
+      <div className="flex flex-col md:items-center gap-2">
+        <Location location={weather.location} description={locationHint} />
 
         <span className="text-sm font-medium leading-none geist-mono text-pretty">
           {formatDateTime(weather.time, {
@@ -61,27 +58,17 @@ export default async function Current({
 
       <WeatherDisplay weather={weather} />
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 md:items-center">
         <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-pretty">
           Recommendation for well-being
         </h2>
 
-        <p className="text-pretty">{weatherHint}</p>
+        <p className="text-pretty md:text-center md:max-w-[750px] md:text-balance">
+          {weatherHint}
+        </p>
 
         <AISeal />
       </div>
-
-      {weather.location.country && (
-        <div className="flex flex-col gap-2">
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-pretty">
-            About the place you are
-          </h2>
-
-          <p className="text-pretty">{locationHint}</p>
-
-          <AISeal />
-        </div>
-      )}
     </main>
   )
 }

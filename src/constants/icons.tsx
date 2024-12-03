@@ -15,19 +15,19 @@ import {
 } from 'lucide-react'
 
 export const weatherIcons = {
-  clear_day: Sun,
-  clear_night: Moon,
-  partly_cloudy_day: CloudSun,
-  partly_cloudy_night: CloudMoon,
-  rainy: CloudRain,
-  thunderstorm: CloudLightning,
-  weather_snowy: CloudSnow,
-  mist: Haze,
-  weather_mix: CloudHail,
-  foggy: CloudFog,
-  airwave: Waves,
-  storm: CloudRainWind,
-  tornado: Tornado
+  mist: <Haze />,
+  airwave: <Waves />,
+  clear_day: <Sun />,
+  partly_cloudy_day: <CloudSun />,
+  clear_night: <Moon />,
+  partly_cloudy_night: <CloudMoon />,
+  weather_snowy: <CloudSnow />,
+  tornado: <Tornado />,
+  weather_mix: <CloudHail />,
+  foggy: <CloudFog />,
+  rainy: <CloudRain />,
+  storm: <CloudRainWind />,
+  thunderstorm: <CloudLightning />
 }
 
 export const weatherIconsArray = Object.values(weatherIcons)

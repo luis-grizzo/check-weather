@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { cloneElement, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
@@ -36,20 +36,21 @@ export function Navbar() {
       <div className="flex items-center justify-between h-14 container mx-auto px-4 overflow-hidden">
         <Link href="/" className="flex items-center gap-2">
           <AnimatePresence mode="wait">
-            {weatherIconsArray.map((Icon, index) => {
-              const MotionIcon = motion(Icon)
-
-              if (stateIndex === index)
-                return (
-                  <MotionIcon
+            {weatherIconsArray.map(
+              (icon, index) =>
+                stateIndex === index && (
+                  <motion.div
                     key={index}
                     initial={{ opacity: 0, y: -32 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 32 }}
-                    className="h-7 w-7"
-                  />
+                  >
+                    {cloneElement(icon, {
+                      className: 'text-emphasis h-7 w-7'
+                    })}
+                  </motion.div>
                 )
-            })}
+            )}
           </AnimatePresence>
 
           <span className="text-lg font-bold text-nowrap">Check Weather</span>
