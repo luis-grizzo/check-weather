@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+
+import { useRouter } from '@/i18n/routing'
 
 import { useToast } from '@/hooks/use-toast'
 
@@ -15,6 +17,8 @@ export default function GetLocation() {
 
   const [error, setError] = useState({ isError: false, message: '' })
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+
+  const t = useTranslations('Home')
 
   const locationProvided = ({
     coords: { latitude, longitude }
@@ -75,7 +79,7 @@ export default function GetLocation() {
 
   return (
     <Button onClick={requestLocation} disabled={isButtonDisabled}>
-      Let&apos;s start!
+      {t('button')}
     </Button>
   )
 }

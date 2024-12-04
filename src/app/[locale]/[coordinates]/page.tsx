@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server'
+
 import { timeUnits } from '@/constants/time-units'
 
 import { fetchWeather } from '@/services/fetch-weather'
@@ -17,9 +19,9 @@ import { formatDateTime } from '@/utils/string-utils'
 export default async function Current({
   params
 }: {
-  params: { coordinates: string }
+  params: { locale: string; coordinates: string }
 }) {
-  const { coordinates } = await params
+  const { locale, coordinates } = await params
 
   const decodedPath = decodeURIComponent(coordinates)
   const [latitude, longitude] = decodedPath.split(',')
@@ -28,10 +30,15 @@ export default async function Current({
     throw new Error('Invalid route')
   }
 
-  const weather = await fetchWeather({ latitude, longitude })
+  const t = await getTranslations('Coordinates')
 
-  const weatherHint = await generateWeatherHint(weather)
-  const locationHint = await generateLocationHint(weather.location)
+  const weather = await fetchWeather({ latitude, longitude, locale })
+
+  const weatherHint = await generateWeatherHint({ weather, locale })
+  const locationHint = await generateLocationHint({
+    location: weather.location,
+    locale
+  })
 
   return (
     <main className="flex flex-col md:items-center justify-center gap-12 md:gap-24 min-h-full container mx-auto px-4 py-[4.5rem]">
@@ -46,7 +53,7 @@ export default async function Current({
             year: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
-            hourCycle: 'h12'
+            locale
           })}
         </span>
 
@@ -60,7 +67,7 @@ export default async function Current({
 
       <div className="flex flex-col gap-2 md:items-center">
         <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-pretty">
-          Recommendation for well-being
+          {t('Recomendation.title')}
         </h2>
 
         <p className="text-pretty md:text-center md:max-w-[750px] md:text-balance">

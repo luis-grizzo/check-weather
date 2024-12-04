@@ -1,3 +1,1 @@
-export const imperialUnitLanguages = ['en-US', 'es-US']
-
-export const validMeasurementUnits = ['imperial', 'metric']
+export const imperialUnitLanguages = ['en', 'en-US', 'es-US']

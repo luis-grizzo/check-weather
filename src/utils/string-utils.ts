@@ -1,10 +1,10 @@
 export const formatDateTime = (
   unixTimestamp: number,
-  options: Intl.DateTimeFormatOptions
+  options: Intl.DateTimeFormatOptions & { locale: string }
 ) => {
   const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
 
-  return new Intl.DateTimeFormat('en', {
+  return new Intl.DateTimeFormat(options.locale, {
     ...options,
     timeZone
   }).format(unixTimestamp * 1_000)
@@ -22,16 +22,20 @@ export const formatTimer = (timestamp: number) => {
   })
 }
 
-export const formatCountryName = (code: string) => {
+export const formatCountryName = (
+  code: string,
+  { locale }: { locale: string }
+) => {
   const isTwoCapitalLetters = /^[A-Z]{2}$/g
   const isThreeDigits = /^\d{3}$/g
 
   if (!isTwoCapitalLetters.test(code) && !isThreeDigits.test(code))
     throw new Error('Invalid country code.')
 
-  return new Intl.DisplayNames(['en'], { type: 'region', fallback: 'code' }).of(
-    code
-  )
+  return new Intl.DisplayNames([locale], {
+    type: 'region',
+    fallback: 'code'
+  }).of(code)
 }
 
 export const truncateToOneDecimal = (decimal: number) => {

@@ -1,0 +1,40 @@
+{
+  "ThemeToggle": {
+    "description": "Alterar tema",
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema"
+  },
+  "Footer": {
+    "link": "Desenvolvido por Luís Grizzo"
+  },
+  "AISeal": {
+    "description": "Conteúdo gerado por IA. Pode conter erros."
+  },
+  "Home": {
+    "description": "Consulte o clima na sua região!",
+    "button": "Vamos começar!"
+  },
+  "Coordinates": {
+    "Heading": {
+      "popoverTitle": "Sobre sua localização",
+      "undefinedLocation": "Águas internacionais",
+      "timerDescription": "Atualizando em"
+    },
+    "Weather": {
+      "sunrise": "Nascer do sol",
+      "sunset": "Pôr do sol",
+      "feelsLike": "Sensação térmica",
+      "minimal": "Minima",
+      "maximum": "Máxima",
+      "rain": "Chuva",
+      "snow": "Neve",
+      "wind": "Vento",
+      "humidity": "Humidade",
+      "visibility": "Visibilidade"
+    },
+    "Recomendation": {
+      "title": "Recomendação para bem-estar"
+    }
+  }
+}

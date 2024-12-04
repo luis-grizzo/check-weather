@@ -1,7 +1,8 @@
 'use client'
 
-import { MoonStar, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import { useTranslations } from 'next-intl'
+import { MoonStar, Sun } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -14,6 +15,8 @@ import {
 export function ThemeToggle() {
   const { setTheme } = useTheme()
 
+  const t = useTranslations('ThemeToggle')
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,21 +25,21 @@ export function ThemeToggle() {
 
           <MoonStar className="hidden dark:block" />
 
-          <span className="sr-only">Toggle theme</span>
+          <span className="sr-only">{t('description')}</span>
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          Light
+          {t('light')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          Dark
+          {t('dark')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          System
+          {t('system')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

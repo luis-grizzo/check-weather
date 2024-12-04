@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+
+import { useRouter } from '@/i18n/routing'
 
 import { timeUnits } from '@/constants/time-units'
 
@@ -18,6 +20,8 @@ export function PageRevalidator({
   const router = useRouter()
 
   const [countdownTimer, setCountdownTimer] = useState('--:--')
+
+  const t = useTranslations('Coordinates.Heading')
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -43,7 +47,7 @@ export function PageRevalidator({
 
   return (
     <span className="text-sm text-muted-foreground geist-mono">
-      {`Updating in ${countdownTimer}`}
+      {`${t('timerDescription')} ${countdownTimer}`}
     </span>
   )
 }

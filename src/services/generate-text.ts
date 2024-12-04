@@ -16,13 +16,17 @@ async function generateText(prompt: string) {
   return response.text()
 }
 
-export async function generateLocationHint(
+export async function generateLocationHint({
+  location,
+  locale
+}: {
   location: FormattedFetchWeatherResponse['location']
-) {
+  locale: string
+}) {
   if (location.country) {
-    const formattedCountry = formatCountryName(location.country)
+    const formattedCountry = formatCountryName(location.country, { locale })
 
-    const prompt = `generate a one-paragraph description of no more than 200 characters about ${location.city}, ${formattedCountry}`
+    const prompt = `generate a one-paragraph description in ${locale}, and no more than 200 characters about ${location.city}, ${formattedCountry}`
 
     const response = await generateText(prompt)
 
@@ -32,7 +36,10 @@ export async function generateLocationHint(
   return null
 }
 
-export async function generateWeatherHint(
+export async function generateWeatherHint({
+  weather,
+  locale
+}: {
   weather: Pick<
     FormattedFetchWeatherResponse,
     | 'location'
@@ -43,16 +50,23 @@ export async function generateWeatherHint(
     | 'humidity'
     | 'description'
   >
-) {
-  const formattedDate = formatDateTime(weather.time, { dateStyle: 'full' })
-  const formattedTime = formatDateTime(weather.time, { timeStyle: 'short' })
+  locale: string
+}) {
+  const formattedDate = formatDateTime(weather.time, {
+    dateStyle: 'full',
+    locale
+  })
+  const formattedTime = formatDateTime(weather.time, {
+    timeStyle: 'short',
+    locale
+  })
   const formattedWindSpeed = metersPerSecondToMilesPerHour(weather.wind_speed)
   const formattedTemperature = kelvinToFahrenheit(weather.curr_temp)
   const formattedFeelsLikeTemperature = kelvinToFahrenheit(
     weather.feels_like_temp
   )
 
-  const prompt = `Based on the user's current local weather conditions, provide a practical and personalized well-being recommendation to maximize their comfort and health throughout the day. Consider the following data: location ${weather.location.city}, date ${formattedDate}, time ${formattedTime}}, temperature ${formattedTemperature}, feels like ${formattedFeelsLikeTemperature}, wind speed ${formattedWindSpeed}, humidity ${weather.humidity}%, and weather ${weather.description}. Do not mention the temperature. The recommendation should be brief and useful, addressing daily activities, suitable clothing, hydration, or any additional care appropriate for these conditions.`
+  const prompt = `Based on the user's current local weather conditions, in ${locale}, provide a practical and personalized well-being recommendation to maximize their comfort and health throughout the day. Consider the following data: location ${weather.location.city}, date ${formattedDate}, time ${formattedTime}}, temperature ${formattedTemperature}, feels like ${formattedFeelsLikeTemperature}, wind speed ${formattedWindSpeed}, humidity ${weather.humidity}%, and weather ${weather.description}. Do not mention the temperature. The recommendation should be brief and useful, addressing daily activities, suitable clothing, hydration, or any additional care appropriate for these conditions.`
 
   const response = await generateText(prompt)
 

@@ -1,15 +1,18 @@
 import { formatWeatherResponse } from '@/lib/format-weather-response'
 
-interface FetchWeatherProps {
+export async function fetchWeather({
+  latitude,
+  longitude,
+  locale
+}: {
   latitude: string
   longitude: string
-}
-
-export async function fetchWeather({ latitude, longitude }: FetchWeatherProps) {
+  locale: string
+}) {
   const params = new URLSearchParams({
     lat: latitude,
     lon: longitude,
-    lang: 'en',
+    lang: locale.replace(/-/gi, '_'),
     appid: String(process.env.OPEN_WEATHER_API_KEY)
   })
 

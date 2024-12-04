@@ -1,0 +1,40 @@
+{
+  "ThemeToggle": {
+    "description": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "Footer": {
+    "link": "Developed by Luís Grizzo"
+  },
+  "AISeal": {
+    "description": "AI-generated content. May contain errors."
+  },
+  "Home": {
+    "description": "Consult your local weather info!",
+    "button": "Let's start!"
+  },
+  "Coordinates": {
+    "Heading": {
+      "popoverTitle": "About your location",
+      "undefinedLocation": "International waters",
+      "timerDescription": "Updating in"
+    },
+    "Weather": {
+      "sunrise": "Sunrise",
+      "sunset": "Sunset",
+      "feelsLike": "Feels like",
+      "minimal": "Minimal",
+      "maximum": "Maximum",
+      "rain": "Rain",
+      "snow": "Snow",
+      "wind": "Wind",
+      "humidity": "Humidity",
+      "visibility": "Visibility"
+    },
+    "Recomendation": {
+      "title": "Recommendation for well-being"
+    }
+  }
+}

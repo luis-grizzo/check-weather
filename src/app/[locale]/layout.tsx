@@ -1,16 +1,21 @@
+import { ReactNode } from 'react'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages, setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
+
 import type { Metadata, Viewport } from 'next'
 
-import { geistMono, geistSans } from './fonts'
+import { geistMono, geistSans } from '../fonts'
+
+import { routing } from '@/i18n/routing'
 
 import { Toaster } from '@/components/ui/toaster'
 
 import { ThemeProvider } from '@/components/client/theme-provider'
-
 import { Navbar } from '@/components/client/navbar'
 import { Footer } from '@/components/client/footer'
 
-import './globals.css'
-import React from 'react'
+import '../globals.css'
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
@@ -33,32 +38,47 @@ export const viewport: Viewport = {
   themeColor: '#f5f5f5'
 }
 
-export default function RootLayout({
-  children
+export default async function RootLayout({
+  children,
+  params
 }: Readonly<{
-  children: React.ReactNode
+  children: ReactNode
+  params: { locale: string }
 }>) {
+  const { locale } = await params
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (!routing.locales.includes(locale as any)) {
+    notFound()
+  }
+
+  setRequestLocale(locale)
+
+  const messages = await getMessages()
+
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       suppressHydrationWarning
     >
       <body className="relative h-dvh w-full">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Navbar />
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
 
-          {children}
+            {children}
 
-          <Footer />
+            <Footer />
 
-          <Toaster />
-        </ThemeProvider>
+            <Toaster />
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   )

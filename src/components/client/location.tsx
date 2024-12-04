@@ -1,6 +1,9 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { Info } from 'lucide-react'
+
+import { useTranslator } from '@/hooks/use-translator'
 
 import { AISeal } from '@/components/server/ai-seal'
 
@@ -21,12 +24,16 @@ export function Location({
   location: FormattedFetchWeatherResponse['location']
   description: string | null
 }) {
+  const { locale } = useTranslator()
+
+  const t = useTranslations('Coordinates.Heading')
+
   if (location.country && description) {
     return (
       <Popover>
         <PopoverTrigger asChild>
           <h1 className="w-fit cursor-pointer text-4xl font-extrabold tracking-tight lg:text-5xl">
-            {`${location.city}, ${formatCountryName(location.country)}`}
+            {`${location.city}, ${formatCountryName(location.country, { locale })}`}
 
             <Info className="inline-flex align-text-top ml-2 h-5 w-5 text-emphasis" />
           </h1>
@@ -34,11 +41,11 @@ export function Location({
 
         <PopoverContent
           collisionPadding={16}
-          className="w-[21rem] sm:w-96 z-40"
+          className="w-[22rem] sm:w-96 z-40"
         >
           <div className="flex flex-col gap-2">
             <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight text-pretty">
-              About your location
+              {t('popoverTitle')}
             </h2>
 
             <p className="text-pretty">{description}</p>

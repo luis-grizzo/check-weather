@@ -1,9 +1,12 @@
+import { useTranslations } from 'next-intl'
 import { Sun } from 'lucide-react'
 
 import GetLocation from '@/components/client/get-location'
 import FancyIcons from '@/components/client/fancy-icons'
 
 export default function Home() {
+  const t = useTranslations('Home')
+
   return (
     <main className="relative h-full w-full overflow-hidden">
       <div className="flex flex-col items-center justify-center gap-8 h-full container mx-auto px-4 py-14">
@@ -16,7 +19,7 @@ export default function Home() {
         </div>
 
         <p className="text-center text-xl text-muted-foreground">
-          Consult your local weather info!
+          {t('description')}
         </p>
 
         <GetLocation />
