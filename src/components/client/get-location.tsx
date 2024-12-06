@@ -14,7 +14,7 @@ import { truncateToOneDecimal } from '@/utils/string-utils'
 export default function GetLocation() {
   const router = useRouter()
   const { toast } = useToast()
-  const translations = useTranslations('Home')
+  const translations = useTranslations('Home.GetLocation')
 
   const [error, setError] = useState({ isError: false, message: '' })
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)

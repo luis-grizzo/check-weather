@@ -63,7 +63,7 @@ export default async function Coordinates({
 
       <div className="flex flex-col gap-2 md:items-center">
         <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-pretty">
-          {translations('Recomendation.title')}
+          {translations('recomendationTitle')}
         </h2>
 
         <p className="text-pretty md:text-center md:max-w-[750px] md:text-balance">

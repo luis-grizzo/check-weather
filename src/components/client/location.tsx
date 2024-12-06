@@ -23,7 +23,7 @@ export function Location({
   description: string | null
 }) {
   const locale = useLocale()
-  const translations = useTranslations('Coordinates.Heading')
+  const translations = useTranslations('Coordinates.Location')
 
   if (location.country && description) {
     return (
@@ -42,7 +42,7 @@ export function Location({
         >
           <div className="flex flex-col gap-2">
             <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight text-pretty">
-              {translations('popoverTitle')}
+              {translations('title')}
             </h2>
 
             <p className="text-pretty">{description}</p>
@@ -56,7 +56,7 @@ export function Location({
 
   return (
     <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
-      International waters
+      {translations('undefinedLocation')}
     </h1>
   )
 }

@@ -12,29 +12,31 @@
     "description": "Conteúdo gerado por IA. Pode conter erros."
   },
   "Home": {
-    "description": "Consulte o clima na sua região!",
-    "button": "Vamos começar!"
+    "GetLocation": {
+      "button": "Vamos começar!"
+    },
+    "description": "Consulte o clima na sua região!"
   },
   "Coordinates": {
-    "Heading": {
-      "popoverTitle": "Sobre sua localização",
-      "undefinedLocation": "Águas internacionais",
-      "timerDescription": "Atualizando em"
+    "PageRevalidator": {
+      "description": "Atualizando em {timer}"
     },
-    "Weather": {
-      "sunrise": "Nascer do sol",
-      "sunset": "Pôr do sol",
-      "feelsLike": "Sensação térmica",
-      "minimal": "Minima",
-      "maximum": "Máxima",
+    "Location": {
+      "title": "Sobre sua localização",
+      "undefinedLocation": "Águas internacionais"
+    },
+    "WeatherDisplay": {
+      "sunrise": "Nascer do sol {hour}",
+      "sunset": "Pôr do sol {hour}",
+      "feelsLike": "Sensação térmica {temperature}",
+      "minimal": "Minima {temperature}",
+      "maximum": "Máxima {temperature}",
       "rain": "Chuva",
       "snow": "Neve",
       "wind": "Vento",
       "humidity": "Humidade",
       "visibility": "Visibilidade"
     },
-    "Recomendation": {
-      "title": "Recomendação para bem-estar"
-    }
+    "recomendationTitle": "Recomendação para bem-estar"
   }
 }

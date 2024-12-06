@@ -12,29 +12,31 @@
     "description": "AI-generated content. May contain errors."
   },
   "Home": {
-    "description": "Consult your local weather info!",
-    "button": "Let's start!"
+    "GetLocation": {
+      "button": "Let's start!"
+    },
+    "description": "Consult your local weather info!"
   },
   "Coordinates": {
-    "Heading": {
-      "popoverTitle": "About your location",
-      "undefinedLocation": "International waters",
-      "timerDescription": "Updating in"
+    "PageRevalidator": {
+      "description": "Updating in {timer}"
     },
-    "Weather": {
-      "sunrise": "Sunrise",
-      "sunset": "Sunset",
-      "feelsLike": "Feels like",
-      "minimal": "Minimal",
-      "maximum": "Maximum",
+    "Location": {
+      "title": "About your location",
+      "undefinedLocation": "International waters"
+    },
+    "WeatherDisplay": {
+      "sunrise": "Sunrise {hour}",
+      "sunset": "Sunset {hour}",
+      "feelsLike": "Feels like {temperature}",
+      "minimal": "Minimal {temperature}",
+      "maximum": "Maximum {temperature}",
       "rain": "Rain",
       "snow": "Snow",
       "wind": "Wind",
       "humidity": "Humidity",
       "visibility": "Visibility"
     },
-    "Recomendation": {
-      "title": "Recommendation for well-being"
-    }
+    "recomendationTitle": "Recommendation for well-being"
   }
 }

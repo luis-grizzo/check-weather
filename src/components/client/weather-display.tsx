@@ -21,7 +21,7 @@ export function WeatherDisplay({
 }: {
   weather: FormattedFetchWeatherResponse
 }) {
-  const translations = useTranslations('Coordinates.Weather')
+  const translations = useTranslations('Coordinates.WeatherDisplay')
   const locale = useLocale()
   const measurementsTranslators = useMeasurementsTranslators()
 
