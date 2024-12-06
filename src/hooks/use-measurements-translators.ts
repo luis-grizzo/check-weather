@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useLocale } from 'next-intl'
 
 import { imperialUnitLanguages } from '@/constants/measurement-units'
 import {
@@ -12,10 +12,8 @@ import {
   metersToMiles
 } from '@/utils/number-utils'
 
-const defaultLanguage = 'en-US'
-
-export function useTranslator() {
-  const [locale, setLocale] = useState(navigator.language || defaultLanguage)
+export function useMeasurementsTranslators() {
+  const locale = useLocale()
 
   const isImperialUnit = imperialUnitLanguages.includes(locale)
 
@@ -29,20 +27,7 @@ export function useTranslator() {
 
   const translateDistance = isImperialUnit ? metersToMiles : metersToKilometers
 
-  useEffect(() => {
-    const handleLanguageChange = () => {
-      setLocale(navigator.language || 'en-US')
-    }
-
-    window.addEventListener('languagechange', handleLanguageChange)
-
-    return () => {
-      window.removeEventListener('languagechange', handleLanguageChange)
-    }
-  }, [])
-
   return {
-    locale,
     translateTemperature,
     translateVelocity,
     translateDistance

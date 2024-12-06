@@ -1,12 +1,12 @@
 'use client'
 
 import { cloneElement } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { CloudRain, CloudSnow, Droplets, Eye, Wind } from 'lucide-react'
 
 import { climateCatalog } from '@/constants/climate-catalog'
 
-import { useTranslator } from '@/hooks/use-translator'
+import { useMeasurementsTranslators } from '@/hooks/use-measurements-translators'
 
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -21,8 +21,9 @@ export function WeatherDisplay({
 }: {
   weather: FormattedFetchWeatherResponse
 }) {
-  const { locale, translateDistance, translateTemperature, translateVelocity } =
-    useTranslator()
+  const translations = useTranslations('Coordinates.Weather')
+  const locale = useLocale()
+  const measurementsTranslators = useMeasurementsTranslators()
 
   const period = calculatePeriod({
     currentTime: weather.time,
@@ -30,8 +31,6 @@ export function WeatherDisplay({
     sunset: weather.sunset
   })
   const icon = climateCatalog[weather.type].icon[period]
-
-  const t = useTranslations('Coordinates.Weather')
 
   return (
     <div className="relative flex flex-col items-center gap-4">
@@ -44,7 +43,7 @@ export function WeatherDisplay({
         })}
 
         <span className="text-6xl font-extrabold tracking-tight lg:text-7xl">
-          {translateTemperature(weather.curr_temp)}
+          {measurementsTranslators.translateTemperature(weather.curr_temp)}
         </span>
       </div>
 
@@ -54,23 +53,45 @@ export function WeatherDisplay({
 
       <div className="flex flex-wrap justify-center gap-2">
         <Badge variant="outline">
-          {`${t('sunrise')} ${formatDateTime(weather.sunrise, { timeStyle: 'short', locale })}`}
+          {translations('sunrise', {
+            hour: formatDateTime(weather.sunrise, {
+              timeStyle: 'short',
+              locale
+            })
+          })}
         </Badge>
 
         <Badge variant="outline">
-          {`${t('sunset')} ${formatDateTime(weather.sunset, { timeStyle: 'short', locale })}`}
+          {translations('sunset', {
+            hour: formatDateTime(weather.sunset, {
+              timeStyle: 'short',
+              locale
+            })
+          })}
         </Badge>
 
         <Badge variant="outline">
-          {`${t('feelsLike')} ${translateTemperature(weather.feels_like_temp)}`}
+          {translations('feelsLike', {
+            temperature: measurementsTranslators.translateTemperature(
+              weather.feels_like_temp
+            )
+          })}
         </Badge>
 
         <Badge variant="outline">
-          {`${t('minimal')} ${translateTemperature(weather.curr_min_temp)}`}
+          {translations('minimal', {
+            temperature: measurementsTranslators.translateTemperature(
+              weather.curr_min_temp
+            )
+          })}
         </Badge>
 
         <Badge variant="outline">
-          {`${t('maximum')} ${translateTemperature(weather.curr_max_temp)}`}
+          {translations('maximum', {
+            temperature: measurementsTranslators.translateTemperature(
+              weather.curr_max_temp
+            )
+          })}
         </Badge>
       </div>
 
@@ -82,7 +103,7 @@ export function WeatherDisplay({
                 <CloudRain className="h-7 w-7" />
 
                 <span className="text-sm font-medium leading-none">
-                  {t('rain')}
+                  {translations('rain')}
                 </span>
 
                 <span className="geist-mono text-nowrap">{`${weather.rain_1h} mm/h`}</span>
@@ -98,7 +119,7 @@ export function WeatherDisplay({
                 <CloudSnow className="h-7 w-7" />
 
                 <span className="text-sm font-medium leading-none">
-                  {t('snow')}
+                  {translations('snow')}
                 </span>
 
                 <span className="geist-mono text-nowrap">{`${weather.snow_1h} mm/h`}</span>
@@ -112,11 +133,11 @@ export function WeatherDisplay({
             <Wind className="h-7 w-7" />
 
             <span className="text-sm font-medium leading-none">
-              {t('wind')}
+              {translations('wind')}
             </span>
 
             <span className="geist-mono text-nowrap">
-              {translateVelocity(weather.wind_speed)}
+              {measurementsTranslators.translateVelocity(weather.wind_speed)}
             </span>
           </div>
 
@@ -126,7 +147,7 @@ export function WeatherDisplay({
             <Droplets className="h-7 w-7" />
 
             <span className="text-sm font-medium leading-none">
-              {t('humidity')}
+              {translations('humidity')}
             </span>
 
             <span className="geist-mono text-nowrap">{`${weather.humidity}%`}</span>
@@ -138,11 +159,11 @@ export function WeatherDisplay({
             <Eye className="h-7 w-7" />
 
             <span className="text-sm font-medium leading-none">
-              {t('visibility')}
+              {translations('visibility')}
             </span>
 
             <span className="geist-mono text-nowrap">
-              {translateDistance(weather.visibility)}
+              {measurementsTranslators.translateDistance(weather.visibility)}
             </span>
           </div>
         </div>

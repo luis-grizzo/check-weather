@@ -1,5 +1,5 @@
 export const formatDateTime = (
-  unixTimestamp: number,
+  timestamp: number,
   options: Intl.DateTimeFormatOptions & { locale: string }
 ) => {
   const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
@@ -7,7 +7,7 @@ export const formatDateTime = (
   return new Intl.DateTimeFormat(options.locale, {
     ...options,
     timeZone
-  }).format(unixTimestamp * 1_000)
+  }).format(timestamp)
 }
 
 export const formatTimer = (timestamp: number) => {

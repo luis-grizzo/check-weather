@@ -1,9 +1,7 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { Info } from 'lucide-react'
-
-import { useTranslator } from '@/hooks/use-translator'
 
 import { AISeal } from '@/components/server/ai-seal'
 
@@ -24,9 +22,8 @@ export function Location({
   location: FormattedFetchWeatherResponse['location']
   description: string | null
 }) {
-  const { locale } = useTranslator()
-
-  const t = useTranslations('Coordinates.Heading')
+  const locale = useLocale()
+  const translations = useTranslations('Coordinates.Heading')
 
   if (location.country && description) {
     return (
@@ -45,7 +42,7 @@ export function Location({
         >
           <div className="flex flex-col gap-2">
             <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight text-pretty">
-              {t('popoverTitle')}
+              {translations('popoverTitle')}
             </h2>
 
             <p className="text-pretty">{description}</p>

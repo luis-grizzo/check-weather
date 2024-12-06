@@ -1,6 +1,4 @@
-import { getTranslations } from 'next-intl/server'
-
-import { timeUnits } from '@/constants/time-units'
+import { getTranslations, getLocale } from 'next-intl/server'
 
 import { fetchWeather } from '@/services/fetch-weather'
 import {
@@ -16,12 +14,12 @@ import { WeatherDisplay } from '@/components/client/weather-display'
 
 import { formatDateTime } from '@/utils/string-utils'
 
-export default async function Current({
+export default async function Coordinates({
   params
 }: {
-  params: { locale: string; coordinates: string }
+  params: { coordinates: string }
 }) {
-  const { locale, coordinates } = await params
+  const { coordinates } = await params
 
   const decodedPath = decodeURIComponent(coordinates)
   const [latitude, longitude] = decodedPath.split(',')
@@ -30,7 +28,8 @@ export default async function Current({
     throw new Error('Invalid route')
   }
 
-  const t = await getTranslations('Coordinates')
+  const translations = await getTranslations('Coordinates')
+  const locale = await getLocale()
 
   const weather = await fetchWeather({ latitude, longitude, locale })
 
@@ -57,17 +56,14 @@ export default async function Current({
           })}
         </span>
 
-        <PageRevalidator
-          requestUnixTimestamp={weather.time}
-          revalidateIn={timeUnits.hour}
-        />
+        <PageRevalidator requestTimestamp={weather.time} />
       </div>
 
       <WeatherDisplay weather={weather} />
 
       <div className="flex flex-col gap-2 md:items-center">
         <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight text-pretty">
-          {t('Recomendation.title')}
+          {translations('Recomendation.title')}
         </h2>
 
         <p className="text-pretty md:text-center md:max-w-[750px] md:text-balance">

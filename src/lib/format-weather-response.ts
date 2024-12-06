@@ -10,9 +10,9 @@ export function formatWeatherResponse(
   return {
     type: response.weather[0].main.toLowerCase() as WeatherTypes,
     description: response.weather[0].description,
-    time: response.dt,
-    sunrise: response.sys.sunrise,
-    sunset: response.sys.sunset,
+    time: response.dt * 1_000,
+    sunrise: response.sys.sunrise * 1_000,
+    sunset: response.sys.sunset * 1_000,
     curr_temp: response.main.temp,
     feels_like_temp: response.main.feels_like,
     curr_min_temp: response.main.temp_min,

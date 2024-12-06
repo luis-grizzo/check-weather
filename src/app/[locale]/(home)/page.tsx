@@ -5,7 +5,7 @@ import GetLocation from '@/components/client/get-location'
 import FancyIcons from '@/components/client/fancy-icons'
 
 export default function Home() {
-  const t = useTranslations('Home')
+  const translations = useTranslations('Home')
 
   return (
     <main className="relative h-full w-full overflow-hidden">
@@ -19,7 +19,7 @@ export default function Home() {
         </div>
 
         <p className="text-center text-xl text-muted-foreground">
-          {t('description')}
+          {translations('description')}
         </p>
 
         <GetLocation />

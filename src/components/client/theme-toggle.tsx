@@ -14,8 +14,7 @@ import {
 
 export function ThemeToggle() {
   const { setTheme } = useTheme()
-
-  const t = useTranslations('ThemeToggle')
+  const translations = useTranslations('ThemeToggle')
 
   return (
     <DropdownMenu>
@@ -25,21 +24,21 @@ export function ThemeToggle() {
 
           <MoonStar className="hidden dark:block" />
 
-          <span className="sr-only">{t('description')}</span>
+          <span className="sr-only">{translations('description')}</span>
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          {t('light')}
+          {translations('light')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          {t('dark')}
+          {translations('dark')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          {t('system')}
+          {translations('system')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
