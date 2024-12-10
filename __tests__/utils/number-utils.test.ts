@@ -3,6 +3,9 @@ import {
   kelvinToCelcius,
   kelvinToFahrenheit,
   metersToKilometers,
+  metersToMiles,
+  metersPerSecondToKilometersPerHour,
+  metersPerSecondToMilesPerHour,
   positiveOrZero
 } from '@/utils/number-utils'
 
@@ -16,11 +19,29 @@ describe('calculateRandomIndex', () => {
   })
 })
 
+describe('metersPerSecondToKilometersPerHour', () => {
+  it('should return the correct rounded value', () => {
+    expect(metersPerSecondToKilometersPerHour(10)).toBe('36 km/h')
+  })
+})
+
+describe('metersPerSecondToMilesPerHour', () => {
+  it('should return the correct rounded value', () => {
+    expect(metersPerSecondToMilesPerHour(10)).toBe('22 mi/h')
+  })
+})
+
 describe('metersToKilometers', () => {
   it('should return the correct rounded value', () => {
-    expect(metersToKilometers(9_132)).toBe(9)
+    expect(metersToKilometers(9_132)).toBe('9 km')
 
-    expect(metersToKilometers(9_932)).toBe(10)
+    expect(metersToKilometers(9_932)).toBe('10 km')
+  })
+})
+
+describe('metersToMiles', () => {
+  it('should return the correct rounded value', () => {
+    expect(metersToMiles(9_132)).toBe('6 mi')
   })
 })
 
@@ -34,12 +55,12 @@ describe('positiveOrZero', () => {
 
 describe('kelvinToCelcius', () => {
   it('should return the correct value', () => {
-    expect(kelvinToCelcius(300)).toBe(27)
+    expect(kelvinToCelcius(300)).toBe('27°C')
   })
 })
 
 describe('kelvinToFahrenheit', () => {
   it('should return the correct value', () => {
-    expect(kelvinToFahrenheit(300)).toBe(80)
+    expect(kelvinToFahrenheit(300)).toBe('80°F')
   })
 })

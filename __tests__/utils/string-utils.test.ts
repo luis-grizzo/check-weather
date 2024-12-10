@@ -1,9 +1,10 @@
+import { defaultLocale } from '@tests/constants'
+
 import {
   calculatePeriod,
   formatCountryName,
-  formatDate,
+  formatDateTime,
   truncateToOneDecimal,
-  formatTime,
   formatTimer
 } from '@/utils/string-utils'
 
@@ -22,38 +23,40 @@ describe('stringFormatters', () => {
   })
 
   describe('formatCountryName', () => {
-    it('should return undefined when the code is undefined', () => {
-      expect(formatCountryName(undefined)).toBe(undefined)
-    })
-
-    it('should return undefined when the code is not valid', () => {
-      expect(formatCountryName('test')).toBe(undefined)
+    it('should throw when the code is not valid', () => {
+      expect(() =>
+        formatCountryName('test', { locale: defaultLocale })
+      ).toThrow()
     })
 
     it("should return the valid code when the country doesn't exists", () => {
-      expect(formatCountryName('ZL')).toBe('ZL')
+      expect(formatCountryName('ZL', { locale: defaultLocale })).toBe('ZL')
     })
 
     it('should return the correct english country name', () => {
-      expect(formatCountryName('BR')).toEqual('Brazil')
+      expect(formatCountryName('BR', { locale: defaultLocale })).toEqual(
+        'Brazil'
+      )
 
-      expect(formatCountryName('US')).toEqual('United States')
+      expect(formatCountryName('US', { locale: defaultLocale })).toEqual(
+        'United States'
+      )
     })
   })
 
-  describe('formatDate', () => {
-    it('should return the formatted date', () => {
-      const unixTimestamp = new Date('2024-06-17T16:38:11Z').getTime() / 1_000
+  describe('formatDateTime', () => {
+    it('should return the formatted value', () => {
+      const timestamp = new Date('2024-06-17T16:38:11Z').getTime()
 
-      expect(formatDate(unixTimestamp)).toBe('Monday, June 17, 2024')
-    })
-  })
-
-  describe('formatTime', () => {
-    it('should return the formatted time', () => {
-      const unixTimestamp = new Date('2024-06-17T16:38:11Z').getTime() / 1_000
-
-      expect(formatTime(unixTimestamp)).toBe('4:38 PM')
+      expect(
+        formatDateTime(timestamp, {
+          weekday: 'long',
+          month: 'long',
+          day: '2-digit',
+          year: 'numeric',
+          locale: defaultLocale
+        })
+      ).toBe('Monday, June 17, 2024')
     })
   })
 
