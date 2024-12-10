@@ -31,6 +31,12 @@ describe('formatWeatherResponse', () => {
         sunrise: 1718704356,
         sunset: 1718743121
       },
+      rain: {
+        '1h': 1
+      },
+      snow: {
+        '1h': 2
+      },
       name: 'Jaú'
     }
 
@@ -41,12 +47,14 @@ describe('formatWeatherResponse', () => {
       feels_like_temp: 27.08,
       curr_min_temp: 28.54,
       curr_max_temp: 29.27,
-      time: 1718729676,
-      sunrise: 1718704356,
-      sunset: 1718743121,
+      time: 1718729676000,
+      sunrise: 1718704356000,
+      sunset: 1718743121000,
       visibility: 10000,
       wind_speed: 3.45,
       humidity: 18,
+      rain_1h: 1,
+      snow_1h: 2,
       location: {
         city: 'Jaú',
         country: 'BR'
