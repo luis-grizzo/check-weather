@@ -1,9 +1,10 @@
-import { Button } from '@/components'
 import { render } from '@testing-library/react'
 
-describe('Button', () => {
+import { Popover } from '@/components/ui/popover'
+
+describe('Popover', () => {
   it('should match snapshot', () => {
-    const { container } = render(<Button>test</Button>)
+    const { container } = render(<Popover />)
 
     expect(container).toMatchSnapshot()
   })
