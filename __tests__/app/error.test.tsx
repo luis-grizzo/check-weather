@@ -26,7 +26,7 @@ describe('Error', () => {
   })
 
   it('should call reset function on button click', () => {
-    const eButton = screen.getByRole('button') as HTMLButtonElement
+    const eButton = screen.getByRole('button')
 
     fireEvent.click(eButton)
 

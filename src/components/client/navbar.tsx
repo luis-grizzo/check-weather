@@ -46,7 +46,8 @@ export function Navbar() {
                     exit={{ opacity: 0, y: 32 }}
                   >
                     {cloneElement(icon, {
-                      className: 'text-emphasis h-7 w-7'
+                      className: 'text-emphasis h-7 w-7',
+                      role: 'figure'
                     })}
                   </motion.div>
                 )

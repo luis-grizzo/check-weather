@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl'
 import { Sun } from 'lucide-react'
 
 import GetLocation from '@/components/client/get-location'
-import FancyIcons from '@/components/client/fancy-icons'
+import { FancyIcons } from '@/components/client/fancy-icons'
 
 export default function Home() {
   const translations = useTranslations('Home')

@@ -20,7 +20,7 @@ export function Location({
   description
 }: {
   location: FormattedFetchWeatherResponse['location']
-  description: string | null
+  description?: string
 }) {
   const locale = useLocale()
   const translations = useTranslations('Coordinates.Location')
