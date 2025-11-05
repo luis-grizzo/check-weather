@@ -16,7 +16,7 @@ async function generateText(prompt: string) {
   return response.text()
 }
 
-export async function generateLocationHint({
+export async function generateLocationDescription({
   location,
   locale
 }: {
@@ -26,14 +26,12 @@ export async function generateLocationHint({
   if (location.country) {
     const formattedCountry = formatCountryName(location.country, { locale })
 
-    const prompt = `generate a one-paragraph description in ${locale}, and no more than 200 characters about ${location.city}, ${formattedCountry}`
+    const prompt = `generate a one-paragraph description in ${locale}, and no more than 600 characters about ${location.city}, ${formattedCountry}`
 
     const response = await generateText(prompt)
 
     return response
   }
-
-  return null
 }
 
 export async function generateWeatherHint({

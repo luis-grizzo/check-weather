@@ -10,6 +10,7 @@ import { geistMono, geistSans } from '../fonts'
 import { routing } from '@/i18n/routing'
 
 import { Toaster } from '@/components/ui/toaster'
+import { DrawerCSSProvider } from '@/components/ui/drawer'
 
 import { ThemeProvider } from '@/components/client/theme-provider'
 import { Navbar } from '@/components/client/navbar'
@@ -70,6 +71,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            {/* <DrawerCSSProvider> */}
             <Navbar />
 
             {children}
@@ -77,6 +79,7 @@ export default async function RootLayout({
             <Footer />
 
             <Toaster />
+            {/* </DrawerCSSProvider> */}
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

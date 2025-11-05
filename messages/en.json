@@ -22,7 +22,7 @@
       "description": "Updating in {timer}"
     },
     "Location": {
-      "title": "About your location",
+      "title": "About {location}",
       "undefinedLocation": "International waters"
     },
     "WeatherDisplay": {

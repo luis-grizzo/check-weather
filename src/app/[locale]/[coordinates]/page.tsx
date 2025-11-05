@@ -3,7 +3,7 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import { fetchWeather } from '@/services/fetch-weather'
 import {
   generateWeatherHint,
-  generateLocationHint
+  generateLocationDescription
 } from '@/services/generate-text'
 
 import { AISeal } from '@/components/server/ai-seal'
@@ -34,7 +34,7 @@ export default async function Coordinates({
   const weather = await fetchWeather({ latitude, longitude, locale })
 
   const weatherHint = await generateWeatherHint({ weather, locale })
-  const locationHint = await generateLocationHint({
+  const locationHint = await generateLocationDescription({
     location: weather.location,
     locale
   })
