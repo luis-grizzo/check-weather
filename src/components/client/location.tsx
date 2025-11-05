@@ -64,8 +64,13 @@ export function Location({
 
           <DialogContent>
             <DialogHeader>
-              {/* <DialogTitle>{`${location.city}, ${formatCountryName(location.country, { locale })}`}</DialogTitle> */}
-              <DialogTitle>{translations('')}</DialogTitle>
+              <DialogTitle>
+                {location.country
+                  ? translations('title', {
+                      location: `${location.city}, ${formatCountryName(location.country, { locale })}`
+                    })
+                  : translations('undefinedLocation')}
+              </DialogTitle>
 
               <DialogDescription>description</DialogDescription>
             </DialogHeader>

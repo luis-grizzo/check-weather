@@ -5,22 +5,14 @@
     "dark": "Escuro",
     "system": "Sistema"
   },
-  "Footer": {
-    "link": "Desenvolvido por Luís Grizzo"
-  },
-  "AISeal": {
-    "description": "Conteúdo gerado por IA. Pode conter erros."
-  },
+  "Footer": { "link": "Desenvolvido por Luís Grizzo" },
+  "AISeal": { "description": "Conteúdo gerado por IA. Pode conter erros." },
   "Home": {
-    "GetLocation": {
-      "button": "Vamos começar!"
-    },
+    "GetLocation": { "button": "Vamos começar!" },
     "description": "Consulte o clima na sua região!"
   },
   "Coordinates": {
-    "PageRevalidator": {
-      "description": "Atualizando em {timer}"
-    },
+    "PageRevalidator": { "description": "Atualizando em {timer}" },
     "Location": {
       "title": "Sobre {location}",
       "undefinedLocation": "Águas internacionais"
