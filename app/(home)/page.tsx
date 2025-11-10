@@ -1,5 +1,7 @@
 import Image from 'next/image'
 
+import { RequestLocation } from '@/components/request-location'
+
 import { Button } from '@/components/ui/button'
 
 import placeholder from '@public/placeholder.jpg'
@@ -20,7 +22,7 @@ export default function Home() {
         </div>
 
         <div className="flex gap-2 flex-wrap">
-          <Button>Consultar clima</Button>
+          <RequestLocation />
 
           <Button variant="ghost">Locais já consultados</Button>
         </div>

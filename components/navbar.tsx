@@ -1,9 +1,12 @@
-import { Home, MapPinMinus } from 'lucide-react'
-import { Button } from './ui/button'
+import { Home } from 'lucide-react'
+
+import { PermissionStatusPopover } from './permission-status-popover'
+
+import { Button } from '@/components/ui/button'
 
 export function Navbar() {
   return (
-    <nav className="w-full bg-background">
+    <nav className="sticky top-0 bg-linear-to-b from-background to-background/60 backdrop-blur z-50">
       <div className="flex justify-between items-center h-14 container mx-auto px-4">
         <span className="text-lg font-medium">CheckWeather</span>
 
@@ -12,9 +15,7 @@ export function Navbar() {
             <Home />
           </Button>
 
-          <Button variant="ghost" size="icon">
-            <MapPinMinus />
-          </Button>
+          <PermissionStatusPopover />
         </div>
       </div>
     </nav>

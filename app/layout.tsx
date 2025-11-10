@@ -5,6 +5,8 @@ import { geistSans, geistMono } from './fonts'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 
+import { GeolocationProvider } from '@/shared/hooks/use-geolocation'
+
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -18,11 +20,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-dvh`}
       >
-        <Navbar />
+        <GeolocationProvider>
+          <Navbar />
 
-        {children}
+          {children}
 
-        <Footer />
+          <Footer />
+        </GeolocationProvider>
       </body>
     </html>
   )

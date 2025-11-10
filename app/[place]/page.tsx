@@ -16,7 +16,7 @@ import {
 
 import placeholder from '@public/placeholder.jpg'
 
-import { Status } from '@/shared/enums/status'
+import { WeatherConditionStatus } from '@/shared/enums/weatherConditionStatus'
 
 export default function Place() {
   return (
@@ -81,17 +81,33 @@ export default function Place() {
             className="object-fill object-center w-full aspect-square rounded-4xl"
           />
 
-          <StatusCard value="10 km ou mais" description="Visibilidade" status={Status.GOOD} />
+          <StatusCard
+            value="10 km ou mais"
+            description="Visibilidade"
+            status={WeatherConditionStatus.GOOD}
+          />
 
           <StatusCard value="100%" description="Nebulosidade" />
 
-          <StatusCard value="67%" description="Umidade" status={Status.GOOD} />
+          <StatusCard value="67%" description="Umidade" status={WeatherConditionStatus.GOOD} />
 
-          <StatusCard value="948 hPa" description="Pressão atmosférica" status={Status.GOOD} />
+          <StatusCard
+            value="948 hPa"
+            description="Pressão atmosférica"
+            status={WeatherConditionStatus.GOOD}
+          />
 
-          <StatusCard value="17 km/h" description="Velocidade do vento" status={Status.AVERAGE} />
+          <StatusCard
+            value="17 km/h"
+            description="Velocidade do vento"
+            status={WeatherConditionStatus.AVERAGE}
+          />
 
-          <StatusCard value="23 km/h" description="Rajadas de vento" status={Status.BAD} />
+          <StatusCard
+            value="23 km/h"
+            description="Rajadas de vento"
+            status={WeatherConditionStatus.BAD}
+          />
 
           <StatusCard value="Noroeste" description="Direção do vento" />
         </div>
