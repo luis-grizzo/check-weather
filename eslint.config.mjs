@@ -12,7 +12,8 @@ const eslintConfig = defineConfig([
     plugins: { prettier: pluginPrettier },
     rules: {
       'prettier/prettier': 'warn',
-      'react-hooks/exhaustive-deps': 'off'
+      'react-hooks/exhaustive-deps': 'off',
+      'no-console': ['warn', { allow: ['error'] }]
     }
   },
   // Override default ignores of eslint-config-next.
@@ -21,7 +22,8 @@ const eslintConfig = defineConfig([
     '.next/**',
     'out/**',
     'build/**',
-    'next-env.d.ts'
+    'next-env.d.ts',
+    '/prisma'
   ])
 ])
 

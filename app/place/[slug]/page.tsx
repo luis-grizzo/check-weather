@@ -1,5 +1,8 @@
+import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { Info } from 'lucide-react'
+
+import { findUniquePlace } from '@/services/prisma/place/find-unique'
 
 import { StatusCard } from '@/components/status-card'
 
@@ -12,20 +15,37 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 
+import { WeatherSeverity } from '@/shared/enums/weather-severity'
+import { formatCountryName, formatDateTime } from '@/shared/utils/formatters'
+
 // Imports a serem removidos
 
 import placeholder from '@public/placeholder.jpg'
+import { currentWeather } from '@/services/open-weather/current-weather'
 
-import { WeatherConditionStatus } from '@/shared/enums/weatherConditionStatus'
+export default async function Place({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
 
-export default function Place() {
+  const place = await findUniquePlace({ slug })
+
+  if (!place) notFound()
+
+  const weather = await currentWeather({
+    latitude: parseFloat(place.latitude),
+    longitude: parseFloat(place.longitude)
+  })
+
+  // console.log({ slug, place, weather })
+
   return (
     <main className="flex flex-col">
       <header className="flex gap-4 items-center justify-between px-4 py-4">
         <div className="flex flex-col">
-          <span className="text-xl font-medium">Jaú, Brasil</span>
+          <span className="text-xl font-medium">
+            {`${place.name}, ${place.state ? `${place.state}, ` : ''}${formatCountryName(place.country)}`}
+          </span>
 
-          <span className="text-base">3 de nov. de 2025 às 13:48</span>
+          <span className="text-base">{weather.timestamp}</span>
         </div>
 
         <Button variant="ghost" size="icon">
@@ -35,16 +55,18 @@ export default function Place() {
 
       <section className="flex flex-col gap-8 px-4 py-8">
         <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-semibold tracking-tighter text-balance">26°C</h1>
+          <h1 className="text-4xl font-semibold tracking-tighter text-balance">
+            {weather.temperature.actual}
+          </h1>
 
-          <span className="text-xl">nuvens dispersas</span>
+          <span className="text-xl">{weather.description}</span>
 
           <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">Sensação 26°C</Badge>
+            <Badge variant="secondary">{weather.temperature.feelsLike}</Badge>
 
-            <Badge variant="secondary">Mínima 26°C</Badge>
+            <Badge variant="secondary">{weather.temperature.minimum}</Badge>
 
-            <Badge variant="secondary">Máxima 26°C</Badge>
+            <Badge variant="secondary">{weather.temperature.maximum}</Badge>
           </div>
         </div>
 
@@ -81,35 +103,16 @@ export default function Place() {
             className="object-fill object-center w-full aspect-square rounded-4xl"
           />
 
-          <StatusCard
-            value="10 km ou mais"
-            description="Visibilidade"
-            status={WeatherConditionStatus.GOOD}
-          />
-
-          <StatusCard value="100%" description="Nebulosidade" />
-
-          <StatusCard value="67%" description="Umidade" status={WeatherConditionStatus.GOOD} />
-
-          <StatusCard
-            value="948 hPa"
-            description="Pressão atmosférica"
-            status={WeatherConditionStatus.GOOD}
-          />
-
-          <StatusCard
-            value="17 km/h"
-            description="Velocidade do vento"
-            status={WeatherConditionStatus.AVERAGE}
-          />
-
-          <StatusCard
-            value="23 km/h"
-            description="Rajadas de vento"
-            status={WeatherConditionStatus.BAD}
-          />
-
-          <StatusCard value="Noroeste" description="Direção do vento" />
+          {weather.statistics.map((statistic) => (
+            <StatusCard
+              key={statistic.name}
+              data={{
+                value: statistic.value,
+                description: statistic.name,
+                status: statistic.status
+              }}
+            />
+          ))}
         </div>
       </section>
     </main>

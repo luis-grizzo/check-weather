@@ -4,12 +4,13 @@ import { useEffect, useState, useCallback, createContext, type ReactNode, useCon
 
 import { GeolocationPermissionStatus } from '@/shared/enums/geolocation-permission-status'
 
-import { type Coordinates } from '@/shared/types/geolocation'
+import { type ICoordinates } from '@/shared/types/geolocation'
 
 type TGeolocationContext = {
   status: GeolocationPermissionStatus
-  coords: Coordinates | null
+  coords: ICoordinates | null
   requestLocation: () => void
+  resetCoords: () => void
 }
 
 const GeolocationContext = createContext<TGeolocationContext | undefined>(undefined)
@@ -18,7 +19,7 @@ export function GeolocationProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<GeolocationPermissionStatus>(
     GeolocationPermissionStatus.LOADING
   )
-  const [coords, setCoords] = useState<Coordinates | null>(null)
+  const [coords, setCoords] = useState<ICoordinates | null>(null)
 
   function handleSuccessLocation({ coords }: GeolocationPosition) {
     const { latitude, longitude } = coords
@@ -67,19 +68,26 @@ export function GeolocationProvider({ children }: { children: ReactNode }) {
 
       if (permission.state === 'granted') {
         setStatus(GeolocationPermissionStatus.GRANTED)
+        return
       }
 
       if (permission.state === 'denied') {
         setStatus(GeolocationPermissionStatus.DENIED)
+        return
       }
 
       if (permission.state === 'prompt') {
         setStatus(GeolocationPermissionStatus.PROMPT)
+        return
       }
     } catch {
       setStatus(GeolocationPermissionStatus.UNSUPPORTED)
     }
   }, [])
+
+  function resetCoords() {
+    setCoords(null)
+  }
 
   useEffect(() => {
     async function initializePermission() {
@@ -90,7 +98,7 @@ export function GeolocationProvider({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <GeolocationContext.Provider value={{ status, coords, requestLocation }}>
+    <GeolocationContext.Provider value={{ status, coords, requestLocation, resetCoords }}>
       {children}
     </GeolocationContext.Provider>
   )
