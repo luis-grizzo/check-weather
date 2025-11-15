@@ -13,8 +13,6 @@ interface IStatistic {
 
 export interface IWeatherFactoryResponse {
   timestamp: string
-  sunrise: string
-  sunset: string
   condition: WeatherConditions
   description: string
   temperature: {
@@ -24,9 +22,12 @@ export interface IWeatherFactoryResponse {
     maximum: string
   }
   statistics: IStatistic[]
+}
 
-  // rain?: string
-  // snow?: string
+function getDescriptionValue(description: string) {
+  const [firstLetter, ...rest] = description
+
+  return `${firstLetter.toUpperCase()}${rest.join('')}`
 }
 
 function getVisibilityValue(visibility: number): string {
@@ -88,16 +89,21 @@ function getWindDiretionValue(degree: number): string {
   return 'Indefinido'
 }
 
+function getRainStatus(volume: number) {
+  if (volume <= 2.5) return WeatherSeverity.GOOD
+  if (volume > 2.5 && volume <= 7.5) return WeatherSeverity.MODERATE
+
+  return WeatherSeverity.SEVERE
+}
+
 export function weatherFactory(raw: ICurrentWeatherResponse): IWeatherFactoryResponse {
-  return {
+  const weather: IWeatherFactoryResponse = {
     timestamp: formatDateTime(new Date(raw.dt * 1_000), {
       dateStyle: 'medium',
       timeStyle: 'short'
     }),
-    sunrise: formatDateTime(new Date(raw.sys.sunrise * 1_000), { timeStyle: 'short' }),
-    sunset: formatDateTime(new Date(raw.sys.sunset * 1_000), { timeStyle: 'short' }),
-    condition: raw.weather.main,
-    description: raw.weather.description,
+    condition: raw.weather[0].main,
+    description: getDescriptionValue(raw.weather[0].description),
     temperature: {
       actual: formatNumber(raw.main.temp, {
         style: 'unit',
@@ -125,6 +131,16 @@ export function weatherFactory(raw: ICurrentWeatherResponse): IWeatherFactoryRes
       })}`
     },
     statistics: [
+      {
+        name: 'Nascer do sol',
+        value: formatDateTime(new Date(raw.sys.sunrise * 1_000), { timeStyle: 'short' }),
+        description: 'tbd'
+      },
+      {
+        name: 'Pôr do sol',
+        value: formatDateTime(new Date(raw.sys.sunset * 1_000), { timeStyle: 'short' }),
+        description: 'tbd'
+      },
       {
         name: 'Visibilidade',
         value: getVisibilityValue(raw.visibility),
@@ -187,4 +203,32 @@ export function weatherFactory(raw: ICurrentWeatherResponse): IWeatherFactoryRes
       }
     ]
   }
+
+  if (!!raw.rain)
+    weather.statistics.push({
+      name: 'Chuva',
+      value: formatNumber(raw.rain['1h'], {
+        style: 'unit',
+        unit: 'millimeter-per-hour',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }),
+      description: 'tbd',
+      status: getRainStatus(raw.rain['1h'])
+    })
+
+  if (!!raw.snow)
+    weather.statistics.push({
+      name: 'Neve',
+      value: formatNumber(raw.snow['1h'], {
+        style: 'unit',
+        unit: 'millimeter-per-hour',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }),
+      description: 'tbd',
+      status: getRainStatus(raw.snow['1h'])
+    })
+
+  return weather
 }

@@ -25,7 +25,7 @@ export function RequestLocation() {
 
           const location = await fetchLocation(coords)
 
-          router.push(`/place/${location.place.slug}`)
+          router.push(`/${location.place.slug}`)
 
           resetCoords()
         } catch (error) {

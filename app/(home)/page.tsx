@@ -9,13 +9,13 @@ import placeholder from '@public/placeholder.jpg'
 export default function Home() {
   return (
     <main className="flex flex-col">
-      <header className="flex gap-8 flex-col px-4 py-16">
+      <header className="flex flex-col gap-8 items-center container lg:max-w-lg mx-auto px-4 py-16">
         <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-semibold tracking-tighter text-balance">
+          <h1 className="text-4xl lg:text-5xl font-semibold tracking-tighter text-center text-balance">
             Consulte o clima de onde estiver.
           </h1>
 
-          <p className="text-base text-balance">
+          <p className="text-base lg:text-xl text-center text-balance">
             Consultor de clima rápido, prático e informativo, que te ajuda a se preparar para o que
             for!
           </p>
@@ -28,11 +28,11 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="flex gap-8 flex-col px-4 py-8">
+      <section className="flex flex-col gap-8 container mx-auto px-4 py-8">
         <Image
           src={placeholder}
           alt="Placeholder"
-          className="object-fill object-center w-full aspect-square rounded-4xl"
+          className="object-fill object-center w-full aspect-square lg:aspect-21/9 rounded-4xl"
         />
       </section>
     </main>

@@ -5,7 +5,7 @@ import { toKebabCase } from '@/shared/utils/formatters'
 import { logError } from '@/shared/utils/log-error'
 
 export async function createPlace(
-  params: Pick<Place, 'name' | 'state' | 'country' | 'latitude' | 'longitude'>
+  params: Pick<Place, 'name' | 'state' | 'country' | 'latitude' | 'longitude' | 'description'>
 ) {
   try {
     const place = await prisma.place.create({

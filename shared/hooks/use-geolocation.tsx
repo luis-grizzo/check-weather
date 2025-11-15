@@ -52,8 +52,8 @@ export function GeolocationProvider({ children }: { children: ReactNode }) {
 
     navigator.geolocation.getCurrentPosition(handleSuccessLocation, handleErrorLocation, {
       enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 10_000
+      maximumAge: 300_000,
+      timeout: 3_000
     })
   }, [])
 

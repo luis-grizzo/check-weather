@@ -17,6 +17,7 @@ export async function findUniquePlace(params: Pick<Place, 'slug'>) {
         country: true,
         latitude: true,
         longitude: true,
+        description: true,
         createdAt: true
       }
     })

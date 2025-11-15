@@ -8,10 +8,10 @@ import { logError } from '@/shared/utils/log-error'
 type TCurrentWeatherRequest = ICoordinates
 
 export interface ICurrentWeatherResponse {
-  weather: {
+  weather: Array<{
     main: WeatherConditions
     description: string
-  }
+  }>
   main: {
     temp: number
     feels_like: number
@@ -29,6 +29,12 @@ export interface ICurrentWeatherResponse {
   clouds: {
     all: number
   }
+  rain?: {
+    '1h': number
+  }
+  snow?: {
+    '1h': number
+  }
   dt: number
   sys: {
     sunrise: number
@@ -44,7 +50,7 @@ export async function currentWeather(
       lat: String(params.latitude),
       lon: String(params.longitude),
       units: 'metric',
-      lang: 'pt-BR',
+      lang: 'pt_br',
       appid: String(OPEN_WEATHER_API_KEY)
     })
 
@@ -59,8 +65,6 @@ export async function currentWeather(
     const raw: ICurrentWeatherResponse = await response.json()
 
     const weather = weatherFactory(raw)
-
-    console.log({ raw })
 
     return weather
   } catch (error) {

@@ -25,7 +25,7 @@ export function StatusCard({
         {!!data.status && (
           <span
             data-status={WeatherSeverity[data.status]}
-            className="size-4 rounded-full data-[status=GOOD]:bg-green-500 data-[status=AVERAGE]:bg-yellow-500 data-[status=BAD]:bg-red-500"
+            className="relative size-4 rounded-full data-[status=GOOD]:bg-green-500 data-[status=MODERATE]:bg-yellow-500 data-[status=SEVERE]:bg-red-500 before:absolute before:top-0 before:left-0 before:size-4 before:bg-inherit before:rounded-full before:animate-ping"
           />
         )}
 

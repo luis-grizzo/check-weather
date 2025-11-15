@@ -10,6 +10,8 @@ import { logError } from '@/shared/utils/log-error'
 import { createPlace } from '@/services/prisma/place/create'
 import { createLocation } from '@/services/prisma/location/create'
 import { findFirstPlace } from '@/services/prisma/place/find-first'
+import { generatePlaceDescription } from '@/services/gemini/generate-place-description'
+import { updatePlace } from '@/services/prisma/place/update'
 
 const FindPlaceSchema = z
   .object({
@@ -37,13 +39,13 @@ export async function POST(request: Request) {
     if (!!location) return successResponse({ data: location, code: HttpsResponseCode.OK_200 })
 
     const openWeatherPlace = await reverseGeocode({
-      latitude: String(contents.latitude),
-      longitude: String(contents.longitude)
+      latitude: contents.latitude,
+      longitude: contents.longitude
     })
 
     if (!openWeatherPlace)
       return errorResponse({
-        message: 'Não foi possível encontrar o local informado.',
+        message: 'Não foi possível identificar sua localização.',
         code: HttpsResponseCode.NOT_FOUND_404
       })
 
@@ -53,6 +55,16 @@ export async function POST(request: Request) {
     })
 
     if (!!place) {
+      if (!place.description) {
+        const placeDescription = await generatePlaceDescription({
+          name: place.name,
+          state: place.state,
+          country: place.country
+        })
+
+        await updatePlace({ id: place.id, description: placeDescription })
+      }
+
       const newLocation = await createLocation({
         placeId: place.id,
         latitude: String(contents.latitude),
@@ -62,12 +74,19 @@ export async function POST(request: Request) {
       return successResponse({ data: newLocation, code: HttpsResponseCode.CREATED_201 })
     }
 
+    const newPlaceDescription = await generatePlaceDescription({
+      name: openWeatherPlace.name,
+      state: openWeatherPlace.state || null,
+      country: openWeatherPlace.country
+    })
+
     const newPlace = await createPlace({
       name: openWeatherPlace.name,
       state: openWeatherPlace.state || null,
       country: openWeatherPlace.country,
       latitude: String(openWeatherPlace.lat),
-      longitude: String(openWeatherPlace.lon)
+      longitude: String(openWeatherPlace.lon),
+      description: newPlaceDescription
     })
 
     const newLocation = await createLocation({

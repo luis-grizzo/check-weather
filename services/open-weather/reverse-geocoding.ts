@@ -1,6 +1,9 @@
 import { OPEN_WEATHER_API_KEY } from '@/shared/constants/enviorement'
 import { ErrorOrigin } from '@/shared/enums/error-origin'
+import { type ICoordinates } from '@/shared/types/geolocation'
 import { logError } from '@/shared/utils/log-error'
+
+type TReverseGeocodingRequest = ICoordinates
 
 interface IReverseGeocodeResponse {
   name: string
@@ -10,22 +13,18 @@ interface IReverseGeocodeResponse {
   state?: string
 }
 
-export async function reverseGeocode({
-  latitude,
-  longitude
-}: {
-  latitude: string
-  longitude: string
-}): Promise<IReverseGeocodeResponse | undefined> {
+export async function reverseGeocode(
+  params: TReverseGeocodingRequest
+): Promise<IReverseGeocodeResponse | undefined> {
   try {
-    const params = new URLSearchParams({
-      lat: latitude,
-      lon: longitude,
+    const searchParams = new URLSearchParams({
+      lat: String(params.latitude),
+      lon: String(params.longitude),
       limit: '1',
       appid: String(OPEN_WEATHER_API_KEY)
     })
 
-    const response = await fetch(`http://api.openweathermap.org/geo/1.0/reverse?${params}`)
+    const response = await fetch(`http://api.openweathermap.org/geo/1.0/reverse?${searchParams}`)
 
     if (!response.ok) {
       const error = await response.json()
