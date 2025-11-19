@@ -1,14 +1,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 
 import { useGeolocation } from '@/shared/hooks/use-geolocation'
 import { GeolocationPermissionStatus } from '@/shared/enums/geolocation-permission-status'
 import { fetchLocation } from '@/services/fetch/location'
+import { logError } from '@/shared/utils/log-error'
+import { ErrorOrigin } from '@/shared/enums/error-origin'
 
 export function RequestLocation() {
   const router = useRouter()
@@ -29,10 +32,14 @@ export function RequestLocation() {
 
           resetCoords()
         } catch (error) {
-          const message =
-            (error as Error).message || 'Erro ao gerar interpretação. Tente novamente em instantes.'
+          const message = logError({
+            origin: ErrorOrigin.APP,
+            alias: 'RequestLocation',
+            path: '@/components/request-location.tsx',
+            error
+          })
 
-          console.error(message)
+          toast.error(message)
         } finally {
           setIsLoading(false)
         }
@@ -51,15 +58,10 @@ export function RequestLocation() {
         isLoading
       }
     >
-      {isLoading ? (
+      {isLoading || status === GeolocationPermissionStatus.LOADING ? (
         <>
-          <Loader2 className="animate-spin" />
+          <Spinner />
           Carregando
-        </>
-      ) : status === GeolocationPermissionStatus.LOADING ? (
-        <>
-          <Loader2 className="animate-spin" />
-          Checando
         </>
       ) : status === GeolocationPermissionStatus.DENIED ? (
         'Permissão negada'

@@ -24,7 +24,9 @@ export async function reverseGeocode(
       appid: String(OPEN_WEATHER_API_KEY)
     })
 
-    const response = await fetch(`http://api.openweathermap.org/geo/1.0/reverse?${searchParams}`)
+    const response = await fetch(`http://api.openweathermap.org/geo/1.0/reverse?${searchParams}`, {
+      next: { revalidate: 0 }
+    })
 
     if (!response.ok) {
       const error = await response.json()

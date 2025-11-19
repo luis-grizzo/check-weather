@@ -12,7 +12,8 @@ interface IStatistic {
 }
 
 export interface IWeatherFactoryResponse {
-  timestamp: string
+  timestamp: number
+  date: string
   condition: WeatherConditions
   description: string
   temperature: {
@@ -98,7 +99,8 @@ function getRainStatus(volume: number) {
 
 export function weatherFactory(raw: ICurrentWeatherResponse): IWeatherFactoryResponse {
   const weather: IWeatherFactoryResponse = {
-    timestamp: formatDateTime(new Date(raw.dt * 1_000), {
+    timestamp: raw.dt * 1_000,
+    date: formatDateTime(new Date(raw.dt * 1_000), {
       dateStyle: 'medium',
       timeStyle: 'short'
     }),

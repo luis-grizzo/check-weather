@@ -1,12 +1,13 @@
 'use client'
 
-import { Loader2, MapPinCheck, MapPinMinus, MapPinOff, MapPinX } from 'lucide-react'
+import { MapPinCheckInside, MapPinMinusInside, MapPinOff, MapPinXInside } from 'lucide-react'
 
 import { useGeolocation } from '@/shared/hooks/use-geolocation'
 import { GeolocationPermissionStatus } from '@/shared/enums/geolocation-permission-status'
 
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Spinner } from '@/components/ui/spinner'
 
 export function PermissionStatusPopover() {
   const { status } = useGeolocation()
@@ -19,17 +20,19 @@ export function PermissionStatusPopover() {
           size="icon"
           disabled={status === GeolocationPermissionStatus.LOADING}
         >
-          {status === GeolocationPermissionStatus.LOADING && <Loader2 className="animate-spin" />}
+          {status === GeolocationPermissionStatus.LOADING && <Spinner />}
 
           {status === GeolocationPermissionStatus.GRANTED && (
-            <MapPinCheck className="text-green-500" />
+            <MapPinCheckInside className="text-green-500" />
           )}
 
           {status === GeolocationPermissionStatus.PROMPT && (
-            <MapPinMinus className="text-yellow-500" />
+            <MapPinMinusInside className="text-yellow-500" />
           )}
 
-          {status === GeolocationPermissionStatus.DENIED && <MapPinX className="text-red-500" />}
+          {status === GeolocationPermissionStatus.DENIED && (
+            <MapPinXInside className="text-red-500" />
+          )}
 
           {status === GeolocationPermissionStatus.UNSUPPORTED && (
             <MapPinOff className="text-purple-500" />

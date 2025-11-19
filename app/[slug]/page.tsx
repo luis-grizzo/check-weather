@@ -1,13 +1,14 @@
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
-import { Info } from 'lucide-react'
 
 import { findUniquePlace } from '@/services/prisma/place/find-unique'
 import { currentWeather } from '@/services/open-weather/current-weather'
+import { generateWeatherRecommendation } from '@/services/gemini/generate-weather-recommendation'
+import { getVideo } from '@/services/pexels/get-video'
 
 import { StatusCard } from '@/components/status-card'
+import { RevalidatePath } from '@/components/revalidate-path'
+import { Video } from '@/components/video'
 
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
   Accordion,
@@ -16,12 +17,10 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 
+import { weatherVideosIds } from '@/shared/enums/weather-conditions'
 import { formatCountryName } from '@/shared/utils/formatters'
 
-// Imports a serem removidos
-
-import placeholder from '@public/placeholder.jpg'
-import { generateWeatherRecommendation } from '@/services/gemini/generate-weather-recommendation'
+export const revalidate = 3_600
 
 export default async function Place({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -35,6 +34,8 @@ export default async function Place({ params }: { params: Promise<{ slug: string
     longitude: parseFloat(place.longitude)
   })
 
+  const video = await getVideo({ id: String(weatherVideosIds[weather.condition]) })
+
   const recommendation = await generateWeatherRecommendation({
     place: { name: place.name },
     weather
@@ -43,17 +44,15 @@ export default async function Place({ params }: { params: Promise<{ slug: string
   const fullPlace = `${place.name}, ${place.state ? `${place.state}, ` : ''}${formatCountryName(place.country)}`
 
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col justify-center min-h-[calc(100svh-7rem)]">
       <header className="flex gap-4 items-center justify-between container mx-auto px-4 py-4">
         <div className="flex flex-col">
           <span className="text-xl font-medium">{fullPlace}</span>
 
-          <span className="text-base">{weather.timestamp}</span>
+          <span className="text-base">{weather.date}</span>
         </div>
 
-        <Button variant="ghost" size="icon">
-          <Info />
-        </Button>
+        <RevalidatePath data={{ timestamp: weather.timestamp }} />
       </header>
 
       <section className="flex flex-col gap-8 container mx-auto px-4 py-8">
@@ -94,10 +93,9 @@ export default async function Place({ params }: { params: Promise<{ slug: string
         </Accordion>
 
         <div className="grid grid-cols-1 auto-rows-auto lg:grid-cols-2 gap-4">
-          <Image
-            src={placeholder}
-            alt="Placeholder"
-            className="object-fill object-center w-full aspect-square rounded-4xl md:aspect-video lg:sticky lg:top-18 xl:h-full xl:aspect-auto"
+          <Video
+            data={{ height: video.height, width: video.width, video_files: video.video_files }}
+            className="w-full aspect-square md:aspect-video lg:aspect-21/9 rounded-4xl"
           />
 
           <div className="grid gap-4 grid-cols-1 auto-rows-auto xl:grid-cols-2">

@@ -54,7 +54,10 @@ export async function currentWeather(
       appid: String(OPEN_WEATHER_API_KEY)
     })
 
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?${searchParams}`)
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?${searchParams}`,
+      { next: { revalidate: 1_800 } }
+    )
 
     if (!response.ok) {
       const error = await response.json()
