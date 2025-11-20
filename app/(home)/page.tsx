@@ -1,15 +1,22 @@
+import Link from 'next/link'
+
 import { getVideo } from '@/services/pexels/get-video'
+import { findManyPlaces } from '@/services/prisma'
 
 import { RequestLocation } from '@/components/request-location'
-
 import { Video } from '@/components/video'
+import { PlaceCard } from '@/components/place-card'
 
 import { Button } from '@/components/ui/button'
 
 import { PEXELS_VIDEO_ID_HOME } from '@/shared/constants/enviorement'
 
+const PLACE_SECTION_ID = 'locais'
+
 export default async function Home() {
   const video = await getVideo({ id: String(PEXELS_VIDEO_ID_HOME) })
+
+  const places = await findManyPlaces()
 
   return (
     <main className="flex flex-col justify-center min-h-[calc(100svh-7rem)]">
@@ -28,7 +35,9 @@ export default async function Home() {
         <div className="flex gap-2 flex-wrap">
           <RequestLocation />
 
-          <Button variant="ghost">Locais já consultados</Button>
+          <Button variant="ghost">
+            <Link href={`#${PLACE_SECTION_ID}`}>Locais já consultados</Link>
+          </Button>
         </div>
       </header>
 
@@ -37,6 +46,15 @@ export default async function Home() {
           data={{ height: video.height, width: video.width, video_files: video.video_files }}
           className="w-full aspect-square md:aspect-video lg:aspect-21/9 rounded-4xl"
         />
+
+        <div
+          id={PLACE_SECTION_ID}
+          className="scroll-m-22 grid gap-4 grid-cols-1 auto-rows-auto xl:grid-cols-2"
+        >
+          {places.map((place) => (
+            <PlaceCard key={place.id} data={place} />
+          ))}
+        </div>
       </section>
     </main>
   )

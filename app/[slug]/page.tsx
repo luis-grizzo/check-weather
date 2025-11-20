@@ -1,3 +1,4 @@
+import { type Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { findUniquePlace } from '@/services/prisma/place/find-unique'
@@ -21,6 +22,29 @@ import { weatherVideosIds } from '@/shared/enums/weather-conditions'
 import { formatCountryName } from '@/shared/utils/formatters'
 
 export const revalidate = 3_600
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+
+  const place = await findUniquePlace({ slug })
+
+  if (!place)
+    return {
+      title: 'Local não encontrado',
+      description: 'Não foi possível encontrar o local informado.'
+    }
+
+  const fullPlace = `${place.name}, ${place.state ? `${place.state}, ` : ''}${formatCountryName(place.country)}`
+
+  return {
+    title: `Previsão em ${fullPlace}`,
+    description: `Veja como está o clima agora em ${fullPlace}!`
+  }
+}
 
 export default async function Place({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
