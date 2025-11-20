@@ -10,8 +10,10 @@
     "format": "prettier . --check",
     "format:write": "prettier . --write",
     "prisma:studio": "npx prisma studio",
+    "prisma:generate": "npx prisma generate",
     "prisma:dev:migrate": "npx prisma migrate dev --name",
-    "prisma:dev:db": "npx prisma dev --name checkweather"
+    "prisma:dev:db": "npx prisma dev --name checkweather",
+    "prisma:remote:migrate": "npx prisma migrate deploy"
   },
   "dependencies": {
     "@google/genai": "^1.29.1",

@@ -13,6 +13,8 @@ import { PEXELS_VIDEO_ID_HOME } from '@/shared/constants/enviorement'
 
 const PLACE_SECTION_ID = 'locais'
 
+export const revalidate = 3_600
+
 export default async function Home() {
   const video = await getVideo({ id: String(PEXELS_VIDEO_ID_HOME) })
 
@@ -35,9 +37,11 @@ export default async function Home() {
         <div className="flex gap-2 flex-wrap">
           <RequestLocation />
 
-          <Button variant="ghost">
-            <Link href={`#${PLACE_SECTION_ID}`}>Locais já consultados</Link>
-          </Button>
+          {!!places.length && (
+            <Button variant="ghost">
+              <Link href={`#${PLACE_SECTION_ID}`}>Locais já consultados</Link>
+            </Button>
+          )}
         </div>
       </header>
 
@@ -47,14 +51,16 @@ export default async function Home() {
           className="w-full aspect-square md:aspect-video lg:aspect-21/9 rounded-4xl"
         />
 
-        <div
-          id={PLACE_SECTION_ID}
-          className="scroll-m-22 grid gap-4 grid-cols-1 auto-rows-auto xl:grid-cols-2"
-        >
-          {places.map((place) => (
-            <PlaceCard key={place.id} data={place} />
-          ))}
-        </div>
+        {!!places.length && (
+          <div
+            id={PLACE_SECTION_ID}
+            className="scroll-m-22 grid gap-4 grid-cols-1 auto-rows-auto xl:grid-cols-2"
+          >
+            {places.map((place) => (
+              <PlaceCard key={place.id} data={place} />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   )

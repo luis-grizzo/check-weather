@@ -44,7 +44,7 @@ export default function Error({
             </EmptyDescription>
           </EmptyHeader>
 
-          <EmptyContent className="flex-row flex-wrap">
+          <EmptyContent className="flex-row flex-wrap justify-center">
             <Button asChild>
               <Link href="/">Voltar a home</Link>
             </Button>
