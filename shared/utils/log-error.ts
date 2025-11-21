@@ -10,7 +10,7 @@ interface LogErrorProps {
 export function logError({ alias, path, error, origin }: LogErrorProps) {
   const message = error instanceof Error ? error.message || origin : origin
 
-  console.error(alias, path, { message })
+  console.error(alias, path, { message: JSON.stringify(message, null, 2) })
 
   return message
 }
