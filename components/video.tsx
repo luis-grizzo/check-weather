@@ -19,7 +19,8 @@ export function Video({
         autoPlay
         muted
         loop
-        preload="none"
+        playsInline
+        preload="auto"
         className="absolute top-0 left-0 object-cover object-center h-full w-full"
       >
         <source src={hdVideo.link} type={hdVideo.file_type} />
