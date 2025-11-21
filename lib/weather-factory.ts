@@ -97,10 +97,12 @@ function getRainStatus(volume: number) {
   return WeatherSeverity.SEVERE
 }
 
-export function weatherFactory(raw: ICurrentWeatherResponse): IWeatherFactoryResponse {
+export async function weatherFactory(
+  raw: ICurrentWeatherResponse
+): Promise<IWeatherFactoryResponse> {
   const weather: IWeatherFactoryResponse = {
     timestamp: raw.dt * 1_000,
-    date: formatDateTime(new Date(raw.dt * 1_000), {
+    date: await formatDateTime(new Date(raw.dt * 1_000), {
       dateStyle: 'medium',
       timeStyle: 'short'
     }),
@@ -135,12 +137,12 @@ export function weatherFactory(raw: ICurrentWeatherResponse): IWeatherFactoryRes
     statistics: [
       {
         name: 'Nascer do sol',
-        value: formatDateTime(new Date(raw.sys.sunrise * 1_000), { timeStyle: 'short' }),
+        value: await formatDateTime(new Date(raw.sys.sunrise * 1_000), { timeStyle: 'short' }),
         description: 'tbd'
       },
       {
         name: 'Pôr do sol',
-        value: formatDateTime(new Date(raw.sys.sunset * 1_000), { timeStyle: 'short' }),
+        value: await formatDateTime(new Date(raw.sys.sunset * 1_000), { timeStyle: 'short' }),
         description: 'tbd'
       },
       {

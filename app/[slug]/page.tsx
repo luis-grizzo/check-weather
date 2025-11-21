@@ -101,7 +101,7 @@ export default async function Place({ params }: { params: Promise<{ slug: string
             <AccordionItem value="about-place">
               <AccordionTrigger>{`Sobre ${fullPlace}`}</AccordionTrigger>
 
-              <AccordionContent className="flex flex-col gap-4 text-balance">
+              <AccordionContent className="flex flex-col gap-4 text-pretty">
                 <p className="text-sm">{place.description}</p>
               </AccordionContent>
             </AccordionItem>
@@ -110,7 +110,7 @@ export default async function Place({ params }: { params: Promise<{ slug: string
           <AccordionItem value="recommendation">
             <AccordionTrigger>Recomendação</AccordionTrigger>
 
-            <AccordionContent className="flex flex-col gap-4 text-balance">
+            <AccordionContent className="flex flex-col gap-4 text-pretty">
               <p className="text-sm">{recommendation}</p>
             </AccordionContent>
           </AccordionItem>
@@ -119,7 +119,7 @@ export default async function Place({ params }: { params: Promise<{ slug: string
         <div className="grid grid-cols-1 auto-rows-auto lg:grid-cols-2 gap-4">
           <Video
             data={{ height: video.height, width: video.width, video_files: video.video_files }}
-            className="w-full aspect-square md:aspect-video lg:aspect-21/9 rounded-4xl"
+            className="w-full aspect-square md:aspect-video rounded-4xl"
           />
 
           <div className="grid gap-4 grid-cols-1 auto-rows-auto xl:grid-cols-2">

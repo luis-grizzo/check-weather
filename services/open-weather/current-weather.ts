@@ -67,7 +67,7 @@ export async function currentWeather(
 
     const raw: ICurrentWeatherResponse = await response.json()
 
-    const weather = weatherFactory(raw)
+    const weather = await weatherFactory(raw)
 
     return weather
   } catch (error) {
