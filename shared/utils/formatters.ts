@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers'
+
 export const toKebabCase = (input: string) => {
   return input
     .normalize('NFD')
@@ -19,14 +21,17 @@ export const formatCountryName = (code: string | undefined) => {
   return new Intl.DisplayNames(['pt-BR'], { type: 'region', fallback: 'code' }).of(code)
 }
 
-export const formatDateTime = (timestamp: Date, options: Intl.DateTimeFormatOptions) => {
+export const formatDateTime = async (timestamp: Date, options: Intl.DateTimeFormatOptions) => {
   const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
+
+  const cookieStore = await cookies()
+  const clientTimeZone = cookieStore.get('clientTimeZone')?.value
 
   const timestampNumber = new Date(timestamp).getTime()
 
   return new Intl.DateTimeFormat('pt-BR', {
     ...options,
-    timeZone
+    timeZone: clientTimeZone || timeZone
   }).format(timestampNumber)
 }
 
