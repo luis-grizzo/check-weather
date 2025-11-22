@@ -7,9 +7,9 @@ import { formatCountryName } from '@/shared/utils/formatters'
 export function PlaceCard({
   data
 }: {
-  data: Pick<Place, 'slug' | 'name' | 'state' | 'country'> & { _count: { locations: number } }
+  data: Pick<Place, 'slug' | 'name' | 'country'> & { _count: { locations: number } }
 }) {
-  const fullPlace = `${data.name}, ${data.state ? `${data.state}, ` : ''}${formatCountryName(data.country)}`
+  const fullPlace = `${data.name}, ${formatCountryName(data.country)}`
 
   return (
     <Link

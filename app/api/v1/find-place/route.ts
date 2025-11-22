@@ -1,22 +1,20 @@
 import { z } from 'zod'
 
-import { findFirstLocation } from '@/services/prisma'
-import { reverseGeocode } from '@/services/open-weather/reverse-geocoding'
+import { findFirstLocation, createPlace, createLocation, findFirstPlace } from '@/services/prisma'
+import { reverseGeocode } from '@/services/open-weather'
+import { generateAboutPlace } from '@/services/gemini'
 
 import { HttpsResponseCode } from '@/shared/enums/https-response-codes'
 import { ErrorOrigin } from '@/shared/enums/error-origin'
 import { errorResponse, successResponse } from '@/shared/utils/api-helpers'
 import { logError } from '@/shared/utils/log-error'
-import { createPlace } from '@/services/prisma/place/create'
-import { createLocation } from '@/services/prisma/location/create'
-import { findFirstPlace } from '@/services/prisma/place/find-first'
-import { generatePlaceDescription } from '@/services/gemini/generate-place-description'
-import { updatePlace } from '@/services/prisma/place/update'
+import { formatNumber } from '@/shared/utils/formatters'
 
 const FindPlaceSchema = z
   .object({
     latitude: z.number(),
-    longitude: z.number()
+    longitude: z.number(),
+    owner: z.string()
   })
   .strict()
 
@@ -32,8 +30,14 @@ export async function POST(request: Request) {
       })
 
     const location = await findFirstLocation({
-      latitude: String(contents.latitude),
-      longitude: String(contents.longitude)
+      latitude: formatNumber(contents.latitude, {
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4
+      }),
+      longitude: formatNumber(contents.longitude, {
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4
+      })
     })
 
     if (!!location) return successResponse({ data: location, code: HttpsResponseCode.OK_200 })
@@ -55,26 +59,23 @@ export async function POST(request: Request) {
     })
 
     if (!!place) {
-      if (!place.description) {
-        const placeDescription = await generatePlaceDescription({
-          name: place.name,
-          state: place.state,
-          country: place.country
-        })
-
-        await updatePlace({ id: place.id, description: placeDescription })
-      }
-
       const newLocation = await createLocation({
         placeId: place.id,
-        latitude: String(contents.latitude),
-        longitude: String(contents.longitude)
+        owner: contents.owner,
+        latitude: formatNumber(contents.latitude, {
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4
+        }),
+        longitude: formatNumber(contents.longitude, {
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4
+        })
       })
 
       return successResponse({ data: newLocation, code: HttpsResponseCode.CREATED_201 })
     }
 
-    const newPlaceDescription = await generatePlaceDescription({
+    const newAboutPlace = await generateAboutPlace({
       name: openWeatherPlace.name,
       state: openWeatherPlace.state || null,
       country: openWeatherPlace.country
@@ -86,13 +87,20 @@ export async function POST(request: Request) {
       country: openWeatherPlace.country,
       latitude: String(openWeatherPlace.lat),
       longitude: String(openWeatherPlace.lon),
-      description: newPlaceDescription
+      about: newAboutPlace
     })
 
     const newLocation = await createLocation({
       placeId: newPlace.id,
-      latitude: String(contents.latitude),
-      longitude: String(contents.longitude)
+      owner: contents.owner,
+      latitude: formatNumber(contents.latitude, {
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4
+      }),
+      longitude: formatNumber(contents.longitude, {
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4
+      })
     })
 
     return successResponse({ data: newLocation, code: HttpsResponseCode.CREATED_201 })

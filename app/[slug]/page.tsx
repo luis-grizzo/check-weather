@@ -69,7 +69,7 @@ export default async function Place({ params }: { params: Promise<{ slug: string
           <span className="text-base">{weather.date}</span>
         </div>
 
-        <AboutPlacePopover data={{ fullPlace, description: place.description }} />
+        <AboutPlacePopover data={{ fullPlace, description: place.about }} />
       </header>
 
       <section className="grid grid-cols-1 auto-rows-auto lg:grid-cols-2 gap-8 container mx-auto px-4 py-8">
