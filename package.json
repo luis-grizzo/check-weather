@@ -7,7 +7,7 @@
     "build": "prisma generate --no-engine && next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate --no-engine",
     "format": "prettier . --check",
     "format:write": "prettier . --write",
     "prisma:studio": "npx prisma studio",
@@ -15,7 +15,8 @@
     "prisma:dev:migrate": "npx prisma migrate dev --name",
     "prisma:dev:db": "npx prisma dev --name checkweather",
     "prisma:dev:remove:db": "npx prisma dev rm checkweather",
-    "prisma:remote:migrate": "npx prisma migrate deploy"
+    "prisma:remote:migrate": "npx prisma migrate deploy",
+    "prisma:remote:reset": "npx prisma migrate reset --force --skip-generate --skip-seed"
   },
   "dependencies": {
     "@google/genai": "^1.29.1",
