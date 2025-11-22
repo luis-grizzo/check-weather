@@ -30,7 +30,7 @@ export function RequestLocation() {
           const UUID = localStorage.getItem(UUID_STORAGE_KEY)
 
           const location = await fetchLocation({
-            owner: JSON.parse(String(UUID)),
+            owner: String(UUID),
             ...coords
           })
 
