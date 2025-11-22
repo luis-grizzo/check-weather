@@ -25,5 +25,5 @@ const UUID = localStorage.getItem(UUID_STORAGE_KEY)
 if (!UUID) {
   const newUUID = crypto.randomUUID()
 
-  localStorage.setItem(UUID_STORAGE_KEY, JSON.stringify(newUUID))
+  localStorage.setItem(UUID_STORAGE_KEY, newUUID)
 }
