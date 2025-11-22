@@ -7,16 +7,9 @@ import { Home } from 'lucide-react'
 import { PermissionStatusPopover } from './permission-status-popover'
 
 import { Button } from '@/components/ui/button'
-import { useEffect } from 'react'
 
 export function Navbar() {
   const pathname = usePathname()
-
-  useEffect(() => {
-    const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
-
-    document.cookie = `clientTimeZone=${timeZone}; path=/`
-  }, [])
 
   return (
     <nav className="sticky top-0 bg-linear-to-b from-background to-background/80 backdrop-blur z-50">
