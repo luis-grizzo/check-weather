@@ -7,7 +7,7 @@ import { formatDateTime, formatNumber } from '@/shared/utils/formatters'
 interface IStatistic {
   name: string
   value: string
-  description: string
+  description?: string
   status?: WeatherSeverity
 }
 
@@ -16,12 +16,7 @@ export interface IWeatherFactoryResponse {
   date: string
   condition: WeatherConditions
   description: string
-  temperature: {
-    actual: string
-    feelsLike: string
-    minimum: string
-    maximum: string
-  }
+  temperature: string
   statistics: IStatistic[]
 }
 
@@ -42,41 +37,41 @@ function getVisibilityValue(visibility: number): string {
   })
 }
 
-function getVisibilityStatus(visibility: number): WeatherSeverity {
-  if (visibility >= 10_000) return WeatherSeverity.GOOD
-  if (visibility < 10_000 && visibility >= 4_000) return WeatherSeverity.MODERATE
+// function getVisibilityStatus(visibility: number): WeatherSeverity {
+//   if (visibility >= 10_000) return WeatherSeverity.GOOD
+//   if (visibility < 10_000 && visibility >= 4_000) return WeatherSeverity.MODERATE
 
-  return WeatherSeverity.SEVERE
-}
+//   return WeatherSeverity.SEVERE
+// }
 
-function getHumidityStatus(humidity: number): WeatherSeverity {
-  if (humidity >= 30 && humidity <= 70) return WeatherSeverity.GOOD
-  if ((humidity >= 20 && humidity <= 30) || (humidity >= 70 && humidity <= 85))
-    return WeatherSeverity.MODERATE
+// function getHumidityStatus(humidity: number): WeatherSeverity {
+//   if (humidity >= 30 && humidity <= 70) return WeatherSeverity.GOOD
+//   if ((humidity >= 20 && humidity <= 30) || (humidity >= 70 && humidity <= 85))
+//     return WeatherSeverity.MODERATE
 
-  return WeatherSeverity.SEVERE
-}
+//   return WeatherSeverity.SEVERE
+// }
 
-function getPressureStatus(pressure: number): WeatherSeverity {
-  if (pressure > 1_005) return WeatherSeverity.GOOD
-  if (pressure >= 995 && pressure <= 1_005) return WeatherSeverity.MODERATE
+// function getPressureStatus(pressure: number): WeatherSeverity {
+//   if (pressure > 1_005) return WeatherSeverity.GOOD
+//   if (pressure >= 995 && pressure <= 1_005) return WeatherSeverity.MODERATE
 
-  return WeatherSeverity.SEVERE
-}
+//   return WeatherSeverity.SEVERE
+// }
 
-function getWindSpeedStatus(speed: number) {
-  if (speed <= 5) return WeatherSeverity.GOOD
-  if (speed > 5 && speed <= 10) return WeatherSeverity.MODERATE
+// function getWindSpeedStatus(speed: number) {
+//   if (speed <= 5) return WeatherSeverity.GOOD
+//   if (speed > 5 && speed <= 10) return WeatherSeverity.MODERATE
 
-  return WeatherSeverity.SEVERE
-}
+//   return WeatherSeverity.SEVERE
+// }
 
-function getWindGustStatus(gust: number) {
-  if (gust <= 10) return WeatherSeverity.GOOD
-  if (gust > 10 && gust <= 17) return WeatherSeverity.MODERATE
+// function getWindGustStatus(gust: number) {
+//   if (gust <= 10) return WeatherSeverity.GOOD
+//   if (gust > 10 && gust <= 17) return WeatherSeverity.MODERATE
 
-  return WeatherSeverity.SEVERE
-}
+//   return WeatherSeverity.SEVERE
+// }
 
 function getWindDiretionValue(degree: number): string {
   if (degree >= 337.5 || degree < 22.5) return 'Norte'
@@ -90,12 +85,12 @@ function getWindDiretionValue(degree: number): string {
   return 'Indefinido'
 }
 
-function getRainStatus(volume: number) {
-  if (volume <= 2.5) return WeatherSeverity.GOOD
-  if (volume > 2.5 && volume <= 7.5) return WeatherSeverity.MODERATE
+// function getRainStatus(volume: number) {
+//   if (volume <= 2.5) return WeatherSeverity.GOOD
+//   if (volume > 2.5 && volume <= 7.5) return WeatherSeverity.MODERATE
 
-  return WeatherSeverity.SEVERE
-}
+//   return WeatherSeverity.SEVERE
+// }
 
 export async function weatherFactory(
   raw: ICurrentWeatherResponse
@@ -108,48 +103,25 @@ export async function weatherFactory(
     }),
     condition: raw.weather[0].main,
     description: getDescriptionValue(raw.weather[0].description),
-    temperature: {
-      actual: formatNumber(raw.main.temp, {
-        style: 'unit',
-        unit: 'celsius',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }),
-      feelsLike: `Sensação ${formatNumber(raw.main.feels_like, {
-        style: 'unit',
-        unit: 'celsius',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      })}`,
-      minimum: `Mínima ${formatNumber(raw.main.temp_min, {
-        style: 'unit',
-        unit: 'celsius',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      })}`,
-      maximum: `Máxima ${formatNumber(raw.main.temp_max, {
-        style: 'unit',
-        unit: 'celsius',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      })}`
-    },
+    temperature: formatNumber(raw.main.temp, {
+      style: 'unit',
+      unit: 'celsius',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }),
     statistics: [
       {
-        name: 'Nascer do sol',
-        value: await formatDateTime(new Date(raw.sys.sunrise * 1_000), { timeStyle: 'short' }),
-        description: 'tbd'
-      },
-      {
-        name: 'Pôr do sol',
-        value: await formatDateTime(new Date(raw.sys.sunset * 1_000), { timeStyle: 'short' }),
-        description: 'tbd'
+        name: 'Sensação térmica',
+        value: formatNumber(raw.main.feels_like, {
+          style: 'unit',
+          unit: 'celsius',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        })
       },
       {
         name: 'Visibilidade',
-        value: getVisibilityValue(raw.visibility),
-        description: 'tbd',
-        status: getVisibilityStatus(raw.visibility)
+        value: getVisibilityValue(raw.visibility)
       },
       {
         name: 'Nebulosidade',
@@ -158,8 +130,7 @@ export async function weatherFactory(
           unit: 'percent',
           minimumFractionDigits: 0,
           maximumFractionDigits: 0
-        }),
-        description: 'tbd'
+        })
       },
       {
         name: 'Umidade',
@@ -168,15 +139,11 @@ export async function weatherFactory(
           unit: 'percent',
           minimumFractionDigits: 0,
           maximumFractionDigits: 0
-        }),
-        description: 'tdb',
-        status: getHumidityStatus(raw.main.humidity)
+        })
       },
       {
         name: 'Pressão atmosférica',
-        value: `${raw.main.sea_level} hPa`,
-        description: 'tbd',
-        status: getPressureStatus(raw.main.sea_level)
+        value: `${raw.main.sea_level} hPa`
       },
       {
         name: 'Velocidade do vento',
@@ -185,9 +152,7 @@ export async function weatherFactory(
           unit: 'kilometer-per-hour',
           minimumFractionDigits: 0,
           maximumFractionDigits: 0
-        }),
-        description: 'tbd',
-        status: getWindSpeedStatus(raw.wind.speed)
+        })
       },
       {
         name: 'Rajada de vento',
@@ -196,42 +161,65 @@ export async function weatherFactory(
           unit: 'kilometer-per-hour',
           minimumFractionDigits: 0,
           maximumFractionDigits: 0
-        }),
-        description: 'tbd',
-        status: getWindGustStatus(raw.wind.gust)
+        })
       },
       {
         name: 'Direção do vento',
-        value: getWindDiretionValue(raw.wind.deg),
-        description: 'tbd'
+        value: getWindDiretionValue(raw.wind.deg)
+      },
+      {
+        name: 'Nascer do sol',
+        value: await formatDateTime(new Date(raw.sys.sunrise * 1_000), { timeStyle: 'short' })
+      },
+      {
+        name: 'Pôr do sol',
+        value: await formatDateTime(new Date(raw.sys.sunset * 1_000), { timeStyle: 'short' })
       }
     ]
   }
 
+  if (raw.main.temp_min !== raw.main.temp_max)
+    weather.statistics.unshift(
+      {
+        name: 'Ponto mais frio',
+        value: formatNumber(raw.main.temp_min, {
+          style: 'unit',
+          unit: 'celsius',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        })
+      },
+      {
+        name: 'Ponto mais quente',
+        value: formatNumber(raw.main.temp_max, {
+          style: 'unit',
+          unit: 'celsius',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        })
+      }
+    )
+
   if (!!raw.rain)
-    weather.statistics.push({
+    weather.statistics.unshift({
       name: 'Chuva',
       value: formatNumber(raw.rain['1h'], {
         style: 'unit',
         unit: 'millimeter-per-hour',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
-      }),
-      description: 'tbd',
-      status: getRainStatus(raw.rain['1h'])
+      })
     })
 
   if (!!raw.snow)
-    weather.statistics.push({
+    weather.statistics.unshift({
       name: 'Neve',
       value: formatNumber(raw.snow['1h'], {
         style: 'unit',
         unit: 'millimeter-per-hour',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
-      }),
-      description: 'tbd',
-      status: getRainStatus(raw.snow['1h'])
+      })
     })
 
   return weather

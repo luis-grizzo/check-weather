@@ -12,7 +12,11 @@ export async function findManyPlaces() {
         slug: true,
         state: true,
         country: true,
-        description: true
+        _count: {
+          select: {
+            locations: true
+          }
+        }
       }
     })
 

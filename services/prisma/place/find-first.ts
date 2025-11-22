@@ -19,7 +19,7 @@ export async function findFirstPlace(params: Pick<Place, 'latitude' | 'longitude
         name: true,
         state: true,
         country: true,
-        description: true
+        about: true
       }
     })
 

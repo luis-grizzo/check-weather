@@ -7,19 +7,12 @@ import { generateWeatherRecommendation } from '@/services/gemini/generate-weathe
 import { getVideo } from '@/services/pexels/get-video'
 
 import { StatusCard } from '@/components/status-card'
-import { RevalidatePath } from '@/components/revalidate-path'
 import { Video } from '@/components/video'
-
-import { Badge } from '@/components/ui/badge'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
+import { AiContentDisclaimer } from '@/components/ai-content-disclaimer'
 
 import { weatherVideosIds } from '@/shared/enums/weather-conditions'
 import { formatCountryName } from '@/shared/utils/formatters'
+import { AboutPlacePopover } from '@/components/about-place-popover'
 
 export const revalidate = 3_600
 
@@ -38,7 +31,7 @@ export async function generateMetadata({
       description: 'Não foi possível encontrar o local informado.'
     }
 
-  const fullPlace = `${place.name}, ${place.state ? `${place.state}, ` : ''}${formatCountryName(place.country)}`
+  const fullPlace = `${place.name}, ${formatCountryName(place.country)}`
 
   return {
     title: `Previsão em ${fullPlace}`,
@@ -65,7 +58,7 @@ export default async function Place({ params }: { params: Promise<{ slug: string
     weather
   })
 
-  const fullPlace = `${place.name}, ${place.state ? `${place.state}, ` : ''}${formatCountryName(place.country)}`
+  const fullPlace = `${place.name}, ${formatCountryName(place.country)}`
 
   return (
     <main className="flex flex-col justify-center min-h-[calc(100svh-7rem)]">
@@ -76,60 +69,41 @@ export default async function Place({ params }: { params: Promise<{ slug: string
           <span className="text-base">{weather.date}</span>
         </div>
 
-        <RevalidatePath data={{ timestamp: weather.timestamp }} />
+        <AboutPlacePopover data={{ fullPlace, description: place.about }} />
       </header>
 
-      <section className="flex flex-col gap-8 container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-4xl lg:text-5xl font-semibold tracking-tighter text-center text-balance">
-            {weather.temperature.actual}
-          </h1>
+      <section className="grid grid-cols-1 auto-rows-auto lg:grid-cols-2 gap-8 container mx-auto px-4 py-8">
+        <div className="relative overflow-hidden lg:sticky lg:top-22 flex flex-col justify-end w-full aspect-square md:aspect-video rounded-4xl before:absolute before:top-0 before:left-0 before:z-10 before:h-full before:w-full before:bg-linear-to-b before:from-50% before:to-black/80">
+          <div className="z-30 flex flex-col gap-2 justify-end p-8">
+            <h1 className="text-4xl lg:text-5xl font-semibold tracking-tighter text-balance text-white">
+              {weather.temperature}
+            </h1>
 
-          <span className="text-lg lg:text-xl text-center">{weather.description}</span>
-
-          <div className="flex flex-wrap justify-center gap-2">
-            <Badge variant="secondary">{weather.temperature.feelsLike}</Badge>
-
-            <Badge variant="secondary">{weather.temperature.minimum}</Badge>
-
-            <Badge variant="secondary">{weather.temperature.maximum}</Badge>
+            <p className="text-base lg:text-xl text-balance text-white">{weather.description}</p>
           </div>
-        </div>
 
-        <Accordion type="single" collapsible className="w-full" defaultValue="recommendation">
-          {place.description && (
-            <AccordionItem value="about-place">
-              <AccordionTrigger>{`Sobre ${fullPlace}`}</AccordionTrigger>
-
-              <AccordionContent className="flex flex-col gap-4 text-pretty">
-                <p className="text-sm">{place.description}</p>
-              </AccordionContent>
-            </AccordionItem>
-          )}
-
-          <AccordionItem value="recommendation">
-            <AccordionTrigger>Recomendação</AccordionTrigger>
-
-            <AccordionContent className="flex flex-col gap-4 text-pretty">
-              <p className="text-sm">{recommendation}</p>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-
-        <div className="grid grid-cols-1 auto-rows-auto lg:grid-cols-2 gap-4">
           <Video
             data={{ height: video.height, width: video.width, video_files: video.video_files }}
-            className="w-full aspect-square md:aspect-video rounded-4xl"
+            className="absolute top-0 left-0 -z-10 h-full w-full"
           />
+        </div>
 
-          <div className="grid gap-4 grid-cols-1 auto-rows-auto xl:grid-cols-2">
+        <div className="@container flex flex-col gap-4">
+          <div className="flex flex-col gap-2 mb-4">
+            <AiContentDisclaimer />
+
+            <h2 className="text-3xl font-semibold text-balance">{recommendation.title}</h2>
+
+            <p className="text-base text-pretty">{recommendation.description}</p>
+          </div>
+
+          <div className="grid gap-4 grid-cols-1 auto-rows-auto @md:grid-cols-2">
             {weather.statistics.map((statistic) => (
               <StatusCard
                 key={statistic.name}
                 data={{
                   value: statistic.value,
-                  description: statistic.name,
-                  status: statistic.status
+                  description: statistic.name
                 }}
               />
             ))}

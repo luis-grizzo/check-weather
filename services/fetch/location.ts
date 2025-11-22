@@ -1,13 +1,14 @@
-import { type Location, type Place } from '@/prisma/generated'
-
+import { type Location, type Place } from '@/lib/prisma'
 import { validateEnvironmentPath } from '@/lib/validate-enviroment-path'
 
 import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { logError } from '@/shared/utils/log-error'
 import { HttpsResponseCode } from '@/shared/enums/https-response-codes'
-import { ICoordinates } from '@/shared/types/geolocation'
+import { logError } from '@/shared/utils/log-error'
+import { type ICoordinates } from '@/shared/types/geolocation'
 
-export type TFetchLocationRequest = ICoordinates
+export interface IFetchLocationRequest extends ICoordinates {
+  owner: string
+}
 
 export interface IFetchLocationResponse
   extends Pick<Location, 'id' | 'latitude' | 'longitude' | 'createdAt'> {
@@ -15,7 +16,7 @@ export interface IFetchLocationResponse
 }
 
 export async function fetchLocation(
-  params: TFetchLocationRequest
+  params: IFetchLocationRequest
 ): Promise<IFetchLocationResponse> {
   try {
     const originPath = validateEnvironmentPath()

@@ -3,7 +3,9 @@ import { type Location, prisma } from '@/lib/prisma'
 import { ErrorOrigin } from '@/shared/enums/error-origin'
 import { logError } from '@/shared/utils/log-error'
 
-export async function createLocation(params: Pick<Location, 'latitude' | 'longitude' | 'placeId'>) {
+export async function createLocation(
+  params: Pick<Location, 'latitude' | 'longitude' | 'placeId' | 'owner'>
+) {
   try {
     const location = await prisma.location.create({
       data: {
@@ -13,6 +15,8 @@ export async function createLocation(params: Pick<Location, 'latitude' | 'longit
         id: true,
         latitude: true,
         longitude: true,
+        owner: true,
+        consentedAt: true,
         createdAt: true,
         place: {
           select: {

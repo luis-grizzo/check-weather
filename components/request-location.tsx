@@ -12,6 +12,7 @@ import { GeolocationPermissionStatus } from '@/shared/enums/geolocation-permissi
 import { fetchLocation } from '@/services/fetch/location'
 import { logError } from '@/shared/utils/log-error'
 import { ErrorOrigin } from '@/shared/enums/error-origin'
+import { UUID_STORAGE_KEY } from '@/shared/constants/storage'
 
 export function RequestLocation() {
   const router = useRouter()
@@ -26,7 +27,12 @@ export function RequestLocation() {
         try {
           setIsLoading(true)
 
-          const location = await fetchLocation(coords)
+          const UUID = localStorage.getItem(UUID_STORAGE_KEY)
+
+          const location = await fetchLocation({
+            owner: JSON.parse(String(UUID)),
+            ...coords
+          })
 
           router.push(`/${location.place.slug}`)
 

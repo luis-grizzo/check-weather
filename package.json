@@ -1,6 +1,6 @@
 {
   "name": "check-weather",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,7 +14,9 @@
     "prisma:generate": "npx prisma generate",
     "prisma:dev:migrate": "npx prisma migrate dev --name",
     "prisma:dev:db": "npx prisma dev --name checkweather",
-    "prisma:remote:migrate": "npx prisma migrate deploy"
+    "prisma:dev:remove:db": "npx prisma dev rm checkweather",
+    "prisma:remote:migrate": "npx prisma migrate deploy",
+    "prisma:remote:reset": "npx prisma migrate reset --force --skip-generate --skip-seed"
   },
   "dependencies": {
     "@google/genai": "^1.29.1",
