@@ -35,23 +35,50 @@ export function PermissionStatusPopover() {
           )}
 
           {status === GeolocationPermissionStatus.UNSUPPORTED && (
-            <MapPinOff className="text-purple-500" />
+            <MapPinOff className="text-blue-500" />
           )}
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent align="end" className="text-sm">
-        {status === GeolocationPermissionStatus.GRANTED &&
-          'CheckWeather tem acesso a sua localização.'}
+      <PopoverContent align="end" className="flex flex-col gap-2 sm:w-sm md:w-md lg:w-lg xl:w-xl">
+        {status === GeolocationPermissionStatus.GRANTED && (
+          <>
+            <h3 className="text-2xl font-semibold text-balance">Permissão concedida</h3>
 
-        {status === GeolocationPermissionStatus.PROMPT &&
-          'CheckWeather ainda não tem permissão para acessar sua localização.'}
+            <p className="text-base text-pretty">
+              Você consentiu em compartilhar sua localização com o CheckWeather.
+            </p>
+          </>
+        )}
 
-        {status === GeolocationPermissionStatus.DENIED &&
-          'CheckWeather não tem permissão para acessar sua localização. Por favor, habilite nas configurações do navegador.'}
+        {status === GeolocationPermissionStatus.PROMPT && (
+          <>
+            <h3 className="text-2xl font-semibold text-balance">Compartilhe sua localização</h3>
 
-        {status === GeolocationPermissionStatus.UNSUPPORTED &&
-          'Seu navegador não suporta geolocalização.'}
+            <p className="text-base text-pretty">
+              CheckWeather ainda não tem permissão para acessar sua localização.
+            </p>
+          </>
+        )}
+
+        {status === GeolocationPermissionStatus.DENIED && (
+          <>
+            <h3 className="text-2xl font-semibold text-balance">Permissão negada</h3>
+
+            <p className="text-base text-pretty">
+              CheckWeather não tem permissão para acessar sua localização. Por favor, habilite nas
+              configurações do navegador.
+            </p>
+          </>
+        )}
+
+        {status === GeolocationPermissionStatus.UNSUPPORTED && (
+          <>
+            <h3 className="text-2xl font-semibold text-balance">Não disponível</h3>
+
+            <p className="text-base text-pretty">Seu navegador não suporta geolocalização.</p>
+          </>
+        )}
       </PopoverContent>
     </Popover>
   )

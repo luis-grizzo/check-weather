@@ -1,4 +1,4 @@
-import { gemini, MODEL } from '@/lib/gemini'
+import { gemini, MODEL, Type } from '@/lib/gemini'
 import { type Place } from '@/lib/prisma'
 import { IWeatherFactoryResponse } from '@/lib/weather-factory'
 
@@ -10,11 +10,14 @@ type TWeatherRecommendationRequest = {
   weather: IWeatherFactoryResponse
 }
 
-type TWeatherRecommendationResponse = string
+interface IWeatherRecommendationResponse {
+  title: string
+  description: string
+}
 
 export async function generateWeatherRecommendation(
   params: TWeatherRecommendationRequest
-): Promise<TWeatherRecommendationResponse> {
+): Promise<IWeatherRecommendationResponse> {
   try {
     const response = await gemini.models.generateContent({
       model: MODEL,
@@ -22,7 +25,20 @@ export async function generateWeatherRecommendation(
       config: {
         temperature: 2,
         systemInstruction:
-          "Você recebe um JSON com 'place' (com 'name') e 'weather' contendo informações atuais do clima (por exemplo: temperature, feels_like, condition, precipitation, wind_speed, humidity, uv_index, visibility, etc.). Em português, gere uma recomendação prática e voltada à preparação e ao bem-estar diante do clima atual. Deve incluir: 1) breve síntese do estado do tempo, 2) dicas acionáveis e específicas (roupa adequada, hidratação, proteção solar, guarda-chuva/impermeável, cuidado com vento/estradas), e 3) precauções especiais quando aplicável. Mantenha o texto conciso (2-4 frases), natural e direto, sem instruções ao leitor sobre como usar a resposta, sem perguntas e sem mencionar que recebeu JSON. Não utilize Markdown; responda apenas com texto puro, sem nenhuma marcação."
+          "Com base em 'place' (com 'name') e 'weather' (por exemplo: temperature, feels_like, condition, precipitation, wind_speed, humidity, uv_index, visibility, etc.), gere em português uma recomendação prática, bem-humorada e voltada à preparação e ao bem-estar diante do clima atual. Deve incluir: 1) breve síntese do estado do tempo, 2) dicas acionáveis e específicas (roupa adequada, hidratação, proteção solar, guarda-chuva/impermeável, cuidado com vento/estradas), 3) sugestões de atividades condizentes com o clima atual (por exemplo: passeio ao ar livre, leitura em casa, esportes, café em cafeteria) e 4) precauções especiais quando aplicável. Mantenha o texto conciso (2-4 frases), natural, direto e com tom leve e bem-humorado. Não faça perguntas, não instrua o leitor sobre como usar a resposta e não mencione que recebeu JSON. Não utilize Markdown; responda apenas com texto puro, sem nenhuma marcação.",
+        responseMimeType: 'application/json',
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            title: {
+              type: Type.STRING
+            },
+            description: {
+              type: Type.STRING
+            }
+          },
+          required: ['title', 'description']
+        }
       }
     })
 
@@ -30,7 +46,9 @@ export async function generateWeatherRecommendation(
       throw new Error('Falha ao gerar a recomendação sobre o clima.')
     }
 
-    return response.text
+    const parsedResponse: IWeatherRecommendationResponse = JSON.parse(response.text)
+
+    return parsedResponse
   } catch (error) {
     const message = logError({
       origin: ErrorOrigin.APP,
