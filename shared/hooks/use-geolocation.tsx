@@ -2,9 +2,10 @@
 
 import { useEffect, useState, useCallback, createContext, type ReactNode, useContext } from 'react'
 
-import { GeolocationPermissionStatus } from '@/shared/enums/geolocation-permission-status'
+import { GeolocationPermissionStatus } from '@/shared/enums'
 
 import { type ICoordinates } from '@/shared/types/geolocation'
+import { toast } from 'sonner'
 
 type TGeolocationContext = {
   status: GeolocationPermissionStatus
@@ -26,19 +27,29 @@ export function GeolocationProvider({ children }: { children: ReactNode }) {
 
     setCoords({ latitude, longitude })
     setStatus(GeolocationPermissionStatus.GRANTED)
+
+    toast.success('Localização obtida com sucesso!')
   }
 
   function handleErrorLocation(error: GeolocationPositionError) {
     if (error.code === error.TIMEOUT) {
       setStatus(GeolocationPermissionStatus.PROMPT)
+
+      toast.warning('Tempo limite para obter localização exedido. Tente novamente!')
     }
 
     if (error.code === error.PERMISSION_DENIED) {
       setStatus(GeolocationPermissionStatus.DENIED)
+
+      toast.error(
+        'Permissão à localização negada. Habilite a permissão nas configurações do navegador.'
+      )
     }
 
     if (error.code === error.POSITION_UNAVAILABLE) {
       setStatus(GeolocationPermissionStatus.UNSUPPORTED)
+
+      toast.error('Seu navegador não suporta o serviço de geolocalização.')
     }
   }
 

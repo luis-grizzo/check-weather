@@ -1,8 +1,7 @@
 import { type Place, prisma } from '@/lib/prisma'
 
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { toKebabCase } from '@/shared/utils/formatters'
-import { logError } from '@/shared/utils/log-error'
+import { ErrorMessage } from '@/shared/enums'
+import { toKebabCase, logError } from '@/shared/utils'
 
 export async function createPlace(
   params: Pick<Place, 'name' | 'state' | 'country' | 'latitude' | 'longitude' | 'about'>
@@ -14,20 +13,15 @@ export async function createPlace(
         slug: toKebabCase(params.name)
       },
       select: {
-        id: true,
-        name: true,
-        slug: true,
-        state: true,
-        country: true,
-        latitude: true,
-        longitude: true
+        id: true
       }
     })
 
     return place
   } catch (error) {
-    const message = logError({
-      origin: ErrorOrigin.APP,
+    const message = ErrorMessage.PRISMA_ERROR
+
+    logError({
       alias: 'createPlace',
       path: '@/services/prisma/place/create.ts',
       error

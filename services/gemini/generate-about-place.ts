@@ -1,8 +1,8 @@
 import { gemini, MODEL } from '@/lib/gemini'
 import { type Place } from '@/lib/prisma'
 
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { logError } from '@/shared/utils/log-error'
+import { ErrorMessage } from '@/shared/enums'
+import { logError } from '@/shared/utils'
 
 type TGenerateAboutPlaceRequest = Pick<Place, 'name' | 'state' | 'country'>
 
@@ -28,8 +28,9 @@ export async function generateAboutPlace(
 
     return response.text
   } catch (error) {
-    const message = logError({
-      origin: ErrorOrigin.APP,
+    const message = ErrorMessage.GEMINI_ERROR
+
+    logError({
       alias: 'generatePlaceDescription',
       path: '@/services/gemini/generate-place-description.ts',
       error

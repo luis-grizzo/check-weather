@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Analytics } from '@vercel/analytics/next'
 
 import { geistSans, geistMono } from './fonts'
 
@@ -7,10 +8,11 @@ import { Footer } from '@/components/footer'
 
 import { Toaster } from '@/components/ui/sonner'
 
-import { BASE_URL } from '@/shared/constants/enviorement'
+import { BASE_URL, IS_PRODUCTION } from '@/shared/constants'
 import { GeolocationProvider } from '@/shared/hooks/use-geolocation'
 
 import './globals.css'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'CheckWeather',
@@ -50,19 +52,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-br" className="scroll-smooth">
+    <html lang="pt-br" data-scroll-behavior="smooth" className="scroll-smooth">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-dvh`}
       >
         <Toaster />
 
         <GeolocationProvider>
-          <Navbar />
+          <Suspense fallback="Carregando...">
+            <Navbar />
+          </Suspense>
 
           {children}
 
           <Footer />
         </GeolocationProvider>
+
+        {IS_PRODUCTION && <Analytics />}
       </body>
     </html>
   )

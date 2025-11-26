@@ -12,7 +12,8 @@ const eslintConfig = defineConfig([
     plugins: { prettier: pluginPrettier },
     rules: {
       'prettier/prettier': 'warn',
-      'react-hooks/exhaustive-deps': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/set-state-in-effect': 'warn',
       'no-console': ['warn', { allow: ['error'] }]
     }
   },

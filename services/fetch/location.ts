@@ -1,18 +1,16 @@
-import { type Location, type Place } from '@/lib/prisma'
+import { type Place } from '@/lib/prisma'
 import { validateEnvironmentPath } from '@/lib/validate-enviroment-path'
 
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { HttpsResponseCode } from '@/shared/enums/https-response-codes'
-import { logError } from '@/shared/utils/log-error'
+import { HttpsResponseCode } from '@/shared/enums'
+import { logError, getErrorMessage } from '@/shared/utils'
 import { type ICoordinates } from '@/shared/types/geolocation'
 
 export interface IFetchLocationRequest extends ICoordinates {
   owner: string
 }
 
-export interface IFetchLocationResponse
-  extends Pick<Location, 'id' | 'latitude' | 'longitude' | 'createdAt'> {
-  place: Pick<Place, 'name' | 'slug' | 'state' | 'country' | 'latitude' | 'longitude'>
+export interface IFetchLocationResponse {
+  place: Pick<Place, 'slug'>
 }
 
 export async function fetchLocation(
@@ -21,7 +19,7 @@ export async function fetchLocation(
   try {
     const originPath = validateEnvironmentPath()
 
-    const res = await fetch(`${originPath}/v1/find-place`, {
+    const res = await fetch(`${originPath}/v1/find-first-location`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -41,8 +39,9 @@ export async function fetchLocation(
 
     return data
   } catch (error) {
-    const message = logError({
-      origin: ErrorOrigin.APP,
+    const message = getErrorMessage(error)
+
+    logError({
       alias: 'fetchLocation',
       path: '@/services/fetch/location.ts',
       error

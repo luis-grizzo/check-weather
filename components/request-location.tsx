@@ -4,15 +4,15 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
+import { fetchLocation } from '@/services/fetch'
+
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 
 import { useGeolocation } from '@/shared/hooks/use-geolocation'
-import { GeolocationPermissionStatus } from '@/shared/enums/geolocation-permission-status'
-import { fetchLocation } from '@/services/fetch/location'
-import { logError } from '@/shared/utils/log-error'
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { UUID_STORAGE_KEY } from '@/shared/constants/storage'
+import { UUID_STORAGE_KEY } from '@/shared/constants'
+import { GeolocationPermissionStatus } from '@/shared/enums'
+import { logError, getErrorMessage } from '@/shared/utils'
 
 export function RequestLocation() {
   const router = useRouter()
@@ -38,8 +38,9 @@ export function RequestLocation() {
 
           resetCoords()
         } catch (error) {
-          const message = logError({
-            origin: ErrorOrigin.APP,
+          const message = getErrorMessage(error)
+
+          logError({
             alias: 'RequestLocation',
             path: '@/components/request-location.tsx',
             error

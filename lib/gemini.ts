@@ -1,6 +1,6 @@
 import { GoogleGenAI } from '@google/genai'
 
-import { GOOGLE_GENAI_KEY } from '@/shared/constants/enviorement'
+import { GOOGLE_GENAI_KEY } from '@/shared/constants'
 
 export { Type } from '@google/genai'
 

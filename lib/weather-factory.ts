@@ -1,14 +1,12 @@
-import { type ICurrentWeatherResponse } from '@/services/open-weather/current-weather'
+import { type ICurrentWeatherResponse } from '@/services/open-weather'
 
-import { WeatherSeverity } from '@/shared/enums/weather-severity'
-import { WeatherConditions } from '@/shared/enums/weather-conditions'
-import { formatDateTime, formatNumber } from '@/shared/utils/formatters'
+import { WeatherConditions } from '@/shared/enums'
+import { formatDateTime, formatNumber } from '@/shared/utils'
 
 interface IStatistic {
+  order: number
   name: string
   value: string
-  description?: string
-  status?: WeatherSeverity
 }
 
 export interface IWeatherFactoryResponse {
@@ -37,42 +35,6 @@ function getVisibilityValue(visibility: number): string {
   })
 }
 
-// function getVisibilityStatus(visibility: number): WeatherSeverity {
-//   if (visibility >= 10_000) return WeatherSeverity.GOOD
-//   if (visibility < 10_000 && visibility >= 4_000) return WeatherSeverity.MODERATE
-
-//   return WeatherSeverity.SEVERE
-// }
-
-// function getHumidityStatus(humidity: number): WeatherSeverity {
-//   if (humidity >= 30 && humidity <= 70) return WeatherSeverity.GOOD
-//   if ((humidity >= 20 && humidity <= 30) || (humidity >= 70 && humidity <= 85))
-//     return WeatherSeverity.MODERATE
-
-//   return WeatherSeverity.SEVERE
-// }
-
-// function getPressureStatus(pressure: number): WeatherSeverity {
-//   if (pressure > 1_005) return WeatherSeverity.GOOD
-//   if (pressure >= 995 && pressure <= 1_005) return WeatherSeverity.MODERATE
-
-//   return WeatherSeverity.SEVERE
-// }
-
-// function getWindSpeedStatus(speed: number) {
-//   if (speed <= 5) return WeatherSeverity.GOOD
-//   if (speed > 5 && speed <= 10) return WeatherSeverity.MODERATE
-
-//   return WeatherSeverity.SEVERE
-// }
-
-// function getWindGustStatus(gust: number) {
-//   if (gust <= 10) return WeatherSeverity.GOOD
-//   if (gust > 10 && gust <= 17) return WeatherSeverity.MODERATE
-
-//   return WeatherSeverity.SEVERE
-// }
-
 function getWindDiretionValue(degree: number): string {
   if (degree >= 337.5 || degree < 22.5) return 'Norte'
   if (degree >= 22.5 && degree < 67.5) return 'Nordeste'
@@ -82,105 +44,87 @@ function getWindDiretionValue(degree: number): string {
   if (degree >= 202.5 && degree < 247.5) return 'Sudoeste'
   if (degree >= 247.5 && degree < 292.5) return 'Oeste'
   if (degree >= 292.5 && degree < 337.5) return 'Noroeste'
+
   return 'Indefinido'
 }
 
-// function getRainStatus(volume: number) {
-//   if (volume <= 2.5) return WeatherSeverity.GOOD
-//   if (volume > 2.5 && volume <= 7.5) return WeatherSeverity.MODERATE
-
-//   return WeatherSeverity.SEVERE
-// }
-
-export async function weatherFactory(
-  raw: ICurrentWeatherResponse
-): Promise<IWeatherFactoryResponse> {
-  const weather: IWeatherFactoryResponse = {
-    timestamp: raw.dt * 1_000,
-    date: await formatDateTime(new Date(raw.dt * 1_000), {
-      dateStyle: 'medium',
-      timeStyle: 'short'
-    }),
-    condition: raw.weather[0].main,
-    description: getDescriptionValue(raw.weather[0].description),
-    temperature: formatNumber(raw.main.temp, {
-      style: 'unit',
-      unit: 'celsius',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }),
-    statistics: [
-      {
-        name: 'Sensação térmica',
-        value: formatNumber(raw.main.feels_like, {
-          style: 'unit',
-          unit: 'celsius',
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0
-        })
-      },
-      {
-        name: 'Visibilidade',
-        value: getVisibilityValue(raw.visibility)
-      },
-      {
-        name: 'Nebulosidade',
-        value: formatNumber(raw.clouds.all, {
-          style: 'unit',
-          unit: 'percent',
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0
-        })
-      },
-      {
-        name: 'Umidade',
-        value: formatNumber(raw.main.humidity, {
-          style: 'unit',
-          unit: 'percent',
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0
-        })
-      },
-      {
-        name: 'Pressão atmosférica',
-        value: `${raw.main.sea_level} hPa`
-      },
-      {
-        name: 'Velocidade do vento',
-        value: formatNumber(raw.wind.speed * 3.6, {
-          style: 'unit',
-          unit: 'kilometer-per-hour',
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0
-        })
-      },
-      {
-        name: 'Rajada de vento',
-        value: formatNumber(raw.wind.gust * 3.6, {
-          style: 'unit',
-          unit: 'kilometer-per-hour',
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0
-        })
-      },
-      {
-        name: 'Direção do vento',
-        value: getWindDiretionValue(raw.wind.deg)
-      },
-      {
-        name: 'Nascer do sol',
-        value: await formatDateTime(new Date(raw.sys.sunrise * 1_000), { timeStyle: 'short' })
-      },
-      {
-        name: 'Pôr do sol',
-        value: await formatDateTime(new Date(raw.sys.sunset * 1_000), { timeStyle: 'short' })
-      }
-    ]
-  }
+export function weatherFactory(raw: ICurrentWeatherResponse): IWeatherFactoryResponse {
+  const statistics: IStatistic[] = [
+    {
+      order: 1,
+      name: 'Sensação térmica',
+      value: formatNumber(raw.main.feels_like, {
+        style: 'unit',
+        unit: 'celsius',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      })
+    },
+    {
+      order: 6,
+      name: 'Velocidade do vento',
+      value: formatNumber(raw.wind.speed * 3.6, {
+        style: 'unit',
+        unit: 'kilometer-per-hour',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      })
+    },
+    {
+      order: 8,
+      name: 'Direção do vento',
+      value: getWindDiretionValue(raw.wind.deg)
+    },
+    {
+      order: 9,
+      name: 'Nebulosidade',
+      value: formatNumber(raw.clouds.all, {
+        style: 'unit',
+        unit: 'percent',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      })
+    },
+    {
+      order: 10,
+      name: 'Umidade',
+      value: formatNumber(raw.main.humidity, {
+        style: 'unit',
+        unit: 'percent',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      })
+    },
+    {
+      order: 11,
+      name: 'Visibilidade',
+      value: getVisibilityValue(raw.visibility)
+    },
+    {
+      order: 12,
+      name: 'Pressão atmosférica',
+      value: `${raw.main.sea_level} hPa`
+    },
+    {
+      order: 13,
+      name: 'Nascer do sol',
+      value: formatDateTime(new Date(raw.timezone * 1_000 + raw.sys.sunrise * 1_000), {
+        timeStyle: 'short'
+      })
+    },
+    {
+      order: 14,
+      name: 'Pôr do sol',
+      value: formatDateTime(new Date(raw.timezone * 1_000 + raw.sys.sunset * 1_000), {
+        timeStyle: 'short'
+      })
+    }
+  ]
 
   if (raw.main.temp_min !== raw.main.temp_max)
-    weather.statistics.unshift(
+    statistics.push(
       {
+        order: 2,
         name: 'Ponto mais frio',
         value: formatNumber(raw.main.temp_min, {
           style: 'unit',
@@ -190,6 +134,7 @@ export async function weatherFactory(
         })
       },
       {
+        order: 3,
         name: 'Ponto mais quente',
         value: formatNumber(raw.main.temp_max, {
           style: 'unit',
@@ -201,7 +146,8 @@ export async function weatherFactory(
     )
 
   if (!!raw.rain)
-    weather.statistics.unshift({
+    statistics.push({
+      order: 4,
       name: 'Chuva',
       value: formatNumber(raw.rain['1h'], {
         style: 'unit',
@@ -212,7 +158,8 @@ export async function weatherFactory(
     })
 
   if (!!raw.snow)
-    weather.statistics.unshift({
+    statistics.push({
+      order: 5,
       name: 'Neve',
       value: formatNumber(raw.snow['1h'], {
         style: 'unit',
@@ -221,6 +168,35 @@ export async function weatherFactory(
         maximumFractionDigits: 0
       })
     })
+
+  if (raw.wind.gust)
+    statistics.push({
+      order: 7,
+      name: 'Rajada de vento',
+      value: formatNumber(raw.wind.gust * 3.6, {
+        style: 'unit',
+        unit: 'kilometer-per-hour',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      })
+    })
+
+  const weather: IWeatherFactoryResponse = {
+    timestamp: raw.dt * 1_000,
+    date: formatDateTime(new Date(raw.timezone * 1_000 + raw.dt * 1_000), {
+      dateStyle: 'medium',
+      timeStyle: 'short'
+    }),
+    condition: raw.weather[0].main,
+    description: getDescriptionValue(raw.weather[0].description),
+    temperature: formatNumber(raw.main.temp, {
+      style: 'unit',
+      unit: 'celsius',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }),
+    statistics: [...statistics].sort((a, b) => a.order - b.order)
+  }
 
   return weather
 }

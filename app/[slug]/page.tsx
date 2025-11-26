@@ -1,20 +1,24 @@
+'use cache'
+
 import { type Metadata } from 'next'
+import { cacheLife } from 'next/cache'
 import { notFound } from 'next/navigation'
 
-import { findUniquePlace } from '@/services/prisma/place/find-unique'
-import { currentWeather } from '@/services/open-weather/current-weather'
-import { generateWeatherRecommendation } from '@/services/gemini/generate-weather-recommendation'
-import { getVideo } from '@/services/pexels/get-video'
+import { findUniquePlace, findUniquePlaceForMetadata } from '@/services/prisma'
+import { currentWeather } from '@/services/open-weather'
+import { generateWeatherRecommendation } from '@/services/gemini'
+import { showVideo } from '@/services/pexels'
 
 import { StatusCard } from '@/components/status-card'
 import { Video } from '@/components/video'
 import { AiContentDisclaimer } from '@/components/ai-content-disclaimer'
-
-import { weatherVideosIds } from '@/shared/enums/weather-conditions'
-import { formatCountryName } from '@/shared/utils/formatters'
 import { AboutPlacePopover } from '@/components/about-place-popover'
 
-export const revalidate = 3_600
+import { Badge } from '@/components/ui/badge'
+
+import { IS_NEW_PERIOD } from '@/shared/constants'
+import { weatherVideosIds } from '@/shared/enums'
+import { formatCountryName, getNow } from '@/shared/utils'
 
 export async function generateMetadata({
   params
@@ -23,7 +27,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
 
-  const place = await findUniquePlace({ slug })
+  const place = await findUniquePlaceForMetadata({ slug })
 
   if (!place)
     return {
@@ -40,6 +44,8 @@ export async function generateMetadata({
 }
 
 export default async function Place({ params }: { params: Promise<{ slug: string }> }) {
+  cacheLife('hours')
+
   const { slug } = await params
 
   const place = await findUniquePlace({ slug })
@@ -51,20 +57,30 @@ export default async function Place({ params }: { params: Promise<{ slug: string
     longitude: parseFloat(place.longitude)
   })
 
-  const video = await getVideo({ id: String(weatherVideosIds[weather.condition]) })
+  const video = await showVideo({ id: String(weatherVideosIds[weather.condition]) })
 
   const recommendation = await generateWeatherRecommendation({
-    place: { name: place.name },
+    name: place.name,
     weather
   })
 
   const fullPlace = `${place.name}, ${formatCountryName(place.country)}`
 
+  const isNew = new Date(place.createdAt).getTime() < getNow() + IS_NEW_PERIOD
+
   return (
     <main className="flex flex-col justify-center min-h-[calc(100svh-7rem)]">
       <header className="flex gap-4 items-center justify-between container mx-auto px-4 py-4">
         <div className="flex flex-col">
-          <span className="text-xl font-medium">{fullPlace}</span>
+          {isNew ? (
+            <div className="flex gap-2 items-center">
+              <span className="text-xl font-medium">{fullPlace}</span>
+
+              <Badge>Novidade</Badge>
+            </div>
+          ) : (
+            <span className="text-xl font-medium">{fullPlace}</span>
+          )}
 
           <span className="text-base">{weather.date}</span>
         </div>

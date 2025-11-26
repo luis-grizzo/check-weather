@@ -4,11 +4,14 @@ import { findFirstLocation, createPlace, createLocation, findFirstPlace } from '
 import { reverseGeocode } from '@/services/open-weather'
 import { generateAboutPlace } from '@/services/gemini'
 
-import { HttpsResponseCode } from '@/shared/enums/https-response-codes'
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { errorResponse, successResponse } from '@/shared/utils/api-helpers'
-import { logError } from '@/shared/utils/log-error'
-import { formatNumber } from '@/shared/utils/formatters'
+import { HttpsResponseCode } from '@/shared/enums'
+import {
+  errorResponse,
+  successResponse,
+  logError,
+  formatNumber,
+  getErrorMessage
+} from '@/shared/utils'
 
 const FindPlaceSchema = z
   .object({
@@ -105,13 +108,17 @@ export async function POST(request: Request) {
 
     return successResponse({ data: newLocation, code: HttpsResponseCode.CREATED_201 })
   } catch (error) {
-    const message = logError({
-      origin: ErrorOrigin.API,
+    const message = getErrorMessage(error)
+
+    logError({
       alias: 'POST',
       path: '@/app/api/v1/find-place/route.ts',
       error
     })
 
-    return errorResponse({ message, code: HttpsResponseCode.INTERNAL_SERVER_ERROR_500 })
+    return errorResponse({
+      message,
+      code: HttpsResponseCode.INTERNAL_SERVER_ERROR_500
+    })
   }
 }
