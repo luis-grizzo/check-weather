@@ -2,11 +2,10 @@ import { gemini, MODEL, Type } from '@/lib/gemini'
 import { type Place } from '@/lib/prisma'
 import { IWeatherFactoryResponse } from '@/lib/weather-factory'
 
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { logError } from '@/shared/utils/log-error'
+import { ErrorMessage } from '@/shared/enums'
+import { logError } from '@/shared/utils'
 
-type TWeatherRecommendationRequest = {
-  place: Pick<Place, 'name'>
+interface IWeatherRecommendationRequest extends Pick<Place, 'name'> {
   weather: IWeatherFactoryResponse
 }
 
@@ -16,7 +15,7 @@ interface IWeatherRecommendationResponse {
 }
 
 export async function generateWeatherRecommendation(
-  params: TWeatherRecommendationRequest
+  params: IWeatherRecommendationRequest
 ): Promise<IWeatherRecommendationResponse> {
   try {
     const response = await gemini.models.generateContent({
@@ -50,8 +49,9 @@ export async function generateWeatherRecommendation(
 
     return parsedResponse
   } catch (error) {
-    const message = logError({
-      origin: ErrorOrigin.APP,
+    const message = ErrorMessage.GEMINI_ERROR
+
+    logError({
       alias: 'generateWeatherRecommendation',
       path: '@/services/gemini/generate-weather-recommendation.ts',
       error

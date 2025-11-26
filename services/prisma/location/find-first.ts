@@ -1,7 +1,7 @@
 import { type Location, prisma } from '@/lib/prisma'
 
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { logError } from '@/shared/utils/log-error'
+import { ErrorMessage } from '@/shared/enums'
+import { logError } from '@/shared/utils'
 
 export async function findFirstLocation(params: Pick<Location, 'latitude' | 'longitude'>) {
   try {
@@ -15,19 +15,9 @@ export async function findFirstLocation(params: Pick<Location, 'latitude' | 'lon
         }
       },
       select: {
-        id: true,
-        latitude: true,
-        longitude: true,
-        createdAt: true,
         place: {
           select: {
-            id: true,
-            name: true,
-            slug: true,
-            state: true,
-            country: true,
-            latitude: true,
-            longitude: true
+            slug: true
           }
         }
       }
@@ -35,8 +25,9 @@ export async function findFirstLocation(params: Pick<Location, 'latitude' | 'lon
 
     return location
   } catch (error) {
-    const message = logError({
-      origin: ErrorOrigin.APP,
+    const message = ErrorMessage.PRISMA_ERROR
+
+    logError({
       alias: 'findFirstLocation',
       path: '@/services/prisma/location/find-first.ts',
       error

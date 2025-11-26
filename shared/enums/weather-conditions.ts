@@ -6,7 +6,7 @@ import {
   PEXELS_VIDEO_ID_RAIN,
   PEXELS_VIDEO_ID_SNOW,
   PEXELS_VIDEO_ID_THUNDERSTORM
-} from '@/shared/constants/enviorement'
+} from '@/shared/constants'
 
 export enum WeatherConditions {
   CLEAR = 'Clear',

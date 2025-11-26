@@ -1,6 +1,6 @@
 'use client'
 
-import { IS_PRODUCTION, BASE_URL } from '@/shared/constants/enviorement'
+import { IS_PRODUCTION, BASE_URL } from '@/shared/constants'
 
 export const validateEnvironmentPath = () => {
   if (IS_PRODUCTION) {

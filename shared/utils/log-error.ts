@@ -1,16 +1,9 @@
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-
-interface LogErrorProps {
+interface ILogError {
   alias: string
   path: string
   error: unknown
-  origin: ErrorOrigin
 }
 
-export function logError({ alias, path, error, origin }: LogErrorProps) {
-  const message = error instanceof Error ? error.message || origin : origin
-
-  console.error(alias, path, { message: JSON.stringify(message, null, 2) })
-
-  return message
+export function logError({ alias, path, error }: ILogError) {
+  console.error(alias, path, error)
 }

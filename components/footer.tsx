@@ -3,7 +3,7 @@ import { Github, Linkedin } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
-import { GITHUB_REPO_URL, LINKEDIN_URL } from '@/shared/constants/enviorement'
+import { GITHUB_REPO_URL, LINKEDIN_URL } from '@/shared/constants'
 
 export function Footer() {
   return (

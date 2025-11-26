@@ -2,14 +2,19 @@ import Link from 'next/link'
 
 import { type Place } from '@/lib/prisma'
 
-import { formatCountryName } from '@/shared/utils/formatters'
+import { Badge } from '@/components/ui/badge'
+
+import { IS_NEW_PERIOD } from '@/shared/constants'
+import { formatCountryName, getNow } from '@/shared/utils'
 
 export function PlaceCard({
   data
 }: {
-  data: Pick<Place, 'slug' | 'name' | 'country'> & { _count: { locations: number } }
+  data: Pick<Place, 'slug' | 'name' | 'country' | 'createdAt'> & { _count: { locations: number } }
 }) {
   const fullPlace = `${data.name}, ${formatCountryName(data.country)}`
+
+  const isNew = new Date(data.createdAt).getTime() < getNow() + IS_NEW_PERIOD
 
   return (
     <Link
@@ -25,6 +30,8 @@ export function PlaceCard({
             : `Em ${data._count.locations} locais diferentes`}
         </span>
       </div>
+
+      {isNew && <Badge>Novidade</Badge>}
     </Link>
   )
 }

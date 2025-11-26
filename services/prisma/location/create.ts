@@ -1,7 +1,7 @@
 import { type Location, prisma } from '@/lib/prisma'
 
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { logError } from '@/shared/utils/log-error'
+import { ErrorMessage } from '@/shared/enums'
+import { logError } from '@/shared/utils'
 
 export async function createLocation(
   params: Pick<Location, 'latitude' | 'longitude' | 'placeId' | 'owner'>
@@ -12,21 +12,9 @@ export async function createLocation(
         ...params
       },
       select: {
-        id: true,
-        latitude: true,
-        longitude: true,
-        owner: true,
-        consentedAt: true,
-        createdAt: true,
         place: {
           select: {
-            id: true,
-            name: true,
-            slug: true,
-            state: true,
-            country: true,
-            latitude: true,
-            longitude: true
+            slug: true
           }
         }
       }
@@ -34,8 +22,9 @@ export async function createLocation(
 
     return location
   } catch (error) {
-    const message = logError({
-      origin: ErrorOrigin.APP,
+    const message = ErrorMessage.PRISMA_ERROR
+
+    logError({
       alias: 'createLocation',
       path: '@/services/prisma/location/create.ts',
       error
