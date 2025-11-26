@@ -1,7 +1,7 @@
-import { OPEN_WEATHER_API_KEY } from '@/shared/constants/enviorement'
-import { ErrorOrigin } from '@/shared/enums/error-origin'
+import { OPEN_WEATHER_API_KEY } from '@/shared/constants'
+import { ErrorMessage } from '@/shared/enums'
+import { logError } from '@/shared/utils'
 import { type ICoordinates } from '@/shared/types/geolocation'
-import { logError } from '@/shared/utils/log-error'
 
 type TReverseGeocodingRequest = ICoordinates
 
@@ -38,8 +38,9 @@ export async function reverseGeocode(
 
     return place as IReverseGeocodeResponse | undefined
   } catch (error) {
-    const message = logError({
-      origin: ErrorOrigin.APP,
+    const message = ErrorMessage.OPEN_WEATHER_ERROR
+
+    logError({
       alias: 'reverseGeocode',
       path: '@/services/open-weather/reverse-geocoding.ts',
       error

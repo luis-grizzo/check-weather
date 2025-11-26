@@ -1,6 +1,9 @@
+'use cache'
+
+import { cacheLife } from 'next/cache'
 import Link from 'next/link'
 
-import { getVideo } from '@/services/pexels/get-video'
+import { showVideo } from '@/services/pexels'
 import { findManyPlaces } from '@/services/prisma'
 
 import { RequestLocation } from '@/components/request-location'
@@ -9,14 +12,14 @@ import { PlaceCard } from '@/components/place-card'
 
 import { Button } from '@/components/ui/button'
 
-import { PEXELS_VIDEO_ID_HOME } from '@/shared/constants/enviorement'
+import { PEXELS_VIDEO_ID_HOME } from '@/shared/constants'
 
 const PLACES_SECTION_ID = 'cidades-visitadas'
 
-export const revalidate = 3_600
-
 export default async function Home() {
-  const video = await getVideo({ id: String(PEXELS_VIDEO_ID_HOME) })
+  cacheLife('hours')
+
+  const video = await showVideo({ id: String(PEXELS_VIDEO_ID_HOME) })
 
   const places = await findManyPlaces()
 

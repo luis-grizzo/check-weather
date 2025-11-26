@@ -1,4 +1,4 @@
-import { HttpsResponseCode, httpsResponseCodeStatuses } from '@/shared/enums/https-response-codes'
+import { HttpsResponseCode, httpsResponseCodeStatuses } from '@/shared/enums'
 
 export function successResponse({
   data,

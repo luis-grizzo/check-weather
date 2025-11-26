@@ -1,16 +1,4 @@
-import { UUID_STORAGE_KEY } from '@/shared/constants/storage'
-
-/**
- * Obtém o fuso horário do cliente usando Intl.DateTimeFormat().resolvedOptions().
- *
- * Expoe o timezone do cliente para o servidor via cookie, permitindo que
- * o backend adapte horários e formatações locais conforme o identificador IANA
- * retornado (ex.: "America/Sao_Paulo").
- */
-
-const { timeZone } = Intl.DateTimeFormat().resolvedOptions()
-
-document.cookie = `clientTimeZone=${timeZone}; path=/`
+import { UUID_STORAGE_KEY } from '@/shared/constants'
 
 /**
  * UUID recuperado do localStorage.

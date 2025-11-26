@@ -1,13 +1,11 @@
-import { Sparkles } from 'lucide-react'
-
 export function AiContentDisclaimer() {
   return (
-    <div className="flex items-center gap-2">
-      <Sparkles className="size-5 text-blue-500" />
+    <div className="flex flex-col">
+      <span className="text-sm font-medium tracking-tight w-fit bg-linear-to-r from-primary to-blue-600 bg-clip-text text-transparent animate-pulse">
+        CheckWeather AI
+      </span>
 
-      <strong className="text-sm font-normal text-pretty text-muted-foreground">
-        Conteúdo gerado por IA. Pode conter erros.
-      </strong>
+      <span className="text-sm text-pretty text-muted-foreground">Cheque as informações.</span>
     </div>
   )
 }

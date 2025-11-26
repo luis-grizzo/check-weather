@@ -1,17 +1,17 @@
 import { prisma } from '@/lib/prisma'
 
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { logError } from '@/shared/utils/log-error'
+import { ErrorMessage } from '@/shared/enums'
+import { logError } from '@/shared/utils'
 
 export async function findManyPlaces() {
   try {
     const place = await prisma.place.findMany({
       select: {
         id: true,
-        name: true,
         slug: true,
-        state: true,
+        name: true,
         country: true,
+        createdAt: true,
         _count: {
           select: {
             locations: true
@@ -22,8 +22,9 @@ export async function findManyPlaces() {
 
     return place
   } catch (error) {
-    const message = logError({
-      origin: ErrorOrigin.APP,
+    const message = ErrorMessage.PRISMA_ERROR
+
+    logError({
       alias: 'findManyPlaces',
       path: '@/services/prisma/place/find-many.ts',
       error

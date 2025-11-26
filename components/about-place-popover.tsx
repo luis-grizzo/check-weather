@@ -24,7 +24,7 @@ export function AboutPlacePopover({
       >
         <AiContentDisclaimer />
 
-        <h3 className="text-2xl font-semibold text-balance">{`Sobre ${data.fullPlace}`}</h3>
+        <h3 className="text-xl font-medium text-balance">{`Sobre ${data.fullPlace}`}</h3>
 
         <p className="text-base text-pretty">{data.description}</p>
       </PopoverContent>

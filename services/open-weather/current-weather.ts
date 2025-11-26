@@ -1,9 +1,9 @@
 import { IWeatherFactoryResponse, weatherFactory } from '@/lib/weather-factory'
-import { OPEN_WEATHER_API_KEY } from '@/shared/constants/enviorement'
-import { ErrorOrigin } from '@/shared/enums/error-origin'
-import { WeatherConditions } from '@/shared/enums/weather-conditions'
+
+import { OPEN_WEATHER_API_KEY } from '@/shared/constants'
+import { ErrorMessage, WeatherConditions } from '@/shared/enums'
+import { logError } from '@/shared/utils'
 import { type ICoordinates } from '@/shared/types/geolocation'
-import { logError } from '@/shared/utils/log-error'
 
 type TCurrentWeatherRequest = ICoordinates
 
@@ -24,7 +24,7 @@ export interface ICurrentWeatherResponse {
   wind: {
     speed: number
     deg: number
-    gust: number
+    gust?: number
   }
   clouds: {
     all: number
@@ -40,6 +40,7 @@ export interface ICurrentWeatherResponse {
     sunrise: number
     sunset: number
   }
+  timezone: number
 }
 
 export async function currentWeather(
@@ -54,10 +55,7 @@ export async function currentWeather(
       appid: String(OPEN_WEATHER_API_KEY)
     })
 
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?${searchParams}`,
-      { next: { revalidate: 1_800 } }
-    )
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?${searchParams}`)
 
     if (!response.ok) {
       const error = await response.json()
@@ -71,8 +69,9 @@ export async function currentWeather(
 
     return weather
   } catch (error) {
-    const message = logError({
-      origin: ErrorOrigin.APP,
+    const message = ErrorMessage.OPEN_WEATHER_ERROR
+
+    logError({
       alias: 'currentWeather',
       path: '@/services/open-weather/current-weather.ts',
       error
